@@ -20,8 +20,11 @@ Profile.destroy_all
 Profile.create!(
   name: "Kaleigh Unger",
   headline: "Senior Analyst — Data, Systems & Applied AI",
-  tagline: "I turn messy data into meaningful insights. I optimize systems for usability and " \
-           "scale. I utilize AI thoughtfully and intentionally.",
+  tagline: [
+    "I turn messy data into meaningful insights.",
+    "I optimize systems for usability and scale.",
+    "I utilize AI thoughtfully and intentionally."
+  ].join("\n"),
   intro: <<~TEXT.squish,
     Ten years of experience in data science and data analytics, creating and running
     custom modeling solutions across financial, health, retail, and senior-living

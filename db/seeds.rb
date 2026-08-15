@@ -65,7 +65,6 @@ skills = {}
   [ "React", "AI & Dev" ],
   [ "Node.js", "AI & Dev" ],
   [ "LLM Agents & Tooling", "AI & Dev" ],
-  [ "Git / GitHub", "AI & Dev" ],
   [ "Snowflake", "AI & Dev" ],
   [ "Google BigQuery", "AI & Dev" ],
   [ "Vercel", "AI & Dev" ],
@@ -185,9 +184,9 @@ nm_planning = Role.create!(
 [
   [ "Was the only person in the office who could structure blended whole-life products, so taught classes to senior advisors and ran product design for most agents in-office.", nil, [ "Training & Curriculum Design" ] ],
   [ "Built highly accurate Personal Financial Plans — Social Security projections, amortization schedules, and scenario modeling — for advisors' clients.", nil, [ "Campaign Optimization" ] ],
-  [ "Was offered an agent's contract without a bachelor's degree — the only person in the office to be, where a degree was a baseline requirement.", "only person in office without a degree", [] ]
-].each_with_index do |(desc, metric, skill_names), i|
-  a = nm_planning.accomplishments.create!(description: desc, metric: metric, position: i + 1)
+  [ "Was the only person ever offered an agent's contract without a bachelor's degree, where a degree was a baseline requirement.", "only person offered the contract without a degree", [], true ]
+].each_with_index do |(desc, metric, skill_names, hide), i|
+  a = nm_planning.accomplishments.create!(description: desc, metric: metric, position: i + 1, hide_from_highlights: !!hide)
   tag(a, skills, *skill_names)
 end
 
@@ -215,21 +214,21 @@ amp = Role.create!(
     "combining their client-provided data with our consumer data, ran it through rigorous " \
     "statistical analysis to determine the right method, then built a custom k-means model " \
     "from scratch.", "400%+ response rate vs. prior efforts", [ "K-Means Segmentation", "SAS" ], 2 ],
-  [ "Took on a client's campaign-optimization problem: asked the right questions about what " \
+  [ "Tasked with optimizing an upcoming campaign: asked the right questions about what " \
     "data they actually had access to, then refactored their existing bucketed RFM process " \
     "into a standard-deviation-based model parsed across more categories, folded into full " \
     "custom modeling blending spending/engagement patterns with household attributes.",
     "record-breaking engagement — the client started paying for this study on every campaign",
     [ "RFM Modeling" ], 3 ],
   [ "Solved an auto-loan campaign with no exact-match variables using reverse-logic modeling on the microgrid variables that were available.", nil, [ "Campaign Optimization" ] ],
-  [ "Learned enough R in a single day to execute and validate a client's own scoring model against their internal testing — not R mastery, just enough to get it done.", "same-day turnaround, vs. weeks from other vendors", [ "R" ] ],
-  [ "Pushed a client off straight-selects and hot-zips onto modeling; the resulting multi-territory win expanded into all franchises plus a full-year budget for the account.", nil, [ "Campaign Optimization" ] ],
-  [ "Tunes variable weighting in production models - catching over- and under-weighted inputs before they skew results.", nil, [] ],
   [ "Overhauled a client's manual data-selection process — replacing a slow, manual, copy/paste-and-highlight " \
     "workflow with a tool built on their existing Google BigQuery setup, giving " \
     "them instant feedback on selections and full control over their own parameters.",
     "replaced a fully manual selection process with instant, self-service control",
-    [ "Google BigQuery", "Workflow Automation", "SQL" ] ]
+    [ "Google BigQuery", "Workflow Automation", "SQL" ], 4 ],
+  [ "Learned enough R in a single day to execute and validate a client's own scoring model against their internal testing — not R mastery, just enough to get it done.", "same-day turnaround, vs. weeks from other vendors", [ "R" ], 5 ],
+  [ "Pushed a client off straight-selects and hot-zips onto modeling; the resulting multi-territory win expanded into all franchises plus a full-year budget for the account.", nil, [ "Campaign Optimization" ] ],
+  [ "Tunes variable weighting in production models - catching over- and under-weighted inputs before they skew results.", nil, [] ]
 ].each_with_index do |(desc, metric, skill_names, highlight), i|
   a = amp.accomplishments.create!(description: desc, metric: metric, position: i + 1, highlight_order: highlight)
   tag(a, skills, *skill_names)
@@ -248,8 +247,8 @@ indie = Role.create!(
 )
 [
   [ "Advising a non-technical client on standing up a personal dashboard she owns and controls, while building a bespoke, model-agnostic dashboard proof of concept.", nil, [ "LLM Agents & Tooling" ] ],
-  [ "Built and shipped AI-augmented tools end to end — agent-augmented data retrieval and scoring, small internal data apps, system integrations.", nil, [ "LLM Agents & Tooling", "Git / GitHub" ] ],
-  [ "Learned Ruby on Rails from zero and shipped this site — modeling her own career as real relational data — in a single weekend.", "zero to shipped in one weekend", [ "Ruby on Rails", "Git / GitHub" ] ]
+  [ "Built and shipped AI-augmented tools end to end — agent-augmented data retrieval and scoring, small internal data apps, system integrations.", nil, [ "LLM Agents & Tooling" ] ],
+  [ "Shipped this site — a working, data-modeled résumé — overnight.", "start to finish, overnight", [ "Ruby on Rails" ] ]
 ].each_with_index do |(desc, metric, skill_names), i|
   a = indie.accomplishments.create!(description: desc, metric: metric, position: i + 1)
   tag(a, skills, *skill_names)

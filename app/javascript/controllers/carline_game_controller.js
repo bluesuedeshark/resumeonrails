@@ -1,34 +1,43 @@
 import { Controller } from "@hotwired/stimulus"
 
-// A deliberately silly lane-dodging game: your car crawls toward the pickup
-// spot, weave left/right to avoid obstacles, get to your kid before the
-// timer runs out. Charming-and-working is the bar, not tight game feel.
+// Chrome-dino-style jump game: one input (tap/click/space), jump over
+// obstacles crossing the road, get to your kid before the timer runs out.
+// Single-input on purpose — it's meant to be playable one-thumb, mid-carline.
 export default class extends Controller {
-  static targets = ["canvas", "status", "level", "startButton"]
+  static targets = ["canvas", "status", "level"]
 
-  LANE_COUNT = 4
   OBSTACLE_KINDS = [
-    { emoji: "🚙", label: "an SUV hogging two lanes" },
-    { emoji: "📱", label: "the mom on her phone" },
-    { emoji: "🚸", label: "the crossing guard waving everyone through" },
-    { emoji: "🚲", label: "a kid weaving on a bike" },
-    { emoji: "🐕", label: "a loose dog" }
+    { emoji: "🚧", label: "a traffic cone someone knocked over" },
+    { emoji: "🐕", label: "a dog making a break for it" },
+    { emoji: "🧸", label: "a dropped stuffed animal" },
+    { emoji: "🛑", label: "the crossing guard's stop sign" }
   ]
+
+  GRAVITY = 2200 // px/s^2
+  JUMP_VELOCITY = -650 // px/s
+  PLAYER_X_RATIO = 0.22
+  GROUND_MARGIN = 60
+  CLEAR_HEIGHT = 46 // how high off the ground counts as "cleared it"
+  HIT_RADIUS = 24
 
   connect() {
     this.ctx = this.canvasTarget.getContext("2d")
     this.width = this.canvasTarget.width
     this.height = this.canvasTarget.height
-    this.laneWidth = this.width / this.LANE_COUNT
+    this.playerX = this.width * this.PLAYER_X_RATIO
+    this.groundY = this.height - this.GROUND_MARGIN
     this.running = false
     this.level = 1
     this.boundKeydown = this.handleKeydown.bind(this)
+    this.boundPointerdown = this.handlePointerdown.bind(this)
+    this.canvasTarget.addEventListener("pointerdown", this.boundPointerdown)
     this.drawIdleFrame()
   }
 
   disconnect() {
     this.stopLoop()
     document.removeEventListener("keydown", this.boundKeydown)
+    this.canvasTarget.removeEventListener("pointerdown", this.boundPointerdown)
   }
 
   start() {
@@ -46,14 +55,16 @@ export default class extends Controller {
   }
 
   beginLevel() {
-    this.playerLane = Math.floor(this.LANE_COUNT / 2)
-    this.progress = 0 // 0 = still in line, 1 = reached the pickup spot
-    this.speed = 0.09 + (this.level - 1) * 0.02
-    this.spawnChance = 0.01 + (this.level - 1) * 0.003
-    this.fallSpeed = 70 + (this.level - 1) * 12 // px/sec — was wildly faster before, this is the fix
+    this.playerY = this.groundY
+    this.velocityY = 0
+    this.onGround = true
+    this.progress = 0
+    this.speed = 0.1 + (this.level - 1) * 0.02
+    this.spawnChance = 0.012 + (this.level - 1) * 0.003
+    this.obstacleSpeed = 150 + (this.level - 1) * 22 // px/sec
     this.obstacles = []
     this.running = true
-    this.graceMs = 1500 // a beat to get oriented before anything can hit you
+    this.graceMs = 1200
     this.statusTarget.textContent = ""
     this.levelTarget.textContent = `Level ${this.level}`
     document.addEventListener("keydown", this.boundKeydown)
@@ -67,17 +78,23 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
+    if (event.key === " " || event.key === "ArrowUp" || event.code === "Space") {
+      event.preventDefault()
+      this.jump()
+    }
+  }
+
+  handlePointerdown() {
+    this.jump()
+  }
+
+  jump() {
     if (!this.running) return
-    if (event.key === "ArrowLeft") this.moveLane(-1)
-    if (event.key === "ArrowRight") this.moveLane(1)
+    if (this.onGround) {
+      this.velocityY = this.JUMP_VELOCITY
+      this.onGround = false
+    }
   }
-
-  moveLane(direction) {
-    this.playerLane = Math.min(this.LANE_COUNT - 1, Math.max(0, this.playerLane + direction))
-  }
-
-  tapLeft() { if (this.running) this.moveLane(-1) }
-  tapRight() { if (this.running) this.moveLane(1) }
 
   loop() {
     if (!this.running) return
@@ -94,28 +111,34 @@ export default class extends Controller {
   update(dt) {
     if (this.graceMs > 0) {
       this.graceMs -= dt
-      return // no spawning, no falling, no dying — just get your bearings
+      return
     }
 
     this.progress += (this.speed * dt) / 1000
 
-    if (Math.random() < this.spawnChance) {
-      const kind = this.OBSTACLE_KINDS[Math.floor(Math.random() * this.OBSTACLE_KINDS.length)]
-      this.obstacles.push({
-        lane: Math.floor(Math.random() * this.LANE_COUNT),
-        y: -40,
-        ...kind
-      })
+    this.velocityY += (this.GRAVITY * dt) / 1000
+    this.playerY += (this.velocityY * dt) / 1000
+    if (this.playerY >= this.groundY) {
+      this.playerY = this.groundY
+      this.velocityY = 0
+      this.onGround = true
     }
 
-    this.obstacles.forEach((o) => (o.y += (this.fallSpeed * dt) / 1000))
-    this.obstacles = this.obstacles.filter((o) => o.y < this.height + 40)
+    if (Math.random() < this.spawnChance) {
+      const kind = this.OBSTACLE_KINDS[Math.floor(Math.random() * this.OBSTACLE_KINDS.length)]
+      this.obstacles.push({ x: this.width + 20, ...kind })
+    }
 
-    const playerY = this.height - 70
+    this.obstacles.forEach((o) => (o.x -= (this.obstacleSpeed * dt) / 1000))
+    this.obstacles = this.obstacles.filter((o) => o.x > -40)
+
     for (const o of this.obstacles) {
-      if (o.lane === this.playerLane && Math.abs(o.y - playerY) < 26) {
-        this.fail(o.label)
-        return
+      if (Math.abs(o.x - this.playerX) < this.HIT_RADIUS) {
+        const clearance = this.groundY - this.playerY
+        if (clearance < this.CLEAR_HEIGHT) {
+          this.fail(o.label)
+          return
+        }
       }
     }
 
@@ -127,7 +150,7 @@ export default class extends Controller {
   fail(reason) {
     this.running = false
     document.removeEventListener("keydown", this.boundKeydown)
-    this.statusTarget.innerHTML = `🚗💥 Busted by ${reason}.<br>Guess you're still stuck in car line. Better luck at 2:45 tomorrow.`
+    this.statusTarget.innerHTML = `🚗💥 Didn't clear ${reason}.<br>Guess you're still stuck in car line. Better luck at 2:45 tomorrow.`
   }
 
   win() {
@@ -143,11 +166,10 @@ export default class extends Controller {
     ctx.fillStyle = "#e2e8f0"
     ctx.font = "bold 15px sans-serif"
     ctx.textAlign = "center"
-    ctx.fillText("Get your kid 🧒 without hitting anything.", this.width / 2, this.height / 2 - 14)
+    ctx.fillText("Tap to jump over stuff. Get your kid 🧒.", this.width / 2, this.height / 2 - 10)
     ctx.fillStyle = "#94a3b8"
     ctx.font = "13px sans-serif"
-    ctx.fillText("◀ ▶ or arrow keys to change lanes.", this.width / 2, this.height / 2 + 10)
-    ctx.fillText("Press Start.", this.width / 2, this.height / 2 + 30)
+    ctx.fillText("Press Start.", this.width / 2, this.height / 2 + 14)
   }
 
   draw() {
@@ -155,23 +177,14 @@ export default class extends Controller {
     ctx.fillStyle = "#1e293b"
     ctx.fillRect(0, 0, this.width, this.height)
 
-    // Highlight the player's current lane so it's obvious where you are
-    ctx.fillStyle = "rgba(99, 102, 241, 0.08)"
-    ctx.fillRect(this.playerLane * this.laneWidth, 0, this.laneWidth, this.height)
-
-    // Lane dividers
+    // Ground line
     ctx.strokeStyle = "#334155"
-    ctx.setLineDash([10, 10])
-    for (let i = 1; i < this.LANE_COUNT; i++) {
-      const x = i * this.laneWidth
-      ctx.beginPath()
-      ctx.moveTo(x, 0)
-      ctx.lineTo(x, this.height)
-      ctx.stroke()
-    }
-    ctx.setLineDash([])
+    ctx.beginPath()
+    ctx.moveTo(0, this.groundY + 24)
+    ctx.lineTo(this.width, this.groundY + 24)
+    ctx.stroke()
 
-    // Progress bar toward pickup, labeled so the goal is obvious
+    // Progress bar, labeled
     ctx.fillStyle = "#475569"
     ctx.fillRect(0, 0, this.width, 10)
     ctx.fillStyle = "#6366f1"
@@ -179,12 +192,12 @@ export default class extends Controller {
     ctx.fillStyle = "#cbd5e1"
     ctx.font = "10px sans-serif"
     ctx.textAlign = "left"
-    ctx.fillText("← progress to pickup", 4, 22)
+    ctx.fillText("progress to pickup", 4, 22)
 
-    // Kid waiting at the pickup spot
+    // Kid waiting
     ctx.font = "28px sans-serif"
     ctx.textAlign = "center"
-    ctx.fillText("🧒", this.width / 2, 50)
+    ctx.fillText("🧒", this.width - 30, this.groundY - 6)
 
     if (this.graceMs > 0) {
       ctx.fillStyle = "#e2e8f0"
@@ -192,19 +205,18 @@ export default class extends Controller {
       ctx.fillText("Get ready…", this.width / 2, this.height / 2)
       ctx.font = "12px sans-serif"
       ctx.fillStyle = "#94a3b8"
-      ctx.fillText("try moving lanes now, nothing can hit you yet", this.width / 2, this.height / 2 + 20)
+      ctx.fillText("tap or press space to test a jump", this.width / 2, this.height / 2 + 20)
     }
 
     // Obstacles
     this.obstacles.forEach((o) => {
       ctx.font = "26px sans-serif"
       ctx.textAlign = "center"
-      ctx.fillText(o.emoji, o.lane * this.laneWidth + this.laneWidth / 2, o.y)
+      ctx.fillText(o.emoji, o.x, this.groundY)
     })
 
-    // Player car
-    const playerX = this.playerLane * this.laneWidth + this.laneWidth / 2
+    // Player car (rises off the ground when jumping)
     ctx.font = "32px sans-serif"
-    ctx.fillText("🚗", playerX, this.height - 60)
+    ctx.fillText("🚗", this.playerX, this.playerY)
   }
 }

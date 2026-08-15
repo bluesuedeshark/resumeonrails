@@ -5,32 +5,31 @@
 <h1 class="text-2xl font-bold text-slate-900 mb-1">Stuck in carline right now?</h1>
 <p class="text-slate-600 mb-1">Pretend your car is actually moving.</p>
 <p class="text-sm text-slate-500 mb-6">
-  <span class="font-medium text-slate-700">Goal:</span> get your car 🚗 to your kid 🧒 without getting hit.
-  <span class="font-medium text-slate-700">Controls:</span> ◀ ▶ buttons below, or left/right arrow keys.
-  Each level starts with a couple of safe seconds to get your bearings.
+  <span class="font-medium text-slate-700">Goal:</span> jump your car 🚗 over stuff in the road, make it to your kid 🧒.
+  <span class="font-medium text-slate-700">Controls:</span> tap the road (or the button, or spacebar) to jump.
+  Each level starts with a couple of safe seconds to try a practice jump.
 </p>
 
 <div class="max-w-sm mx-auto" data-controller="carline-game">
   <div class="flex items-center justify-between mb-2 text-sm font-medium text-slate-600">
     <span data-carline-game-target="level">Level 1</span>
-    <button data-carline-game-target="startButton" data-action="carline-game#start" class="text-indigo-600 hover:text-indigo-800 font-semibold">
+    <button data-action="carline-game#start" class="text-indigo-600 hover:text-indigo-800 font-semibold">
       Start
     </button>
   </div>
 
-  <canvas data-carline-game-target="canvas" width="320" height="440" class="w-full rounded-lg border border-slate-300 touch-none"></canvas>
+  <canvas data-carline-game-target="canvas" width="320" height="320" class="w-full rounded-lg border border-slate-300 touch-none select-none"></canvas>
 
   <div data-carline-game-target="status" class="text-center text-sm font-medium text-slate-700 mt-4 min-h-12"></div>
 
-  <div class="flex gap-3 mt-4">
-    <button data-action="carline-game#tapLeft" class="flex-1 bg-slate-100 hover:bg-slate-200 rounded-lg py-4 text-xl font-semibold text-slate-700 select-none">◀</button>
-    <button data-action="carline-game#tapRight" class="flex-1 bg-slate-100 hover:bg-slate-200 rounded-lg py-4 text-xl font-semibold text-slate-700 select-none">▶</button>
-  </div>
+  <button data-action="carline-game#jump" class="w-full bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-lg py-5 text-lg font-bold text-slate-700 select-none mt-2">
+    JUMP
+  </button>
 
   <div class="flex gap-3 mt-3">
     <button data-action="carline-game#retry" class="flex-1 text-sm text-slate-500 hover:text-indigo-600">Retry level</button>
     <button data-action="carline-game#nextLevel" class="flex-1 text-sm text-slate-500 hover:text-indigo-600">Next level →</button>
   </div>
 
-  <p class="text-xs text-slate-400 mt-4 text-center">Arrow keys work too, if you're not actually one-handed in a car.</p>
+  <p class="text-xs text-slate-400 mt-4 text-center">Spacebar works too, if you're on a real keyboard.</p>
 </div>

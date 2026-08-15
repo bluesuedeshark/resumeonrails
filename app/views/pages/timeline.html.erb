@@ -1,7 +1,6 @@
 <% content_for :title, "Timeline — #{Profile.current.name}" %>
 
-<h1 class="text-2xl font-bold text-slate-900 mb-2">Timeline</h1>
-<p class="text-slate-600 mb-10 text-sm">Skills clickable for summary.</p>
+<h1 class="text-2xl font-bold text-slate-900 mb-10">Timeline</h1>
 
 <div class="space-y-12">
   <% @roles.each do |role| %>
@@ -23,13 +22,6 @@
             <li class="text-sm text-slate-700">
               <%= a.description %>
               <% if a.metric.present? %><span class="text-indigo-600 font-medium">— <%= a.metric %></span><% end %>
-              <% if a.skills.any? %>
-                <span class="block mt-1 space-x-1">
-                  <% a.skills.each do |skill| %>
-                    <%= link_to skill.name, category_path(skill.category_slug), class: "inline-block text-xs bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-full px-2 py-0.5" %>
-                  <% end %>
-                </span>
-              <% end %>
             </li>
           <% end %>
         </ul>

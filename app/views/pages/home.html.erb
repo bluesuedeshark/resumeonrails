@@ -1,8 +1,8 @@
 <% content_for :title, "#{@profile.name} — #{@profile.headline}" %>
 
-<section class="mb-16">
+<section class="mb-8">
   <p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2 flex items-center gap-2">
-    Resume on <%= image_tag "rails-logo.svg", alt: "Rails", class: "h-4 text-slate-900" %>
+    Resume on <%= image_tag "rails-logo.svg", alt: "Rails", class: "h-4" %>
   </p>
   <h1 class="text-4xl font-bold tracking-tight text-slate-900 mb-3"><%= @profile.name %></h1>
   <p class="text-xl text-slate-600 mb-6"><%= @profile.headline %></p>

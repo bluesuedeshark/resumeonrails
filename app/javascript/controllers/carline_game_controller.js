@@ -14,11 +14,12 @@ export default class extends Controller {
   ]
 
   GRAVITY = 1700 // px/s^2 — floaty on purpose, easy to time
-  JUMP_VELOCITY = -700 // px/s
+  JUMP_VELOCITY = -620 // px/s — tuned to clear obstacles without leaving the shorter canvas
   PLAYER_X_RATIO = 0.22
-  GROUND_MARGIN = 60
+  GROUND_MARGIN = 55
   CLEAR_HEIGHT = 30 // how high off the ground counts as "cleared it" — generous
   HIT_RADIUS = 16
+  MIN_SPAWN_GAP_MS = 1500 // always enough runway to land before the next one
 
   connect() {
     this.ctx = this.canvasTarget.getContext("2d")
@@ -65,6 +66,7 @@ export default class extends Controller {
     this.obstacles = []
     this.running = true
     this.graceMs = 1200
+    this.timeSinceSpawn = this.MIN_SPAWN_GAP_MS // eligible to spawn right after grace ends
     this.statusTarget.textContent = ""
     this.levelTarget.textContent = `Level ${this.level}`
     document.addEventListener("keydown", this.boundKeydown)
@@ -127,9 +129,11 @@ export default class extends Controller {
 
     this.progress += (this.speed * dt) / 1000
 
-    if (Math.random() < this.spawnChance) {
+    this.timeSinceSpawn += dt
+    if (this.timeSinceSpawn >= this.MIN_SPAWN_GAP_MS && Math.random() < this.spawnChance) {
       const kind = this.OBSTACLE_KINDS[Math.floor(Math.random() * this.OBSTACLE_KINDS.length)]
       this.obstacles.push({ x: this.width + 20, ...kind })
+      this.timeSinceSpawn = 0
     }
 
     this.obstacles.forEach((o) => (o.x -= (this.obstacleSpeed * dt) / 1000))

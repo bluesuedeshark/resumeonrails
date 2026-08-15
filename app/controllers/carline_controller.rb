@@ -36,6 +36,12 @@ class CarlineController < ApplicationController
     @vocal_bus_ready_percent = @vocal_families.any? ? ((@vocal_bus_ready.size.to_f / @vocal_families.size) * 100).round : 0
     @bus_ready_families = Family.where(extended_day: true, wants_bus: true)
     @extended_day_count = Family.where(extended_day: true).count
+
+    # Option C's wait-time effect is the one real number here: bus-ready
+    # families as a share of the average line. A/B's effects are disclosed
+    # estimates in the view — no equivalent controlled measurement exists.
+    avg_cars = @days.average(:cars_in_line).to_f
+    @effect_c = avg_cars.positive? ? (@bus_ready_families.count / avg_cars).round(3) : 0
   end
 
   def export

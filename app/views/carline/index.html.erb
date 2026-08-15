@@ -122,54 +122,88 @@
 <section class="mb-16">
   <h2 class="text-lg font-semibold text-slate-900 mb-2">So — not one fix, three</h2>
   <p class="text-sm text-slate-600 mb-6 max-w-2xl">
-    Independent variables, not mutually exclusive. A and B optimize existing flow; C reduces input
-    volume. Stacked, C reduces the load A and B have to handle.
+    Independent variables, not mutually exclusive. Toggle any combination — the projection updates.
   </p>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div class="bg-white border border-slate-200 rounded-lg p-5">
-      <p class="text-xs uppercase tracking-wide text-slate-400 font-semibold mb-1">Option A</p>
-      <h3 class="font-semibold text-slate-900 mb-2">Earlier, organized check-in</h3>
-      <p class="text-sm text-slate-600 mb-3">
-        App-based (or a simple tag scan) check-in when a car enters the queue, so kids are staged in
-        rounds and ready to hop in — instead of being paged after the car's already at the front.
-      </p>
-      <dl class="text-xs text-slate-500 space-y-1">
-        <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Low-medium — a check-in point + staging process</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">Weeks</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Payoff alone:</dt> <dd class="inline">Faster hop-in, same number of cars</dd></div>
-      </dl>
+
+  <div data-controller="solution-mix"
+       data-solution-mix-baseline-wait-value="<%= @plateau_baseline %>"
+       data-solution-mix-bus-ready-value="<%= @bus_ready_families.count %>"
+       data-solution-mix-effect-c-value="<%= @effect_c %>">
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <label class="block bg-white border border-slate-200 rounded-lg p-5 cursor-pointer has-[:checked]:border-indigo-400 has-[:checked]:bg-indigo-50/40">
+        <div class="flex items-start gap-2 mb-1">
+          <input type="checkbox" checked data-solution-mix-target="optionA" data-action="solution-mix#recalculate" class="mt-1">
+          <p class="text-xs uppercase tracking-wide text-slate-400 font-semibold">Option A</p>
+        </div>
+        <h3 class="font-semibold text-slate-900 mb-2">Earlier, organized check-in</h3>
+        <p class="text-sm text-slate-600 mb-3">
+          App-based (or a simple tag scan) check-in when a car enters the queue, so kids are staged in
+          rounds and ready to hop in — instead of being paged after the car's already at the front.
+        </p>
+        <dl class="text-xs text-slate-500 space-y-1">
+          <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Low-medium</dd></div>
+          <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">Weeks</dd></div>
+          <div><dt class="inline font-medium text-slate-600">Est. wait reduction:</dt> <dd class="inline">~15%</dd></div>
+        </dl>
+      </label>
+
+      <label class="block bg-white border border-slate-200 rounded-lg p-5 cursor-pointer has-[:checked]:border-indigo-400 has-[:checked]:bg-indigo-50/40">
+        <div class="flex items-start gap-2 mb-1">
+          <input type="checkbox" data-solution-mix-target="optionB" data-action="solution-mix#recalculate" class="mt-1">
+          <p class="text-xs uppercase tracking-wide text-slate-400 font-semibold">Option B</p>
+        </div>
+        <h3 class="font-semibold text-slate-900 mb-2">Stagger dismissal by grade</h3>
+        <p class="text-sm text-slate-600 mb-3">Spread the surge instead of releasing every classroom at once.</p>
+        <dl class="text-xs text-slate-500 space-y-1">
+          <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Medium</dd></div>
+          <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">Weeks</dd></div>
+          <div><dt class="inline font-medium text-slate-600">Est. wait reduction:</dt> <dd class="inline">~20%</dd></div>
+        </dl>
+      </label>
+
+      <label class="block bg-indigo-50 border border-indigo-300 rounded-lg p-5 cursor-pointer has-[:checked]:border-indigo-500">
+        <div class="flex items-start gap-2 mb-1">
+          <input type="checkbox" data-solution-mix-target="optionC" data-action="solution-mix#recalculate" class="mt-1">
+          <p class="text-xs uppercase tracking-wide text-indigo-500 font-semibold">Option C</p>
+        </div>
+        <h3 class="font-semibold text-slate-900 mb-2">Afternoon bus route</h3>
+        <p class="text-sm text-slate-600 mb-3">
+          Route extended-day families who already want it. New driver jobs, a new revenue line for
+          the school, fewer trips for those families — target the most vocal families first.
+        </p>
+        <dl class="text-xs text-slate-500 space-y-1">
+          <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">High</dd></div>
+          <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">A semester</dd></div>
+          <div><dt class="inline font-medium text-slate-600">Measured effect:</dt> <dd class="inline"><%= @bus_ready_families.count %> cars removable</dd></div>
+        </dl>
+      </label>
     </div>
-    <div class="bg-white border border-slate-200 rounded-lg p-5">
-      <p class="text-xs uppercase tracking-wide text-slate-400 font-semibold mb-1">Option B</p>
-      <h3 class="font-semibold text-slate-900 mb-2">Stagger dismissal by grade</h3>
-      <p class="text-sm text-slate-600 mb-3">Spread the surge instead of releasing every classroom at once.</p>
-      <dl class="text-xs text-slate-500 space-y-1">
-        <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Medium — scheduling, staff buy-in</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">Weeks</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Payoff alone:</dt> <dd class="inline">Lower peak congestion, sustained</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Stacked with A:</dt> <dd class="inline">Smaller, faster-moving rounds instead of one long one</dd></div>
-      </dl>
-    </div>
-    <div class="bg-indigo-50 border border-indigo-300 rounded-lg p-5">
-      <p class="text-xs uppercase tracking-wide text-indigo-500 font-semibold mb-1">Option C</p>
-      <h3 class="font-semibold text-slate-900 mb-2">Afternoon bus route</h3>
-      <p class="text-sm text-slate-600 mb-3">
-        Route extended-day families who already want it. Fewer cars, new driver jobs, a new revenue
-        line for the school, fewer trips for those families — and target the most vocal families
-        first, since that's the lowest-friction path to visible satisfaction gains.
-      </p>
-      <dl class="text-xs text-slate-500 space-y-1">
-        <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">High — planning, staffing, a route</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">A semester</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Payoff alone:</dt> <dd class="inline"><%= @bus_ready_families.count %> fewer cars in line, structurally</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Stacked with A/B:</dt> <dd class="inline">Compounds — smaller line <em>and</em> it moves faster</dd></div>
-      </dl>
+
+    <div class="mt-4 bg-slate-900 text-slate-100 rounded-lg p-5">
+      <p class="text-xs uppercase tracking-wide text-slate-400 font-semibold mb-3">Projected outcome for this combination</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
+        <div>
+          <p class="text-2xl font-bold text-white" data-solution-mix-target="wait"></p>
+          <p class="text-xs text-slate-400">projected wait</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-white" data-solution-mix-target="cars"></p>
+          <p class="text-xs text-slate-400">cars removed</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-white" data-solution-mix-target="effort"></p>
+          <p class="text-xs text-slate-400">effort</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-white" data-solution-mix-target="timeline"></p>
+          <p class="text-xs text-slate-400">timeline</p>
+        </div>
+      </div>
+      <p class="text-xs text-slate-400" data-solution-mix-target="reduction"></p>
+      <p class="text-xs text-slate-500 mt-2" data-solution-mix-target="note"></p>
     </div>
   </div>
-  <p class="text-xs text-slate-400 mt-4 max-w-2xl">
-    Next iteration: live toggle to combine options, export the projected outcome per combination.
-    Not built — tradeoffs sketched, not simulated.
-  </p>
 </section>
 
 <section class="mb-16">

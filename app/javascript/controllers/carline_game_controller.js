@@ -48,10 +48,12 @@ export default class extends Controller {
   beginLevel() {
     this.playerLane = Math.floor(this.LANE_COUNT / 2)
     this.progress = 0 // 0 = still in line, 1 = reached the pickup spot
-    this.speed = 0.09 + (this.level - 1) * 0.035
-    this.spawnChance = 0.02 + (this.level - 1) * 0.008
+    this.speed = 0.09 + (this.level - 1) * 0.02
+    this.spawnChance = 0.01 + (this.level - 1) * 0.003
+    this.fallSpeed = 70 + (this.level - 1) * 12 // px/sec — was wildly faster before, this is the fix
     this.obstacles = []
     this.running = true
+    this.graceMs = 1500 // a beat to get oriented before anything can hit you
     this.statusTarget.textContent = ""
     this.levelTarget.textContent = `Level ${this.level}`
     document.addEventListener("keydown", this.boundKeydown)
@@ -90,6 +92,11 @@ export default class extends Controller {
   }
 
   update(dt) {
+    if (this.graceMs > 0) {
+      this.graceMs -= dt
+      return // no spawning, no falling, no dying — just get your bearings
+    }
+
     this.progress += (this.speed * dt) / 1000
 
     if (Math.random() < this.spawnChance) {
@@ -101,13 +108,12 @@ export default class extends Controller {
       })
     }
 
-    const fallSpeed = (0.25 + this.level * 0.05) * dt
-    this.obstacles.forEach((o) => (o.y += fallSpeed))
+    this.obstacles.forEach((o) => (o.y += (this.fallSpeed * dt) / 1000))
     this.obstacles = this.obstacles.filter((o) => o.y < this.height + 40)
 
     const playerY = this.height - 70
     for (const o of this.obstacles) {
-      if (o.lane === this.playerLane && Math.abs(o.y - playerY) < 30) {
+      if (o.lane === this.playerLane && Math.abs(o.y - playerY) < 26) {
         this.fail(o.label)
         return
       }
@@ -134,16 +140,24 @@ export default class extends Controller {
     const ctx = this.ctx
     ctx.fillStyle = "#1e293b"
     ctx.fillRect(0, 0, this.width, this.height)
-    ctx.fillStyle = "#94a3b8"
-    ctx.font = "16px sans-serif"
+    ctx.fillStyle = "#e2e8f0"
+    ctx.font = "bold 15px sans-serif"
     ctx.textAlign = "center"
-    ctx.fillText("Press Start when you're ready to dodge.", this.width / 2, this.height / 2)
+    ctx.fillText("Get your kid 🧒 without hitting anything.", this.width / 2, this.height / 2 - 14)
+    ctx.fillStyle = "#94a3b8"
+    ctx.font = "13px sans-serif"
+    ctx.fillText("◀ ▶ or arrow keys to change lanes.", this.width / 2, this.height / 2 + 10)
+    ctx.fillText("Press Start.", this.width / 2, this.height / 2 + 30)
   }
 
   draw() {
     const ctx = this.ctx
     ctx.fillStyle = "#1e293b"
     ctx.fillRect(0, 0, this.width, this.height)
+
+    // Highlight the player's current lane so it's obvious where you are
+    ctx.fillStyle = "rgba(99, 102, 241, 0.08)"
+    ctx.fillRect(this.playerLane * this.laneWidth, 0, this.laneWidth, this.height)
 
     // Lane dividers
     ctx.strokeStyle = "#334155"
@@ -157,19 +171,34 @@ export default class extends Controller {
     }
     ctx.setLineDash([])
 
-    // Progress bar toward pickup
+    // Progress bar toward pickup, labeled so the goal is obvious
     ctx.fillStyle = "#475569"
-    ctx.fillRect(0, 0, this.width, 8)
+    ctx.fillRect(0, 0, this.width, 10)
     ctx.fillStyle = "#6366f1"
-    ctx.fillRect(0, 0, this.width * Math.min(this.progress, 1), 8)
+    ctx.fillRect(0, 0, this.width * Math.min(this.progress, 1), 10)
+    ctx.fillStyle = "#cbd5e1"
+    ctx.font = "10px sans-serif"
+    ctx.textAlign = "left"
+    ctx.fillText("← progress to pickup", 4, 22)
 
     // Kid waiting at the pickup spot
     ctx.font = "28px sans-serif"
     ctx.textAlign = "center"
-    ctx.fillText("🧒", this.width / 2, 40)
+    ctx.fillText("🧒", this.width / 2, 50)
+
+    if (this.graceMs > 0) {
+      ctx.fillStyle = "#e2e8f0"
+      ctx.font = "bold 16px sans-serif"
+      ctx.fillText("Get ready…", this.width / 2, this.height / 2)
+      ctx.font = "12px sans-serif"
+      ctx.fillStyle = "#94a3b8"
+      ctx.fillText("try moving lanes now, nothing can hit you yet", this.width / 2, this.height / 2 + 20)
+    }
 
     // Obstacles
     this.obstacles.forEach((o) => {
+      ctx.font = "26px sans-serif"
+      ctx.textAlign = "center"
       ctx.fillText(o.emoji, o.lane * this.laneWidth + this.laneWidth / 2, o.y)
     })
 

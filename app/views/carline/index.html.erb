@@ -5,11 +5,16 @@
 <p class="text-slate-600 max-w-2xl mb-2">
   Every school has one queue nobody asked a data person to look at. So I looked at it anyway.
 </p>
-<p class="text-xs text-slate-400 max-w-2xl mb-12">
+<p class="text-xs text-slate-400 max-w-2xl mb-8">
   Disclosure, up front, because a data person who hides her assumptions can't be trusted: the figures
   below are illustrative — hand-authored to be plausible, not pulled from any real school's records.
   The <em>shape</em> of the analysis is the point, not the specific numbers.
 </p>
+
+<div class="sticky top-0 z-30 -mx-6 px-6 py-3 mb-12 bg-indigo-50/95 backdrop-blur border-b border-indigo-200 shadow-sm flex items-center justify-between gap-4">
+  <span class="text-sm text-slate-700">Actually stuck in this line right now? Dodge the SUV, weave past the mom on her phone, get your kid before the timer runs out.</span>
+  <%= link_to "Play →", carline_play_path, class: "shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg px-4 py-2 text-sm" %>
+</div>
 
 <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
   <div class="bg-white border border-slate-200 rounded-lg p-5">
@@ -102,8 +107,3 @@
     <li>Borrow the Chick-fil-A trick: take the order (the kid) before the car reaches the window.</li>
   </ul>
 </section>
-
-<div class="border border-indigo-200 bg-indigo-50 rounded-lg p-5 text-sm text-slate-700 flex items-center justify-between gap-4">
-  <span>Actually stuck in this line right now? Dodge the SUV, weave past the mom on her phone, get your kid before the timer runs out.</span>
-  <%= link_to "Play →", carline_play_path, class: "shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg px-4 py-2" %>
-</div>

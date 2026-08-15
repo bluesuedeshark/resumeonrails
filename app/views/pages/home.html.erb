@@ -1,7 +1,9 @@
 <% content_for :title, "#{@profile.name} — #{@profile.headline}" %>
 
 <section class="mb-16">
-  <p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2">Résumé, on Rails</p>
+  <p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2 flex items-center gap-2">
+    Resume on <%= image_tag "rails-logo.svg", alt: "Rails", class: "h-4 text-slate-900" %>
+  </p>
   <h1 class="text-4xl font-bold tracking-tight text-slate-900 mb-3"><%= @profile.name %></h1>
   <p class="text-xl text-slate-600 mb-6"><%= @profile.headline %></p>
   <p class="text-lg text-slate-700 leading-relaxed max-w-2xl"><%= @profile.tagline %></p>
@@ -9,27 +11,6 @@
 
 <section class="mb-16 max-w-2xl">
   <p class="text-slate-700 leading-relaxed"><%= @profile.intro %></p>
-</section>
-
-<section class="mb-16">
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="bg-white border border-slate-200 rounded-lg p-5">
-      <p class="text-3xl font-bold text-indigo-600"><%= @total_years %></p>
-      <p class="text-sm text-slate-500 mt-1">years across roles</p>
-    </div>
-    <div class="bg-white border border-slate-200 rounded-lg p-5">
-      <p class="text-3xl font-bold text-indigo-600"><%= @accomplishment_count %></p>
-      <p class="text-sm text-slate-500 mt-1">logged accomplishments</p>
-    </div>
-    <div class="bg-white border border-slate-200 rounded-lg p-5">
-      <p class="text-3xl font-bold text-indigo-600"><%= @skill_count %></p>
-      <p class="text-sm text-slate-500 mt-1">distinct skills</p>
-    </div>
-    <div class="bg-white border border-slate-200 rounded-lg p-5">
-      <p class="text-3xl font-bold text-indigo-600"><%= Role.count %></p>
-      <p class="text-sm text-slate-500 mt-1">roles held</p>
-    </div>
-  </div>
 </section>
 
 <section>

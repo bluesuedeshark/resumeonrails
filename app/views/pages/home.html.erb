@@ -13,26 +13,30 @@
   <p class="text-slate-700 leading-relaxed"><%= @profile.intro %></p>
 </section>
 
+<section class="mb-16">
+  <h2 class="text-lg font-semibold text-slate-900 mb-4">Relevant skills</h2>
+  <div class="flex flex-wrap gap-2">
+    <% @featured_skills.each do |skill| %>
+      <%= link_to skill.name, skill_path(skill), class: "inline-block text-sm bg-white border border-slate-200 hover:border-indigo-400 hover:text-indigo-700 text-slate-700 rounded-full px-3 py-1" %>
+    <% end %>
+  </div>
+</section>
+
 <section>
   <div class="flex items-baseline justify-between mb-6">
-    <h2 class="text-lg font-semibold text-slate-900">Recent roles</h2>
+    <h2 class="text-lg font-semibold text-slate-900">Relevant projects</h2>
     <%= link_to "Full timeline →", timeline_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
   </div>
 
-  <div class="space-y-8">
-    <% @roles.select { |r| r.kind == "role" }.last(3).reverse_each do |role| %>
-      <div class="border-l-2 border-slate-200 pl-5">
-        <div class="flex items-baseline justify-between gap-4">
-          <h3 class="font-semibold text-slate-900"><%= role.title %></h3>
-          <span class="text-sm text-slate-500 whitespace-nowrap"><%= role.date_range %></span>
-        </div>
-        <p class="text-sm text-slate-500 mb-2"><%= role.organization %></p>
-        <ul class="text-sm text-slate-700 space-y-1 list-disc list-inside">
-          <% role.accomplishments.ordered.first(3).each do |a| %>
-            <li><%= a.description %><% if a.metric.present? %> <span class="text-indigo-600 font-medium">— <%= a.metric %></span><% end %></li>
-          <% end %>
-        </ul>
-      </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <% @featured_projects.each do |a| %>
+      <%= link_to timeline_path(anchor: "role-#{a.role.id}"), class: "group block bg-white border border-slate-200 hover:border-indigo-400 rounded-lg p-4" do %>
+        <p class="text-sm text-slate-700"><%= a.description %></p>
+        <p class="text-indigo-600 font-semibold text-sm mt-1"><%= a.metric %></p>
+        <p class="text-xs text-slate-400 mt-2 max-h-0 overflow-hidden group-hover:max-h-12 transition-all duration-200">
+          <%= a.role.title %> · <%= a.role.organization %> · <%= a.role.date_range %>
+        </p>
+      <% end %>
     <% end %>
   </div>
 </section>

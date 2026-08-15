@@ -55,6 +55,7 @@ skills = {}
   [ "LLM Agents & Tooling", "AI & Dev" ],
   [ "Git / GitHub", "AI & Dev" ],
   [ "Snowflake", "AI & Dev" ],
+  [ "Google BigQuery", "AI & Dev" ],
   [ "Vercel", "AI & Dev" ],
   [ "Supabase", "AI & Dev" ],
   [ "Linux", "AI & Dev" ],
@@ -197,11 +198,21 @@ amp = Role.create!(
     "combining their client-provided data with our consumer data, ran it through rigorous " \
     "statistical analysis to determine the right method, then built a custom k-means model " \
     "from scratch.", "400%+ response rate vs. prior efforts", [ "K-Means Segmentation", "SAS" ], 1 ],
-  [ "Designed a standard-deviation-based RFM variable, replacing bucketed RFM, for a partner's card campaign.", "record-breaking engagement", [ "RFM Modeling" ] ],
+  [ "Took on a client's campaign-optimization problem: asked the right questions about what " \
+    "data they actually had access to, then refactored their existing bucketed RFM process " \
+    "into a standard-deviation-based model parsed across more categories, folded into full " \
+    "custom modeling blending spending/engagement patterns with household attributes.",
+    "record-breaking engagement — the client started paying for this study on every campaign",
+    [ "RFM Modeling" ] ],
   [ "Solved an auto-loan campaign with no exact-match variables using reverse-logic modeling on the microgrid variables that were available.", nil, [ "Campaign Optimization" ] ],
   [ "Learned enough R in a single day to execute and validate a client's own scoring model against their internal testing — not R mastery, just enough to get it done.", "same-day turnaround, vs. weeks from other vendors", [ "R" ] ],
   [ "Pushed a client off straight-selects and hot-zips onto modeling; the resulting multi-territory win expanded into all franchises plus a full-year budget for the account.", nil, [ "Campaign Optimization" ] ],
-  [ "Tunes variable weighting in production models - catching over- and under-weighted inputs before they skew results.", nil, [] ]
+  [ "Tunes variable weighting in production models - catching over- and under-weighted inputs before they skew results.", nil, [] ],
+  [ "Overhauled a client's manual data-selection process — replacing a copy/paste, manually " \
+    "highlighted spreadsheet with a tool built on their existing Google BigQuery setup, giving " \
+    "them instant feedback on selections and full control over their own parameters.",
+    "replaced a fully manual spreadsheet workflow with instant, self-service selection",
+    [ "Google BigQuery", "Workflow Automation", "SQL" ] ]
 ].each_with_index do |(desc, metric, skill_names, highlight), i|
   a = amp.accomplishments.create!(description: desc, metric: metric, position: i + 1, highlight_order: highlight)
   tag(a, skills, *skill_names)

@@ -43,7 +43,7 @@ Profile.create!(
     "integrity drive me to succeed in the face of obstacles, navigate ambiguity " \
     "with confidence, and exceed expectations consistently."
   ].join("\n\n"),
-  github_url: "https://github.com/bluesuedeshark",
+  github_url: "https://github.com/bluesuedeshark/resumeonrails",
   location: "Greer, SC"
 )
 

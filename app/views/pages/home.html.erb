@@ -1,0 +1,36 @@
+<% content_for :title, "#{@profile.name} — #{@profile.headline}" %>
+
+<section class="mb-16">
+  <p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2">Résumé, on Rails</p>
+  <h1 class="text-4xl font-bold tracking-tight text-slate-900 mb-3"><%= @profile.name %></h1>
+  <p class="text-xl text-slate-600 mb-6"><%= @profile.headline %></p>
+  <p class="text-lg text-slate-700 leading-relaxed max-w-2xl"><%= @profile.tagline %></p>
+</section>
+
+<section class="mb-16 max-w-2xl">
+  <p class="text-slate-700 leading-relaxed"><%= @profile.intro %></p>
+</section>
+
+<section>
+  <div class="flex items-baseline justify-between mb-6">
+    <h2 class="text-lg font-semibold text-slate-900">Recent roles</h2>
+    <%= link_to "Full timeline →", timeline_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
+  </div>
+
+  <div class="space-y-8">
+    <% @roles.select { |r| r.kind == "role" }.last(3).reverse_each do |role| %>
+      <div class="border-l-2 border-slate-200 pl-5">
+        <div class="flex items-baseline justify-between gap-4">
+          <h3 class="font-semibold text-slate-900"><%= role.title %></h3>
+          <span class="text-sm text-slate-500 whitespace-nowrap"><%= role.date_range %></span>
+        </div>
+        <p class="text-sm text-slate-500 mb-2"><%= role.organization %></p>
+        <ul class="text-sm text-slate-700 space-y-1 list-disc list-inside">
+          <% role.accomplishments.ordered.first(3).each do |a| %>
+            <li><%= a.description %><% if a.metric.present? %> <span class="text-indigo-600 font-medium">— <%= a.metric %></span><% end %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</section>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Kaleigh Unger — Résumé, on Rails" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Résumé on Rails">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+  </head>
+
+  <body class="bg-slate-50 text-slate-800 antialiased">
+    <header class="border-b border-slate-200 bg-white">
+      <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+        <%= link_to root_path, class: "font-semibold tracking-tight text-slate-900" do %>
+          Kaleigh Unger
+        <% end %>
+        <nav class="flex gap-6 text-sm font-medium text-slate-600">
+          <%= link_to "Home", root_path, class: "hover:text-indigo-600" %>
+          <%= link_to "Timeline", timeline_path, class: "hover:text-indigo-600" %>
+          <%= link_to "By the numbers", stats_path, class: "hover:text-indigo-600" %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      <%= yield %>
+    </main>
+
+    <footer class="max-w-4xl mx-auto px-6 py-10 mt-12 border-t border-slate-200 text-sm text-slate-500">
+      Built with Ruby on Rails, over a weekend, for a conversation I didn't see coming.
+      <% if Profile.current&.github_url.present? %>
+        · <%= link_to "source on GitHub", Profile.current.github_url, class: "underline hover:text-indigo-600" %>
+      <% end %>
+    </footer>
+  </body>
+</html>

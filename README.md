@@ -1,24 +1,31 @@
-# README
+# Resume on Rails
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A résumé modeled as a Rails app instead of a document — career data as real ActiveRecord records
+(`Role`, `Accomplishment`, `Skill`), not a PDF.
 
-Things you may want to cover:
+## What's here
 
-* Ruby version
+- **Headline** (`/`) — the pitch: intro, a handful of curated highlights, skills grouped into a
+  few clickable categories.
+- **Timeline** (`/timeline`) — the full chronological record.
+- **Carline** (`/carline`) — a data-driven look at school pickup-line optimization: raw data, a
+  second dataset joined in to find a pattern the first one alone couldn't show, and an interactive
+  dashboard for weighing trade-offs between fixes. Also has a small tap-to-jump game
+  (`/carline/play`), because it should be.
 
-* System dependencies
+## Stack
 
-* Configuration
+Ruby on Rails 8.1, SQLite, Tailwind CSS v4, Hotwire (Turbo + Stimulus). No JS framework.
 
-* Database creation
+## Running it locally
 
-* Database initialization
+```
+bundle install
+bin/rails db:seed
+bin/rails server
+```
 
-* How to run the test suite
+## Why this exists
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Built in a weekend as a follow-up to an unexpectedly fun conversation at a conference — a way to
+show, not just tell.

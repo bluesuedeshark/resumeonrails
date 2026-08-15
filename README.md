@@ -11,7 +11,7 @@ A résumé modeled as a Rails app instead of a document — career data as real 
 - **Carline** (`/carline`) — a data-driven look at school pickup-line optimization: raw data, a
   second dataset joined in to find a pattern the first one alone couldn't show, and an interactive
   dashboard for weighing trade-offs between fixes. Also has a small tap-to-jump game
-  (`/carline/play`), because it should be.
+  (`/carline/play`), just because.
 
 ## Stack
 

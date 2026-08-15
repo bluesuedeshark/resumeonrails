@@ -1,14 +1,13 @@
-<% content_for :title, "The Carline Optimization Initiative — #{Profile.current.name}" %>
+<% content_for :title, "If the Carline Were a Data Problem — #{Profile.current.name}" %>
 
-<p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2">A Totally Unsolicited Analysis</p>
-<h1 class="text-3xl font-bold text-slate-900 mb-3">The Carline Optimization Initiative</h1>
+<p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2">If the carline were a data problem</p>
+<h1 class="text-3xl font-bold text-slate-900 mb-3">Carline, but make it data</h1>
 <p class="text-slate-600 max-w-2xl mb-2">
-  Every school has one queue nobody asked a data person to look at. So I looked at it anyway.
+  Every school has one queue nobody's ever pointed a spreadsheet at. So I did.
 </p>
 <p class="text-xs text-slate-400 max-w-2xl mb-8">
-  Disclosure, up front, because a data person who hides her assumptions can't be trusted: the figures
-  below are illustrative — hand-authored to be plausible, not pulled from any real school's records.
-  The <em>shape</em> of the analysis is the point, not the specific numbers.
+  This is a toy — fake data, fake insights, all for fun :-) The numbers below are hand-authored, not
+  pulled from any real school. What's real is the <em>way</em> of thinking about it.
 </p>
 
 <div class="sticky top-0 z-30 -mx-6 px-6 py-3 mb-12 bg-indigo-50/95 backdrop-blur border-b border-indigo-200 shadow-sm flex items-center justify-between gap-4">
@@ -16,7 +15,40 @@
   <%= link_to "Play →", carline_play_path, class: "shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg px-4 py-2 text-sm" %>
 </div>
 
-<section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+<section class="mb-4">
+  <%= form_with url: carline_path, method: :get, local: true, class: "flex gap-2 max-w-md" do %>
+    <%= text_field_tag :q, @q, placeholder: "Search the log — try \"slow\" or \"guard\"", class: "flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm" %>
+    <%= submit_tag "Search", class: "bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg px-4 py-2 cursor-pointer" %>
+  <% end %>
+  <p class="text-xs text-slate-400 mt-1">
+    Keyword + synonym search today, not real semantic search — that's the natural next step once this points at a real vector-capable store instead of a hand-typed table.
+  </p>
+</section>
+
+<% if @q %>
+  <section class="mb-12 bg-white border border-indigo-200 rounded-lg p-5">
+    <p class="text-sm font-semibold text-slate-900 mb-3">Results for "<%= @q %>"</p>
+    <% if @search[:days].none? && @search[:complaints].none? %>
+      <p class="text-sm text-slate-500">Nothing matched. Try "slow," "suv," "guard," "bike," or "loop."</p>
+    <% else %>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <% @search[:days].each do |d| %>
+          <li>📅 <%= d.observed_on.strftime("%b %-d") %> — <%= d.note %></li>
+        <% end %>
+        <% @search[:complaints].each do |c| %>
+          <li>💬 <%= c.logged_on.strftime("%b %-d") %> — <%= c.category %> (<%= c.channel %>, <%= c.family_label %>)</li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
+<% end %>
+
+<section class="flex items-baseline justify-between mb-4">
+  <h2 class="text-lg font-semibold text-slate-900">What the raw data shows</h2>
+  <%= link_to "Export CSV ↓", carline_export_path(q: @q), class: "text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
+</section>
+
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
   <div class="bg-white border border-slate-200 rounded-lg p-5">
     <p class="text-3xl font-bold text-indigo-600"><%= @avg_wait %></p>
     <p class="text-sm text-slate-500 mt-1">avg. wait, minutes</p>
@@ -34,6 +66,11 @@
     <p class="text-sm text-slate-500 mt-1">dismissals observed</p>
   </div>
 </section>
+
+<p class="text-sm text-slate-600 max-w-2xl mb-12">
+  Read on its own, this says: <strong>the carline is slow, so fix the carline.</strong> Redesign the
+  loop, stagger the grades, add a lane. All reasonable. All aimed at the symptom.
+</p>
 
 <section class="mb-16">
   <h2 class="text-lg font-semibold text-slate-900 mb-4">Dismissal log</h2>
@@ -67,7 +104,7 @@
 
 <section class="mb-16">
   <h2 class="text-lg font-semibold text-slate-900 mb-4">Complaints by category</h2>
-  <div class="flex flex-wrap gap-3 mb-6">
+  <div class="flex flex-wrap gap-3">
     <% @complaints_by_category.sort_by { |_, n| -n }.each do |category, count| %>
       <div class="bg-white border border-slate-200 rounded-full px-4 py-1.5 text-sm text-slate-700">
         <span class="font-semibold text-indigo-600"><%= count %></span> <%= category %>
@@ -76,34 +113,76 @@
   </div>
 </section>
 
-<section class="mb-16 bg-white border border-slate-200 rounded-lg p-6">
-  <h2 class="text-lg font-semibold text-slate-900 mb-2">The churn model nobody asked for</h2>
-  <p class="text-sm text-slate-600 mb-4">
-    Every logged complaint nudges projected family churn up a notch. It's a straight line, not a
-    real model — but so was the first version of most real models.
+<section class="mb-16 bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+  <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wide mb-2">Then we combined it with another dataset</p>
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">Family transport preferences — not just complaints</h2>
+  <p class="text-sm text-slate-700 mb-4 max-w-2xl">
+    The complaint log only shows who's annoyed. It doesn't show <em>why</em>, or what they'd actually
+    prefer instead. So the related dataset here isn't more carline data — it's family-level data on
+    who's in extended day and who's already said they'd take a bus if one existed.
   </p>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
     <div>
-      <p class="text-2xl font-bold text-slate-900"><%= @churn_risk_percent %>%</p>
-      <p class="text-sm text-slate-500">projected churn risk</p>
+      <p class="text-3xl font-bold text-slate-900"><%= @vocal_families.size %></p>
+      <p class="text-sm text-slate-500">repeat-complaint families</p>
     </div>
     <div>
-      <p class="text-2xl font-bold text-slate-900"><%= @families_at_risk %></p>
-      <p class="text-sm text-slate-500">families "at risk"</p>
+      <p class="text-3xl font-bold text-indigo-600"><%= @vocal_bus_ready_percent %>%</p>
+      <p class="text-sm text-slate-500">of them are also extended-day families who already want a bus</p>
     </div>
     <div>
-      <p class="text-2xl font-bold text-indigo-600">$<%= number_with_delimiter(@dollars_at_risk) %></p>
-      <p class="text-sm text-slate-500">tuition dollars at risk</p>
+      <p class="text-3xl font-bold text-slate-900"><%= @bus_ready_families.count %></p>
+      <p class="text-sm text-slate-500">families total who'd take a bus today, out of <%= @total_families %></p>
     </div>
   </div>
+  <p class="text-sm text-slate-700 max-w-2xl">
+    That's the hidden pattern: the loudest complaints aren't randomly distributed — they cluster with
+    families who were already halfway to a different answer. What looked like a carline-efficiency
+    problem is at least partly an <strong>afternoon-transport</strong> problem wearing a carline
+    costume.
+  </p>
 </section>
 
 <section class="mb-16">
-  <h2 class="text-lg font-semibold text-slate-900 mb-4">Recommended interventions</h2>
-  <ul class="space-y-2 text-sm text-slate-700 list-disc list-inside">
-    <li>Stagger dismissal by grade instead of releasing every classroom at once.</li>
-    <li>One-way loop redesign so the line stops doubling back on itself at the flagpole.</li>
-    <li>A text/radio check-in when a car enters the queue, so kids are staged and waiting curbside instead of being paged after the car's already at the front.</li>
-    <li>Borrow the Chick-fil-A trick: take the order (the kid) before the car reaches the window.</li>
-  </ul>
+  <h2 class="text-lg font-semibold text-slate-900 mb-2">So — not one fix, three</h2>
+  <p class="text-sm text-slate-600 mb-6 max-w-2xl">
+    Different effort, different timelines, different kinds of payoff. None of them wrong — the point
+    is knowing which one you're picking and why.
+  </p>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <p class="text-xs uppercase tracking-wide text-slate-400 font-semibold mb-1">Option A</p>
+      <h3 class="font-semibold text-slate-900 mb-2">Redesign the loop</h3>
+      <p class="text-sm text-slate-600 mb-3">One-way flow instead of the current doubling-back at the flagpole.</p>
+      <dl class="text-xs text-slate-500 space-y-1">
+        <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Low — paint and signage</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">Days</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Payoff:</dt> <dd class="inline">Modest, immediate</dd></div>
+      </dl>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <p class="text-xs uppercase tracking-wide text-slate-400 font-semibold mb-1">Option B</p>
+      <h3 class="font-semibold text-slate-900 mb-2">Stagger dismissal by grade</h3>
+      <p class="text-sm text-slate-600 mb-3">Spread the surge instead of releasing every classroom at once.</p>
+      <dl class="text-xs text-slate-500 space-y-1">
+        <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Medium — scheduling, staff buy-in</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">Weeks</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Payoff:</dt> <dd class="inline">Meaningful, sustained</dd></div>
+      </dl>
+    </div>
+    <div class="bg-indigo-50 border border-indigo-300 rounded-lg p-5">
+      <p class="text-xs uppercase tracking-wide text-indigo-500 font-semibold mb-1">Option C</p>
+      <h3 class="font-semibold text-slate-900 mb-2">Afternoon bus route</h3>
+      <p class="text-sm text-slate-600 mb-3">
+        Route extended-day families who already want it. Fewer cars, new driver jobs, a new revenue
+        line for the school, fewer trips for those families — and target the most vocal families
+        first, since that's the lowest-friction path to visible satisfaction gains.
+      </p>
+      <dl class="text-xs text-slate-500 space-y-1">
+        <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">High — planning, staffing, a route</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">A semester</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Payoff:</dt> <dd class="inline">Structural — solves the cause, not the symptom, and pays for itself</dd></div>
+      </dl>
+    </div>
+  </div>
 </section>

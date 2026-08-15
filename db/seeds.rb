@@ -264,6 +264,7 @@ Education.create!(
 # ---------------------------------------------------------------------------
 CarlineDay.destroy_all
 Complaint.destroy_all
+Family.destroy_all
 
 [
   [ Date.new(2026, 8, 4), "2:45pm", 14, 22, 118, "First week jitters — everyone forgot where to line up." ],
@@ -286,6 +287,36 @@ Complaint.destroy_all
   )
 end
 
+# Families — the "related dataset" that, combined with the complaint log, reveals the
+# hidden pattern: repeat complainers cluster with extended-day families who already
+# want a bus. Vocal (2+ complaints): #14, #22, #40. Everyone else is quieter background.
+families = {}
+[
+  # label,        extended_day, wants_bus, carpool_interested
+  [ "Family #14", true,  true,  false ],
+  [ "Family #22", true,  true,  true ],
+  [ "Family #40", false, false, true ],
+  [ "Family #3",  false, false, false ],
+  [ "Family #9",  true,  false, false ],
+  [ "Family #31", false, false, false ],
+  [ "Family #6",  true,  true,  false ],
+  [ "Family #1",  false, false, false ],
+  [ "Family #2",  false, false, true ],
+  [ "Family #4",  true,  false, false ],
+  [ "Family #5",  false, false, false ],
+  [ "Family #7",  false, false, false ],
+  [ "Family #8",  true,  false, false ],
+  [ "Family #10", false, false, false ],
+  [ "Family #11", false, false, false ],
+  [ "Family #12", true,  true,  false ],
+  [ "Family #13", false, false, false ],
+  [ "Family #15", false, false, false ],
+  [ "Family #16", false, true,  false ],
+  [ "Family #17", false, false, false ]
+].each do |label, extended_day, wants_bus, carpool_interested|
+  families[label] = Family.create!(label: label, extended_day: extended_day, wants_bus: wants_bus, carpool_interested: carpool_interested)
+end
+
 [
   [ Date.new(2026, 8, 5), "email", "wait time", 2, "Family #14" ],
   [ Date.new(2026, 8, 7), "phone", "wait time", 3, "Family #22" ],
@@ -303,8 +334,9 @@ end
     channel: channel,
     category: category,
     severity: severity,
-    family_label: family_label
+    family_label: family_label,
+    family: families.fetch(family_label)
   )
 end
 
-puts "Seeded: #{Role.count} roles, #{Accomplishment.count} accomplishments, #{Skill.count} skills, #{Education.count} education entries, #{CarlineDay.count} carline days, #{Complaint.count} complaints."
+puts "Seeded: #{Role.count} roles, #{Accomplishment.count} accomplishments, #{Skill.count} skills, #{Education.count} education entries, #{CarlineDay.count} carline days, #{Complaint.count} complaints, #{Family.count} families."

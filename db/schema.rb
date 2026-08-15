@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_15_125634) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_15_132538) do
   create_table "accomplishment_skills", force: :cascade do |t|
     t.integer "accomplishment_id", null: false
     t.datetime "created_at", null: false
@@ -46,10 +46,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_15_125634) do
     t.string "category"
     t.string "channel"
     t.datetime "created_at", null: false
+    t.integer "family_id"
     t.string "family_label"
     t.date "logged_on"
     t.integer "severity"
     t.datetime "updated_at", null: false
+    t.index ["family_id"], name: "index_complaints_on_family_id"
   end
 
   create_table "educations", force: :cascade do |t|
@@ -61,6 +63,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_15_125634) do
     t.string "location"
     t.integer "position"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "families", force: :cascade do |t|
+    t.boolean "carpool_interested"
+    t.datetime "created_at", null: false
+    t.boolean "extended_day"
+    t.string "label"
+    t.datetime "updated_at", null: false
+    t.boolean "wants_bus"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -99,4 +110,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_15_125634) do
   add_foreign_key "accomplishment_skills", "accomplishments"
   add_foreign_key "accomplishment_skills", "skills"
   add_foreign_key "accomplishments", "roles"
+  add_foreign_key "complaints", "families"
 end

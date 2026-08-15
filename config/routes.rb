@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   root "pages#home"
   get "timeline" => "pages#timeline"
   get "carline" => "carline#index"
+  get "carline/export" => "carline#export"
   get "carline/play" => "carline#play"
   resources :skills, only: [ :show ]
 end

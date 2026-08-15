@@ -1,24 +1,70 @@
+require "csv"
+
 class CarlineController < ApplicationController
-  # Illustrative, hand-authored figures for a fictional-but-plausible school — see
-  # db/seeds.rb for the disclosure. Nothing here is real family or school data.
-  ASSUMED_FAMILIES = 240
-  ASSUMED_ANNUAL_TUITION = 9500
-  CHURN_PERCENT_PER_COMPLAINT = 1.4 # goofy-but-plausible: each logged complaint nudges churn risk up a notch
+  # A small hand-built synonym map — this is honest keyword search, not real
+  # semantic search. Labeled that way on the page on purpose: claiming more
+  # sophistication than what's actually running would undercut the whole point.
+  SEARCH_SYNONYMS = {
+    "slow" => %w[wait],
+    "suv" => %w[lane],
+    "guard" => %w[safety crossing],
+    "bike" => %w[safety],
+    "loop" => %w[redesign]
+  }.freeze
 
   def index
     @days = CarlineDay.ordered
-    @complaints = Complaint.ordered
+    @complaints = Complaint.ordered.includes(:family)
 
     @avg_wait = @days.average(:avg_wait_minutes)&.round(1)
-    @worst_day = @days.max_by(&:worst_wait_minutes)
+    @worst_day = @days.order(worst_wait_minutes: :desc).first
     @complaint_count = @complaints.count
     @complaints_by_category = @complaints.group(:category).count
 
-    @churn_risk_percent = [ @complaint_count * CHURN_PERCENT_PER_COMPLAINT, 45 ].min.round(1)
-    @families_at_risk = (ASSUMED_FAMILIES * @churn_risk_percent / 100.0).round
-    @dollars_at_risk = (@families_at_risk * ASSUMED_ANNUAL_TUITION)
+    @q = params[:q].presence
+    @search = search(@q) if @q
+
+    # The reframe: combine the complaint log with a related dataset (family
+    # transport preferences) and see what falls out.
+    @total_families = Family.count
+    @vocal_families = Family.vocal.to_a
+    @vocal_bus_ready = @vocal_families.select { |f| f.extended_day? && f.wants_bus? }
+    @vocal_bus_ready_percent = @vocal_families.any? ? ((@vocal_bus_ready.size.to_f / @vocal_families.size) * 100).round : 0
+    @bus_ready_families = Family.where(extended_day: true, wants_bus: true)
+    @extended_day_count = Family.where(extended_day: true).count
+  end
+
+  def export
+    csv = CSV.generate(headers: true) do |rows|
+      rows << [ "Dismissal log" ]
+      rows << [ "Date", "Dismissal", "Avg wait (min)", "Worst wait (min)", "Cars", "Field notes" ]
+      CarlineDay.ordered.each do |d|
+        rows << [ d.observed_on, d.dismissal_time, d.avg_wait_minutes, d.worst_wait_minutes, d.cars_in_line, d.note ]
+      end
+      rows << []
+      rows << [ "Complaints" ]
+      rows << [ "Date", "Channel", "Category", "Severity", "Family", "Extended day?", "Wants bus?" ]
+      Complaint.ordered.includes(:family).each do |c|
+        rows << [ c.logged_on, c.channel, c.category, c.severity, c.family_label, c.family&.extended_day, c.family&.wants_bus ]
+      end
+    end
+
+    send_data csv, filename: "carline-report-#{Date.current}.csv", type: "text/csv"
   end
 
   def play
+  end
+
+  private
+
+  def search(q)
+    terms = ([ q ] + Array(SEARCH_SYNONYMS[q.downcase])).uniq
+    day_conditions = terms.map { "note LIKE ?" }.join(" OR ")
+    complaint_conditions = terms.map { "category LIKE ?" }.join(" OR ")
+
+    {
+      days: CarlineDay.where(day_conditions, *terms.map { |t| "%#{t}%" }),
+      complaints: Complaint.includes(:family).where(complaint_conditions, *terms.map { |t| "%#{t}%" })
+    }
   end
 end

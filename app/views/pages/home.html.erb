@@ -1,5 +1,68 @@
 <% content_for :title, "#{@profile.name} — #{@profile.headline}" %>
 
+<div data-controller="tour">
+  <div data-tour-target="fork" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-6">
+    <div class="bg-white rounded-xl shadow-xl p-8 max-w-sm w-full text-center">
+      <p class="text-xs font-semibold text-indigo-600 uppercase tracking-wide mb-2">Resume on Rails</p>
+      <h2 class="text-xl font-bold text-slate-900 mb-2"><%= @profile.name %></h2>
+      <p class="text-sm text-slate-600 mb-6">Want the two-minute tour, or would you rather explore on your own?</p>
+      <div class="flex flex-col gap-2">
+        <button data-action="tour#startTour" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg py-2.5 text-sm">Walk me through it</button>
+        <button data-action="tour#skip" class="text-slate-500 hover:text-slate-700 text-sm py-2">I'll explore myself</button>
+      </div>
+    </div>
+  </div>
+
+  <div data-tour-target="tour" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-6">
+    <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full">
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex gap-1.5">
+          <% 5.times do %>
+            <span data-tour-target="dot" class="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
+          <% end %>
+        </div>
+        <button data-action="tour#exit" class="text-xs text-slate-400 hover:text-slate-700">Exit tour ✕</button>
+      </div>
+
+      <div data-tour-target="slide">
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Hi, I'm <%= @profile.name %></h3>
+        <p class="text-sm text-slate-600 mb-2"><%= @profile.headline %>.</p>
+        <p class="text-sm text-slate-600">Data science rigor, applied through software — and enough product sense to know which problems are worth solving.</p>
+      </div>
+
+      <div data-tour-target="slide" class="hidden">
+        <h3 class="text-lg font-bold text-slate-900 mb-2">A couple of things I've solved</h3>
+        <p class="text-sm text-slate-600 mb-2">A client-facing data portal I still maintain, and a custom segmentation model that beat prior efforts by 400%+.</p>
+        <p class="text-sm text-slate-600">Four more like these are below.</p>
+        <a href="#highlights" data-action="tour#exit" class="inline-block mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-800">See all six ↓</a>
+      </div>
+
+      <div data-tour-target="slide" class="hidden">
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Everything, chronologically</h3>
+        <p class="text-sm text-slate-600">This page is the highlight reel. Timeline is the full formal record — every role, every accomplishment, back to my first job.</p>
+        <%= link_to "Open Timeline →", timeline_path, class: "inline-block mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
+      </div>
+
+      <div data-tour-target="slide" class="hidden">
+        <h3 class="text-lg font-bold text-slate-900 mb-2">The one I built for you specifically</h3>
+        <p class="text-sm text-slate-600">A real data problem, reframed with a second dataset, ending in an interactive dashboard where you can weigh trade-offs yourself — not just read my conclusions.</p>
+        <%= link_to "Open Carline →", carline_path, class: "inline-block mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
+      </div>
+
+      <div data-tour-target="slide" class="hidden">
+        <h3 class="text-lg font-bold text-slate-900 mb-2">One more thing</h3>
+        <p class="text-sm text-slate-600 mb-3">There's a small game on the Carline page if you need a break. Thanks for looking — explore anywhere from here.</p>
+        <%= link_to "Play the game →", carline_play_path, class: "inline-block text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
+      </div>
+
+      <div class="flex items-center justify-between mt-6">
+        <button data-action="tour#prev" data-tour-target="prevBtn" class="text-sm text-slate-500 hover:text-indigo-600 invisible">← Back</button>
+        <button data-action="tour#next" data-tour-target="nextBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg px-4 py-2">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <section class="mb-8">
   <p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2 flex items-center gap-2">
     <span style="font-family: 'IBM Plex Mono', monospace;">Resume on</span>
@@ -25,7 +88,7 @@
   </div>
 </section>
 
-<section>
+<section id="highlights" class="scroll-mt-10">
   <div class="flex items-baseline justify-between mb-6">
     <h2 class="text-lg font-semibold text-slate-900">Some things I do...</h2>
     <%= link_to "Full timeline →", timeline_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-800" %>

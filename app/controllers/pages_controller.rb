@@ -8,7 +8,7 @@ class PagesController < ApplicationController
   end
 
   def timeline
-    @roles = Role.ordered.includes(accomplishments: :skills)
+    @roles = Role.ordered.includes(accomplishments: :skills).reverse
     @skills = Skill.ordered
   end
 end

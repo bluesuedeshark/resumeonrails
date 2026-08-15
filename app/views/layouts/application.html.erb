@@ -12,6 +12,7 @@
     <%= yield :head %>
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body class="bg-slate-50 text-slate-800 antialiased">

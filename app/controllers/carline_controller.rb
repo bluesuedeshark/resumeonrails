@@ -18,4 +18,7 @@ class CarlineController < ApplicationController
     @families_at_risk = (ASSUMED_FAMILIES * @churn_risk_percent / 100.0).round
     @dollars_at_risk = (@families_at_risk * ASSUMED_ANNUAL_TUITION)
   end
+
+  def play
+  end
 end

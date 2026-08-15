@@ -1,0 +1,31 @@
+<% content_for :title, "Stuck in Carline? — #{Profile.current.name}" %>
+
+<p class="text-sm mb-4"><%= link_to "← Back to the analysis", carline_path, class: "text-indigo-600 hover:text-indigo-800" %></p>
+
+<h1 class="text-2xl font-bold text-slate-900 mb-1">Stuck in carline right now?</h1>
+<p class="text-slate-600 mb-6">Pretend your car is actually moving. Weave lanes, dodge the usual suspects, get your kid before the timer runs out.</p>
+
+<div class="max-w-sm mx-auto" data-controller="carline-game">
+  <div class="flex items-center justify-between mb-2 text-sm font-medium text-slate-600">
+    <span data-carline-game-target="level">Level 1</span>
+    <button data-carline-game-target="startButton" data-action="carline-game#start" class="text-indigo-600 hover:text-indigo-800 font-semibold">
+      Start
+    </button>
+  </div>
+
+  <canvas data-carline-game-target="canvas" width="320" height="440" class="w-full rounded-lg border border-slate-300 touch-none"></canvas>
+
+  <div data-carline-game-target="status" class="text-center text-sm font-medium text-slate-700 mt-4 min-h-12"></div>
+
+  <div class="flex gap-3 mt-4">
+    <button data-action="carline-game#tapLeft" class="flex-1 bg-slate-100 hover:bg-slate-200 rounded-lg py-4 text-xl font-semibold text-slate-700 select-none">◀</button>
+    <button data-action="carline-game#tapRight" class="flex-1 bg-slate-100 hover:bg-slate-200 rounded-lg py-4 text-xl font-semibold text-slate-700 select-none">▶</button>
+  </div>
+
+  <div class="flex gap-3 mt-3">
+    <button data-action="carline-game#retry" class="flex-1 text-sm text-slate-500 hover:text-indigo-600">Retry level</button>
+    <button data-action="carline-game#nextLevel" class="flex-1 text-sm text-slate-500 hover:text-indigo-600">Next level →</button>
+  </div>
+
+  <p class="text-xs text-slate-400 mt-4 text-center">Arrow keys work too, if you're not actually one-handed in a car.</p>
+</div>

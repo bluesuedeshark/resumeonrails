@@ -60,8 +60,8 @@ skills = {}
   [ "Workflow Automation", "Systems & Process" ],
   [ "Training & Curriculum Design", "Systems & Process" ],
   [ "Process Reverse-Engineering", "Systems & Process" ],
-  [ "FINRA Licensing (6, 63, 7)", "Licenses" ],
-  [ "Insurance Licensing", "Licenses" ]
+  [ "FINRA Licensing (6, 63, 7)", "Learning & Credentials" ],
+  [ "Insurance Licensing", "Learning & Credentials" ]
 ].each do |name, category|
   skills[name] = Skill.create!(name: name, category: category)
 end

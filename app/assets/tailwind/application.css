@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@keyframes rail-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(16px); }
+}
+
+.rail-track {
+  border-bottom: 2px dashed #c7d2fe;
+  padding-bottom: 6px;
+}
+
+.rail-car {
+  display: inline-flex;
+  align-items: center;
+  animation: rail-drift 7s ease-in-out infinite;
+}
+
+.rail-car:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-car {
+    animation: none;
+  }
+}

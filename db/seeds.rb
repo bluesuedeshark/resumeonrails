@@ -63,6 +63,7 @@ skills = {}
   [ "Geospatial / Huff Modeling", "Data Science and Analytics" ],
   [ "Ruby on Rails", "AI & Dev" ],
   [ "React", "AI & Dev" ],
+  [ "TypeScript", "AI & Dev" ],
   [ "Node.js", "AI & Dev" ],
   [ "LLM Agents & Tooling", "AI & Dev" ],
   [ "Snowflake", "AI & Dev" ],
@@ -209,7 +210,7 @@ amp = Role.create!(
   [ "Co-built, launched, and now maintains a client-facing data portal — self-service data " \
     "exploration that replaced a slow, fully manual request process — and helped shape a new " \
     "data marketplace offering built on top of it.",
-    "still in production, still growing", [ "React", "Node.js", "Python", "Snowflake", "SQL" ], 1 ],
+    "still in production, still growing", [ "React", "TypeScript", "Node.js", "Python", "Snowflake", "SQL" ], 1 ],
   [ "Took on a client's \"group within a group\" segmentation problem: curated a new dataset " \
     "combining their client-provided data with our consumer data, ran it through rigorous " \
     "statistical analysis to determine the right method, then built a custom k-means model " \
@@ -257,21 +258,28 @@ end
 # ---------------------------------------------------------------------------
 # Education
 # ---------------------------------------------------------------------------
-Education.create!(institution: "Greenville Technical College", credential: "Coursework", location: "Greenville, SC", position: 1)
-Education.create!(institution: "Southeastern University", credential: "Coursework", location: "Lakeland, FL", position: 2)
+Education.create!(
+  institution: "Calvary Christian School",
+  credential: "High school diploma",
+  honor: "Valedictorian — graduated at 16",
+  location: "Myrtle Beach, SC",
+  position: 1
+)
+Education.create!(institution: "Greenville Technical College", credential: "Coursework", location: "Greenville, SC", position: 2)
+Education.create!(institution: "Southeastern University", credential: "Coursework", location: "Lakeland, FL", position: 3)
 Education.create!(
   institution: "Franklin University",
   credential: "B.S., Marketing & Business Administration (dual major)",
   honor: "Summa Cum Laude — Highest Honors",
   location: "Columbus, OH",
   completed_on: Date.new(2022, 8, 1),
-  position: 3
+  position: 4
 )
 Education.create!(
   institution: "Self-directed",
   credential: "Data science and software development — self-built curriculum drawing on MIT " \
               "OpenCourseWare and other rigorous sources, ongoing",
-  position: 4
+  position: 5
 )
 
 # ---------------------------------------------------------------------------

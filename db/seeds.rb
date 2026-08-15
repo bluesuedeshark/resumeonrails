@@ -242,4 +242,54 @@ Education.create!(
   position: 4
 )
 
-puts "Seeded: #{Role.count} roles, #{Accomplishment.count} accomplishments, #{Skill.count} skills, #{Education.count} education entries."
+# ---------------------------------------------------------------------------
+# Carline — deliberately fictional. Nothing here is a real school's data;
+# hand-authored to be plausible and a little funny. See the disclosure banner
+# on the Carline page itself.
+# ---------------------------------------------------------------------------
+CarlineDay.destroy_all
+Complaint.destroy_all
+
+[
+  [ Date.new(2026, 8, 4), "2:45pm", 14, 22, 118, "First week jitters — everyone forgot where to line up." ],
+  [ Date.new(2026, 8, 5), "2:45pm", 17, 29, 121, "Rain. Nobody wanted to walk the extra 10 feet." ],
+  [ Date.new(2026, 8, 6), "2:45pm", 12, 19, 115, "Smoothest day of the week, for reasons unclear." ],
+  [ Date.new(2026, 8, 7), "2:45pm", 19, 31, 124, "One car stalled at the flagpole for six full minutes." ],
+  [ Date.new(2026, 8, 8), "2:45pm", 11, 16, 109, "Half-day Friday — line cleared before it really started." ],
+  [ Date.new(2026, 8, 11), "2:45pm", 16, 24, 119, "Normal Monday chaos." ],
+  [ Date.new(2026, 8, 12), "2:45pm", 15, 21, 120, "Crossing guard out sick — visibly slower without her." ],
+  [ Date.new(2026, 8, 13), "2:45pm", 21, 34, 126, "Two SUVs sharing what should've been one lane." ],
+  [ Date.new(2026, 8, 14), "2:45pm", 13, 18, 117, "Trial run of a one-way loop — modest improvement." ]
+].each do |observed_on, dismissal_time, avg_wait, worst_wait, cars, note|
+  CarlineDay.create!(
+    observed_on: observed_on,
+    dismissal_time: dismissal_time,
+    avg_wait_minutes: avg_wait,
+    worst_wait_minutes: worst_wait,
+    cars_in_line: cars,
+    note: note
+  )
+end
+
+[
+  [ Date.new(2026, 8, 5), "email", "wait time", 2, "Family #14" ],
+  [ Date.new(2026, 8, 7), "phone", "wait time", 3, "Family #22" ],
+  [ Date.new(2026, 8, 7), "email", "lane discipline", 2, "Family #3" ],
+  [ Date.new(2026, 8, 8), "email", "wait time", 1, "Family #40" ],
+  [ Date.new(2026, 8, 11), "phone", "communication", 1, "Family #9" ],
+  [ Date.new(2026, 8, 12), "email", "wait time", 2, "Family #22" ],
+  [ Date.new(2026, 8, 13), "phone", "lane discipline", 3, "Family #14" ],
+  [ Date.new(2026, 8, 13), "email", "wait time", 3, "Family #31" ],
+  [ Date.new(2026, 8, 13), "email", "safety", 2, "Family #6" ],
+  [ Date.new(2026, 8, 14), "phone", "wait time", 1, "Family #40" ]
+].each do |logged_on, channel, category, severity, family_label|
+  Complaint.create!(
+    logged_on: logged_on,
+    channel: channel,
+    category: category,
+    severity: severity,
+    family_label: family_label
+  )
+end
+
+puts "Seeded: #{Role.count} roles, #{Accomplishment.count} accomplishments, #{Skill.count} skills, #{Education.count} education entries, #{CarlineDay.count} carline days, #{Complaint.count} complaints."

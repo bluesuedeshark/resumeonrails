@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_15_055305) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_15_062511) do
   create_table "accomplishment_skills", force: :cascade do |t|
     t.integer "accomplishment_id", null: false
     t.datetime "created_at", null: false
@@ -28,6 +28,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_15_055305) do
     t.integer "role_id", null: false
     t.datetime "updated_at", null: false
     t.index ["role_id"], name: "index_accomplishments_on_role_id"
+  end
+
+  create_table "carline_days", force: :cascade do |t|
+    t.integer "avg_wait_minutes"
+    t.integer "cars_in_line"
+    t.datetime "created_at", null: false
+    t.string "dismissal_time"
+    t.text "note"
+    t.date "observed_on"
+    t.datetime "updated_at", null: false
+    t.integer "worst_wait_minutes"
+  end
+
+  create_table "complaints", force: :cascade do |t|
+    t.string "category"
+    t.string "channel"
+    t.datetime "created_at", null: false
+    t.string "family_label"
+    t.date "logged_on"
+    t.integer "severity"
+    t.datetime "updated_at", null: false
   end
 
   create_table "educations", force: :cascade do |t|

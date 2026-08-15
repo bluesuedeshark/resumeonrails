@@ -1,0 +1,110 @@
+<% content_for :title, "The Carline Optimization Initiative — #{Profile.current.name}" %>
+
+<p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2">A Totally Unsolicited Analysis</p>
+<h1 class="text-3xl font-bold text-slate-900 mb-3">The Carline Optimization Initiative</h1>
+<p class="text-slate-600 max-w-2xl mb-2">
+  Every school has one queue nobody asked a data person to look at. So I looked at it anyway.
+</p>
+<p class="text-xs text-slate-400 max-w-2xl mb-12">
+  Disclosure, up front, because a data person who hides her assumptions can't be trusted: the figures
+  below are illustrative — hand-authored to be plausible, not pulled from any real school's records.
+  The <em>shape</em> of the analysis is the point, not the specific numbers.
+</p>
+
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+  <div class="bg-white border border-slate-200 rounded-lg p-5">
+    <p class="text-3xl font-bold text-indigo-600"><%= @avg_wait %></p>
+    <p class="text-sm text-slate-500 mt-1">avg. wait, minutes</p>
+  </div>
+  <div class="bg-white border border-slate-200 rounded-lg p-5">
+    <p class="text-3xl font-bold text-indigo-600"><%= @worst_day&.worst_wait_minutes %></p>
+    <p class="text-sm text-slate-500 mt-1">worst single wait</p>
+  </div>
+  <div class="bg-white border border-slate-200 rounded-lg p-5">
+    <p class="text-3xl font-bold text-indigo-600"><%= @complaint_count %></p>
+    <p class="text-sm text-slate-500 mt-1">complaints logged</p>
+  </div>
+  <div class="bg-white border border-slate-200 rounded-lg p-5">
+    <p class="text-3xl font-bold text-indigo-600"><%= @days.count %></p>
+    <p class="text-sm text-slate-500 mt-1">dismissals observed</p>
+  </div>
+</section>
+
+<section class="mb-16">
+  <h2 class="text-lg font-semibold text-slate-900 mb-4">Dismissal log</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-sm border border-slate-200 rounded-lg overflow-hidden">
+      <thead class="bg-slate-100 text-slate-600 text-left">
+        <tr>
+          <th class="px-4 py-2">Date</th>
+          <th class="px-4 py-2">Dismissal</th>
+          <th class="px-4 py-2">Avg wait</th>
+          <th class="px-4 py-2">Worst wait</th>
+          <th class="px-4 py-2">Cars</th>
+          <th class="px-4 py-2">Field notes</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100 bg-white">
+        <% @days.each do |day| %>
+          <tr>
+            <td class="px-4 py-2 whitespace-nowrap"><%= day.observed_on.strftime("%b %-d") %></td>
+            <td class="px-4 py-2"><%= day.dismissal_time %></td>
+            <td class="px-4 py-2"><%= day.avg_wait_minutes %> min</td>
+            <td class="px-4 py-2 font-medium text-indigo-600"><%= day.worst_wait_minutes %> min</td>
+            <td class="px-4 py-2"><%= day.cars_in_line %></td>
+            <td class="px-4 py-2 text-slate-500"><%= day.note %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="mb-16">
+  <h2 class="text-lg font-semibold text-slate-900 mb-4">Complaints by category</h2>
+  <div class="flex flex-wrap gap-3 mb-6">
+    <% @complaints_by_category.sort_by { |_, n| -n }.each do |category, count| %>
+      <div class="bg-white border border-slate-200 rounded-full px-4 py-1.5 text-sm text-slate-700">
+        <span class="font-semibold text-indigo-600"><%= count %></span> <%= category %>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<section class="mb-16 bg-white border border-slate-200 rounded-lg p-6">
+  <h2 class="text-lg font-semibold text-slate-900 mb-2">The churn model nobody asked for</h2>
+  <p class="text-sm text-slate-600 mb-4">
+    Every logged complaint nudges projected family churn up a notch. It's a straight line, not a
+    real model — but so was the first version of most real models.
+  </p>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div>
+      <p class="text-2xl font-bold text-slate-900"><%= @churn_risk_percent %>%</p>
+      <p class="text-sm text-slate-500">projected churn risk</p>
+    </div>
+    <div>
+      <p class="text-2xl font-bold text-slate-900"><%= @families_at_risk %></p>
+      <p class="text-sm text-slate-500">families "at risk"</p>
+    </div>
+    <div>
+      <p class="text-2xl font-bold text-indigo-600">$<%= number_with_delimiter(@dollars_at_risk) %></p>
+      <p class="text-sm text-slate-500">tuition dollars at risk</p>
+    </div>
+  </div>
+</section>
+
+<section class="mb-16">
+  <h2 class="text-lg font-semibold text-slate-900 mb-4">Recommended interventions</h2>
+  <ul class="space-y-2 text-sm text-slate-700 list-disc list-inside">
+    <li>Stagger dismissal by grade instead of releasing every classroom at once.</li>
+    <li>One-way loop redesign so the line stops doubling back on itself at the flagpole.</li>
+    <li>A text/radio check-in when a car enters the queue, so kids are staged and waiting curbside instead of being paged after the car's already at the front.</li>
+    <li>Borrow the Chick-fil-A trick: take the order (the kid) before the car reaches the window.</li>
+  </ul>
+</section>
+
+<div class="border border-dashed border-slate-300 rounded-lg p-5 text-sm text-slate-500">
+  <span class="font-semibold text-slate-600">Coming next:</span> a small game for while you're
+  actually stuck in this line — dodge the SUV blocking two lanes, weave past the mom on her phone,
+  get your kid in the car before the timer runs out.
+</div>

@@ -11,6 +11,27 @@
   <p class="text-slate-700 leading-relaxed"><%= @profile.intro %></p>
 </section>
 
+<section class="mb-16">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <p class="text-3xl font-bold text-indigo-600"><%= @total_years %></p>
+      <p class="text-sm text-slate-500 mt-1">years across roles</p>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <p class="text-3xl font-bold text-indigo-600"><%= @accomplishment_count %></p>
+      <p class="text-sm text-slate-500 mt-1">logged accomplishments</p>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <p class="text-3xl font-bold text-indigo-600"><%= @skill_count %></p>
+      <p class="text-sm text-slate-500 mt-1">distinct skills</p>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <p class="text-3xl font-bold text-indigo-600"><%= Role.count %></p>
+      <p class="text-sm text-slate-500 mt-1">roles held</p>
+    </div>
+  </div>
+</section>
+
 <section>
   <div class="flex items-baseline justify-between mb-6">
     <h2 class="text-lg font-semibold text-slate-900">Recent roles</h2>

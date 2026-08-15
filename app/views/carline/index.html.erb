@@ -174,9 +174,13 @@
 
 <section class="mb-16">
   <h2 class="text-lg font-semibold text-slate-900 mb-2">How this was actually built</h2>
-  <p class="text-sm text-slate-600 mb-6 max-w-2xl">
+  <p class="text-sm text-slate-600 mb-1 max-w-2xl">
     Three source tables, joined on a real key, rolled into a derived signal not visible in any single
     table.
+  </p>
+  <p class="text-xs text-slate-400 mb-6 max-w-2xl">
+    Simplified example of joins and derivations, pared down in complexity for the sake of a demo —
+    production-scale data carries more sources, messier keys, and higher cardinality than this.
   </p>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2" style="font-family: 'IBM Plex Mono', monospace;">

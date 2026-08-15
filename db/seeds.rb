@@ -193,14 +193,17 @@ amp = Role.create!(
   [ "Rebuilt the core report shell: automated branding/white-labeling that had been done by hand, and added versioning, conditional logic, and exception-handling.", nil, [ "SAS", "VBA", "Workflow Automation" ] ],
   [ "Consolidated three separately-maintained versions of the same report — often out of sync with each other — into one data-driven shell.", nil, [ "SAS", "Workflow Automation" ] ],
   [ "Became the team's mapping expert: automated per-run maps in PDF output, drive-time measurement, and Huff-model competitor analysis.", nil, [ "Geospatial / Huff Modeling" ] ],
-  [ "Built a custom k-means segmentation for a \"group within a group\" financial-product campaign.", "400%+ response rate vs. prior efforts", [ "K-Means Segmentation", "SAS" ] ],
+  [ "Took on a client's \"group within a group\" segmentation problem: curated a new dataset " \
+    "combining their client-provided data with our consumer data, ran it through rigorous " \
+    "statistical analysis to determine the right method, then built a custom k-means model " \
+    "from scratch.", "400%+ response rate vs. prior efforts", [ "K-Means Segmentation", "SAS" ], 1 ],
   [ "Designed a standard-deviation-based RFM variable, replacing bucketed RFM, for a partner's card campaign.", "record-breaking engagement", [ "RFM Modeling" ] ],
   [ "Solved an auto-loan campaign with no exact-match variables using reverse-logic modeling on the microgrid variables that were available.", nil, [ "Campaign Optimization" ] ],
-  [ "Learned R in a single day to execute and validate a client's own R scoring model against their internal testing.", "same-day turnaround", [ "R" ] ],
+  [ "Learned enough R in a single day to execute and validate a client's own scoring model against their internal testing — not R mastery, just enough to get it done.", "same-day turnaround, vs. weeks from other vendors", [ "R" ] ],
   [ "Pushed a client off straight-selects and hot-zips onto modeling; the resulting multi-territory win expanded into all franchises plus a full-year budget for the account.", nil, [ "Campaign Optimization" ] ],
   [ "Tunes variable weighting in production models - catching over- and under-weighted inputs before they skew results.", nil, [] ]
-].each_with_index do |(desc, metric, skill_names), i|
-  a = amp.accomplishments.create!(description: desc, metric: metric, position: i + 1)
+].each_with_index do |(desc, metric, skill_names, highlight), i|
+  a = amp.accomplishments.create!(description: desc, metric: metric, position: i + 1, highlight_order: highlight)
   tag(a, skills, *skill_names)
 end
 

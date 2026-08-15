@@ -6,10 +6,7 @@ class PagesController < ApplicationController
       .group("skills.id")
       .order(Arel.sql("COUNT(accomplishments.id) DESC"))
       .limit(12)
-    @featured_projects = Accomplishment
-      .where.not(metric: [ nil, "" ])
-      .includes(:role, :skills)
-      .order(:position)
+    @featured_projects = Accomplishment.highlighted.includes(:role, :skills)
   end
 
   def timeline

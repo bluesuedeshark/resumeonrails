@@ -5,7 +5,19 @@ class Skill < ApplicationRecord
 
   scope :ordered, -> { order(:category, :name) }
 
-  def to_param
-    name.parameterize
+  def self.categories
+    distinct.order(:category).pluck(:category)
+  end
+
+  def self.category_slug(category)
+    category.parameterize
+  end
+
+  def self.find_by_category_slug!(slug)
+    categories.find { |c| category_slug(c) == slug } || raise(ActiveRecord::RecordNotFound)
+  end
+
+  def category_slug
+    self.class.category_slug(category)
   end
 end

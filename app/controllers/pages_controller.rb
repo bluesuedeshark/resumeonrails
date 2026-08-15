@@ -1,11 +1,7 @@
 class PagesController < ApplicationController
   def home
     @profile = Profile.current
-    @featured_skills = Skill
-      .joins(:accomplishments)
-      .group("skills.id")
-      .order(Arel.sql("COUNT(accomplishments.id) DESC"))
-      .limit(12)
+    @skill_categories = Skill.categories
     @featured_projects = Accomplishment.highlighted.includes(:role, :skills)
   end
 

@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   get "carline" => "carline#index"
   get "carline/export" => "carline#export"
   get "carline/play" => "carline#play"
-  resources :skills, only: [ :show ]
+  get "categories/:id" => "categories#show", as: :category
 end

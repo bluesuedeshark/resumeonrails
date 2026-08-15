@@ -1,7 +1,7 @@
 <% content_for :title, "Timeline — #{Profile.current.name}" %>
 
 <h1 class="text-2xl font-bold text-slate-900 mb-2">Timeline</h1>
-<p class="text-slate-600 mb-10">Every role is a record; every bullet below is a real accomplishment tied to it. Click a skill to see everywhere it shows up.</p>
+<p class="text-slate-600 mb-10 text-sm">Skills clickable for summary.</p>
 
 <div class="space-y-12">
   <% @roles.each do |role| %>
@@ -26,7 +26,7 @@
               <% if a.skills.any? %>
                 <span class="block mt-1 space-x-1">
                   <% a.skills.each do |skill| %>
-                    <%= link_to skill.name, skill_path(skill), class: "inline-block text-xs bg-slate-100 hover:bg-indigo-100 hover:text-indigo-700 text-slate-600 rounded-full px-2 py-0.5" %>
+                    <%= link_to skill.name, category_path(skill.category_slug), class: "inline-block text-xs bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-full px-2 py-0.5" %>
                   <% end %>
                 </span>
               <% end %>
@@ -50,14 +50,10 @@
   <% end %>
 </ul>
 
-<h2 class="text-lg font-semibold text-slate-900 mt-16 mb-4">All skills</h2>
+<h2 class="text-lg font-semibold text-slate-900 mt-16 mb-4">Skills</h2>
 <% @skills.group_by(&:category).each do |category, skills| %>
   <div class="mb-4">
-    <p class="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-2"><%= category %></p>
-    <div class="flex flex-wrap gap-2">
-      <% skills.each do |skill| %>
-        <%= link_to skill.name, skill_path(skill), class: "inline-block text-sm bg-white border border-slate-200 hover:border-indigo-400 hover:text-indigo-700 text-slate-700 rounded-full px-3 py-1" %>
-      <% end %>
-    </div>
+    <%= link_to category, category_path(Skill.category_slug(category)), class: "text-sm font-semibold text-indigo-600 hover:text-indigo-800 uppercase tracking-wide" %>
+    <p class="text-sm text-purple-700 mt-1"><%= skills.map(&:name).join(" · ") %></p>
   </div>
 <% end %>

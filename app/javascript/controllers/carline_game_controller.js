@@ -13,12 +13,12 @@ export default class extends Controller {
     { emoji: "🛑", label: "the crossing guard's stop sign" }
   ]
 
-  GRAVITY = 2200 // px/s^2
-  JUMP_VELOCITY = -650 // px/s
+  GRAVITY = 1700 // px/s^2 — floaty on purpose, easy to time
+  JUMP_VELOCITY = -700 // px/s
   PLAYER_X_RATIO = 0.22
   GROUND_MARGIN = 60
-  CLEAR_HEIGHT = 46 // how high off the ground counts as "cleared it"
-  HIT_RADIUS = 24
+  CLEAR_HEIGHT = 30 // how high off the ground counts as "cleared it" — generous
+  HIT_RADIUS = 16
 
   connect() {
     this.ctx = this.canvasTarget.getContext("2d")
@@ -60,8 +60,8 @@ export default class extends Controller {
     this.onGround = true
     this.progress = 0
     this.speed = 0.1 + (this.level - 1) * 0.02
-    this.spawnChance = 0.012 + (this.level - 1) * 0.003
-    this.obstacleSpeed = 150 + (this.level - 1) * 22 // px/sec
+    this.spawnChance = 0.01 + (this.level - 1) * 0.003
+    this.obstacleSpeed = 130 + (this.level - 1) * 18 // px/sec
     this.obstacles = []
     this.running = true
     this.graceMs = 1200
@@ -109,13 +109,11 @@ export default class extends Controller {
   }
 
   update(dt) {
-    if (this.graceMs > 0) {
-      this.graceMs -= dt
-      return
-    }
-
-    this.progress += (this.speed * dt) / 1000
-
+    // Physics always runs, even during the grace period — otherwise a practice
+    // jump during "get ready" leaves onGround stuck false for the whole level,
+    // and every real jump attempt after that silently does nothing. (This was
+    // the actual bug: jump() only fires when onGround, and onGround only ever
+    // got reset back to true in the block that grace used to skip entirely.)
     this.velocityY += (this.GRAVITY * dt) / 1000
     this.playerY += (this.velocityY * dt) / 1000
     if (this.playerY >= this.groundY) {
@@ -123,6 +121,13 @@ export default class extends Controller {
       this.velocityY = 0
       this.onGround = true
     }
+
+    if (this.graceMs > 0) {
+      this.graceMs -= dt
+      return
+    }
+
+    this.progress += (this.speed * dt) / 1000
 
     if (Math.random() < this.spawnChance) {
       const kind = this.OBSTACLE_KINDS[Math.floor(Math.random() * this.OBSTACLE_KINDS.length)]

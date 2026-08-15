@@ -1,3 +1,6 @@
 <svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+  <rect width="512" height="512" rx="112" fill="#4f46e5"/>
+  <text x="50%" y="53%" dominant-baseline="middle" text-anchor="middle"
+        font-family="'IBM Plex Mono', ui-monospace, monospace" font-weight="700"
+        font-size="290" fill="#ffffff">K</text>
 </svg>

@@ -1,17 +1,18 @@
-<% content_for :title, "If the Carline Were a Data Problem — #{Profile.current.name}" %>
+<% content_for :title, "Carline, Data-Driven — #{Profile.current.name}" %>
 
 <p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2">If the carline were a data problem</p>
-<h1 class="text-3xl font-bold text-slate-900 mb-3">Carline, but make it data</h1>
+<h1 class="text-3xl font-bold text-slate-900 mb-3">Carline: pain, data, and eventually, joy</h1>
 <p class="text-slate-600 max-w-2xl mb-2">
-  Every school has one queue nobody's ever pointed a spreadsheet at. So I did.
+  Every school has one queue nobody's ever pointed a real database at. So I did.
 </p>
 <p class="text-xs text-slate-400 max-w-2xl mb-8">
-  This is a toy — fake data, fake insights, all for fun :-) The numbers below are hand-authored, not
-  pulled from any real school. What's real is the <em>way</em> of thinking about it.
+  Not pulled from real data, but imagined from real carline woes :-) What's real is how I'd actually
+  work it: not just the surface numbers, but digging, combining datasets, looking for patterns that
+  weren't obvious on the first pass.
 </p>
 
 <div class="sticky top-0 z-30 -mx-6 px-6 py-3 mb-12 bg-indigo-50/95 backdrop-blur border-b border-indigo-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-  <span class="text-sm text-slate-700">Actually stuck in this line right now? Jump over the cone, dodge the loose dog, get your kid before the timer runs out.</span>
+  <span class="text-sm text-slate-700">Escape into a world where getting to your kid is just the click of a button. Jump the cone, dodge the loose dog, beat the clock.</span>
   <%= link_to "Play →", carline_play_path, class: "shrink-0 self-start sm:self-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg px-4 py-2 text-sm" %>
 </div>
 
@@ -45,10 +46,10 @@
 
 <section class="flex items-baseline justify-between mb-4">
   <h2 class="text-lg font-semibold text-slate-900">What the raw data shows</h2>
-  <%= link_to "Export CSV ↓", carline_export_path(q: @q), class: "text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
+  <%= link_to "Export the report ↓", carline_export_path(q: @q), class: "text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
 </section>
 
-<section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
   <div class="bg-white border border-slate-200 rounded-lg p-5">
     <p class="text-3xl font-bold text-indigo-600"><%= @avg_wait %></p>
     <p class="text-sm text-slate-500 mt-1">avg. wait, minutes</p>
@@ -67,42 +68,7 @@
   </div>
 </section>
 
-<p class="text-sm text-slate-600 max-w-2xl mb-12">
-  Read on its own, this says: <strong>the carline is slow, so fix the carline.</strong> Redesign the
-  loop, stagger the grades, add a lane. All reasonable. All aimed at the symptom.
-</p>
-
-<section class="mb-16">
-  <h2 class="text-lg font-semibold text-slate-900 mb-4">Dismissal log</h2>
-  <div class="overflow-x-auto">
-    <table class="min-w-full text-sm border border-slate-200 rounded-lg overflow-hidden">
-      <thead class="bg-slate-100 text-slate-600 text-left">
-        <tr>
-          <th class="px-4 py-2">Date</th>
-          <th class="px-4 py-2">Dismissal</th>
-          <th class="px-4 py-2">Avg wait</th>
-          <th class="px-4 py-2">Worst wait</th>
-          <th class="px-4 py-2">Cars</th>
-          <th class="px-4 py-2">Field notes</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-slate-100 bg-white">
-        <% @days.each do |day| %>
-          <tr>
-            <td class="px-4 py-2 whitespace-nowrap"><%= day.observed_on.strftime("%b %-d") %></td>
-            <td class="px-4 py-2"><%= day.dismissal_time %></td>
-            <td class="px-4 py-2"><%= day.avg_wait_minutes %> min</td>
-            <td class="px-4 py-2 font-medium text-indigo-600"><%= day.worst_wait_minutes %> min</td>
-            <td class="px-4 py-2"><%= day.cars_in_line %></td>
-            <td class="px-4 py-2 text-slate-500"><%= day.note %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<section class="mb-16">
+<section class="mb-12">
   <h2 class="text-lg font-semibold text-slate-900 mb-4">Complaints by category</h2>
   <div class="flex flex-wrap gap-3">
     <% @complaints_by_category.sort_by { |_, n| -n }.each do |category, count| %>
@@ -112,6 +78,11 @@
     <% end %>
   </div>
 </section>
+
+<p class="text-sm text-slate-600 max-w-2xl mb-12">
+  Read on its own, this says: <strong>the carline is slow, so fix the carline.</strong> Redesign the
+  loop, stagger the grades, add a lane. All reasonable. All aimed at the symptom.
+</p>
 
 <section class="mb-16 bg-indigo-50 border border-indigo-200 rounded-lg p-6">
   <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wide mb-2">Then we combined it with another dataset</p>
@@ -141,23 +112,32 @@
     problem is at least partly an <strong>afternoon-transport</strong> problem wearing a carline
     costume.
   </p>
+  <p class="text-xs text-slate-400 mt-4 max-w-2xl">
+    Honest footnote: a real 95% confidence interval at a ±5% margin needs roughly 384 families
+    surveyed. This toy has 20. Real rigor means knowing your sample size before you trust your
+    percentages — this page is a sketch of the method, not a finished study.
+  </p>
 </section>
 
 <section class="mb-16">
   <h2 class="text-lg font-semibold text-slate-900 mb-2">So — not one fix, three</h2>
   <p class="text-sm text-slate-600 mb-6 max-w-2xl">
-    Different effort, different timelines, different kinds of payoff. None of them wrong — the point
-    is knowing which one you're picking and why.
+    Different effort, different timelines, different kinds of payoff — and they're not mutually
+    exclusive. A and B both help how the existing line moves; C changes what's arriving in the first
+    place. Stack C with either, and it shrinks the line before A or B even have to work as hard.
   </p>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <div class="bg-white border border-slate-200 rounded-lg p-5">
       <p class="text-xs uppercase tracking-wide text-slate-400 font-semibold mb-1">Option A</p>
-      <h3 class="font-semibold text-slate-900 mb-2">Redesign the loop</h3>
-      <p class="text-sm text-slate-600 mb-3">One-way flow instead of the current doubling-back at the flagpole.</p>
+      <h3 class="font-semibold text-slate-900 mb-2">Earlier, organized check-in</h3>
+      <p class="text-sm text-slate-600 mb-3">
+        App-based (or a simple tag scan) check-in when a car enters the queue, so kids are staged in
+        rounds and ready to hop in — instead of being paged after the car's already at the front.
+      </p>
       <dl class="text-xs text-slate-500 space-y-1">
-        <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Low — paint and signage</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">Days</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Payoff:</dt> <dd class="inline">Modest, immediate</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Low-medium — a check-in point + staging process</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">Weeks</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Payoff alone:</dt> <dd class="inline">Faster hop-in, same number of cars</dd></div>
       </dl>
     </div>
     <div class="bg-white border border-slate-200 rounded-lg p-5">
@@ -167,7 +147,8 @@
       <dl class="text-xs text-slate-500 space-y-1">
         <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Medium — scheduling, staff buy-in</dd></div>
         <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">Weeks</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Payoff:</dt> <dd class="inline">Meaningful, sustained</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Payoff alone:</dt> <dd class="inline">Lower peak congestion, sustained</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Stacked with A:</dt> <dd class="inline">Smaller, faster-moving rounds instead of one long one</dd></div>
       </dl>
     </div>
     <div class="bg-indigo-50 border border-indigo-300 rounded-lg p-5">
@@ -181,8 +162,46 @@
       <dl class="text-xs text-slate-500 space-y-1">
         <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">High — planning, staffing, a route</dd></div>
         <div><dt class="inline font-medium text-slate-600">Timeline:</dt> <dd class="inline">A semester</dd></div>
-        <div><dt class="inline font-medium text-slate-600">Payoff:</dt> <dd class="inline">Structural — solves the cause, not the symptom, and pays for itself</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Payoff alone:</dt> <dd class="inline"><%= @bus_ready_families.count %> fewer cars in line, structurally</dd></div>
+        <div><dt class="inline font-medium text-slate-600">Stacked with A/B:</dt> <dd class="inline">Compounds — smaller line <em>and</em> it moves faster</dd></div>
       </dl>
     </div>
   </div>
+  <p class="text-xs text-slate-400 mt-4 max-w-2xl">
+    The honest next version of this page: a live toggle to combine options and see (and export) the
+    specific projected outcome for whichever combination you'd actually pick. Not built yet — this
+    pass sketches the tradeoffs, doesn't simulate them.
+  </p>
 </section>
+
+<details class="mb-16 group">
+  <summary class="cursor-pointer text-sm font-semibold text-slate-500 hover:text-indigo-600 select-none">
+    Dismissal log (the raw artifact, if you want to poke at it) ▸
+  </summary>
+  <div class="overflow-x-auto mt-4">
+    <table class="min-w-full text-sm border border-slate-200 rounded-lg overflow-hidden">
+      <thead class="bg-slate-100 text-slate-600 text-left">
+        <tr>
+          <th class="px-4 py-2">Date</th>
+          <th class="px-4 py-2">Dismissal</th>
+          <th class="px-4 py-2">Avg wait</th>
+          <th class="px-4 py-2">Worst wait</th>
+          <th class="px-4 py-2">Cars</th>
+          <th class="px-4 py-2">Field notes</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100 bg-white">
+        <% @days.each do |day| %>
+          <tr>
+            <td class="px-4 py-2 whitespace-nowrap"><%= day.observed_on.strftime("%b %-d") %></td>
+            <td class="px-4 py-2"><%= day.dismissal_time %></td>
+            <td class="px-4 py-2"><%= day.avg_wait_minutes %> min</td>
+            <td class="px-4 py-2 font-medium text-indigo-600"><%= day.worst_wait_minutes %> min</td>
+            <td class="px-4 py-2"><%= day.cars_in_line %></td>
+            <td class="px-4 py-2 text-slate-500"><%= day.note %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</details>

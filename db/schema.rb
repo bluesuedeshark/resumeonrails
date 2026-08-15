@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_15_132538) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_15_143517) do
   create_table "accomplishment_skills", force: :cascade do |t|
     t.integer "accomplishment_id", null: false
     t.datetime "created_at", null: false
@@ -23,6 +23,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_15_132538) do
   create_table "accomplishments", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
+    t.boolean "hide_from_highlights", default: false, null: false
     t.integer "highlight_order"
     t.string "metric"
     t.integer "position"

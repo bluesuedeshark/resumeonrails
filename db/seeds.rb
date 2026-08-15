@@ -69,6 +69,7 @@ skills = {}
   [ "Snowflake", "AI & Dev" ],
   [ "Google BigQuery", "AI & Dev" ],
   [ "Vercel", "AI & Dev" ],
+  [ "Railway", "AI & Dev" ],
   [ "Supabase", "AI & Dev" ],
   [ "Linux", "AI & Dev" ],
   [ "Workflow Automation", "Systems & Process" ],
@@ -210,7 +211,7 @@ amp = Role.create!(
   [ "Co-built, launched, and now maintains a client-facing data portal — self-service data " \
     "exploration that replaced a slow, fully manual request process — and helped shape a new " \
     "data marketplace offering built on top of it.",
-    "still in production, still growing", [ "React", "TypeScript", "Node.js", "Python", "Snowflake", "SQL" ], 1 ],
+    "still in production, still growing", [ "React", "TypeScript", "Node.js", "Python", "Snowflake", "SQL", "Vercel", "Railway", "Supabase" ], 1 ],
   [ "Took on a client's \"group within a group\" segmentation problem: curated a new dataset " \
     "combining their client-provided data with our consumer data, ran it through rigorous " \
     "statistical analysis to determine the right method, then built a custom k-means model " \

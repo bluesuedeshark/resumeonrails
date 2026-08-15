@@ -51,9 +51,9 @@
 </ul>
 
 <h2 class="text-lg font-semibold text-slate-900 mt-16 mb-4">Skills</h2>
-<% @skills.group_by(&:category).each do |category, skills| %>
+<% Skill.categories.each do |category| %>
   <div class="mb-4">
     <%= link_to category, category_path(Skill.category_slug(category)), class: "text-sm font-semibold text-indigo-600 hover:text-indigo-800 uppercase tracking-wide" %>
-    <p class="text-sm text-purple-700 mt-1"><%= skills.map(&:name).join(" · ") %></p>
+    <p class="text-sm text-purple-700 mt-1"><%= @skills.select { |s| s.category == category }.map(&:name).join(" · ") %></p>
   </div>
 <% end %>

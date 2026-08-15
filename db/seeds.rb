@@ -1,7 +1,5 @@
 # Idempotent — safe to re-run with `bin/rails db:seed`.
-# All content pulled from hq/projects/resume.md + Desktop/"resume things"
-# (2022 resume, the 2026 rethink draft, and the intro paragraph drafted 2026-08-15).
-# No personal phone/home email/street here on purpose — same PII rule as the hq résumé draft.
+# No personal phone/home email included on purpose.
 
 AccomplishmentSkill.destroy_all
 Accomplishment.destroy_all
@@ -13,8 +11,6 @@ Profile.destroy_all
 # ---------------------------------------------------------------------------
 # Profile
 # ---------------------------------------------------------------------------
-# 2026-08-15 rewrite. Portal/marketplace specifics deliberately live in "Some
-# things I do" + Timeline instead of here — intro stays at the identity level.
 Profile.create!(
   name: "Kaleigh Unger",
   headline: "Senior Analyst — Data, Systems & Applied AI",
@@ -56,15 +52,15 @@ Profile.create!(
 # ---------------------------------------------------------------------------
 skills = {}
 [
-  [ "SAS", "Analytics & Modeling" ],
-  [ "VBA", "Analytics & Modeling" ],
-  [ "R", "Analytics & Modeling" ],
-  [ "Python", "Analytics & Modeling" ],
-  [ "SQL", "Analytics & Modeling" ],
-  [ "K-Means Segmentation", "Analytics & Modeling" ],
-  [ "RFM Modeling", "Analytics & Modeling" ],
-  [ "Campaign Optimization", "Analytics & Modeling" ],
-  [ "Geospatial / Huff Modeling", "Analytics & Modeling" ],
+  [ "SAS", "Data Science and Analytics" ],
+  [ "VBA", "Data Science and Analytics" ],
+  [ "R", "Data Science and Analytics" ],
+  [ "Python", "Data Science and Analytics" ],
+  [ "SQL", "Data Science and Analytics" ],
+  [ "K-Means Segmentation", "Data Science and Analytics" ],
+  [ "RFM Modeling", "Data Science and Analytics" ],
+  [ "Campaign Optimization", "Data Science and Analytics" ],
+  [ "Geospatial / Huff Modeling", "Data Science and Analytics" ],
   [ "Ruby on Rails", "AI & Dev" ],
   [ "React", "AI & Dev" ],
   [ "Node.js", "AI & Dev" ],
@@ -280,85 +276,124 @@ Education.create!(
 )
 
 # ---------------------------------------------------------------------------
-# Carline — deliberately fictional. Nothing here is a real school's data;
-# hand-authored to be plausible and a little funny. See the disclosure banner
-# on the Carline page itself.
+# Carline — deliberately fictional. Nothing here is a real school's data; it's
+# generated, not hand-typed, to form a real 6-week time series: 30 school days
+# so there's enough data to separate "still learning the routine" (wait times
+# genuinely improving) from "this is just how long it takes now" (a plateau
+# that doesn't budge). See the disclosure banner on the Carline page itself.
 # ---------------------------------------------------------------------------
 CarlineDay.destroy_all
 Complaint.destroy_all
 Family.destroy_all
 
-[
-  [ Date.new(2026, 8, 4), "2:45pm", 14, 22, 118, "First week jitters — everyone forgot where to line up." ],
-  [ Date.new(2026, 8, 5), "2:45pm", 17, 29, 121, "Rain. Nobody wanted to walk the extra 10 feet." ],
-  [ Date.new(2026, 8, 6), "2:45pm", 12, 19, 115, "Smoothest day of the week, for reasons unclear." ],
-  [ Date.new(2026, 8, 7), "2:45pm", 19, 31, 124, "One car stalled at the flagpole for six full minutes." ],
-  [ Date.new(2026, 8, 8), "2:45pm", 11, 16, 109, "Half-day Friday — line cleared before it really started." ],
-  [ Date.new(2026, 8, 11), "2:45pm", 16, 24, 119, "Normal Monday chaos." ],
-  [ Date.new(2026, 8, 12), "2:45pm", 15, 21, 120, "Crossing guard out sick — visibly slower without her." ],
-  [ Date.new(2026, 8, 13), "2:45pm", 21, 34, 126, "Two SUVs sharing what should've been one lane." ],
-  [ Date.new(2026, 8, 14), "2:45pm", 13, 18, 117, "Trial run of a one-way loop — modest improvement." ]
-].each do |observed_on, dismissal_time, avg_wait, worst_wait, cars, note|
+rng = Random.new(20260815)
+
+school_start = Date.new(2026, 8, 4)
+school_days = []
+d = school_start
+while school_days.size < 30
+  school_days << d unless [ 0, 6 ].include?(d.wday)
+  d += 1
+end
+
+SPIKE_MINUTES = 63.0
+PLATEAU_MINUTES = 33.0
+DECAY = 0.85
+
+EARLY_NOTES = [
+  "Everyone's still learning where to line up.",
+  "New families figuring out the flow — lots of confusion at the flagpole.",
+  "Kids still working out which line is which.",
+  "Staff still working out the choreography too.",
+  "First few weeks are always like this, in theory."
+].freeze
+TRANSITION_NOTES = [
+  "A little better than last week, a little at a time.",
+  "Regulars are faster now; newer families still slow to load.",
+  "Some days good, some days bad — still finding a rhythm.",
+  "Improving, but not as fast as anyone hoped."
+].freeze
+PLATEAU_NOTES = [
+  "This is just how it is now. Everyone knows the routine — it's still this slow.",
+  "Not an onboarding problem anymore. Everyone's fast at their part; the line is still the line.",
+  "Nothing unusual today. It's just this long, every day.",
+  "Routine is fully set. Wait time isn't improving further.",
+  "Well past the settling-in period — this is the baseline, not a rough patch."
+].freeze
+SPECIAL_EVENTS = {
+  1 => "Rain. Nobody wanted to walk the extra 10 feet.",
+  8 => "Two SUVs sharing what should've been one lane.",
+  11 => "Crossing guard out sick — visibly slower without her.",
+  18 => "Trial run of a one-way loop — modest improvement, didn't hold.",
+  23 => "One car stalled at the flagpole for six full minutes."
+}.freeze
+
+school_days.each_with_index do |date, i|
+  avg = PLATEAU_MINUTES + (SPIKE_MINUTES - PLATEAU_MINUTES) * (DECAY**i) + rng.rand(-4..4)
+  avg = avg.round.clamp(20, 70)
+  worst = (avg + rng.rand(10..22)).clamp(avg + 8, 85)
+  cars = 108 + rng.rand(-6..16)
+
+  note = SPECIAL_EVENTS[i] || case i
+                               when 0...6 then EARLY_NOTES.sample(random: rng)
+                               when 6...16 then TRANSITION_NOTES.sample(random: rng)
+                               else PLATEAU_NOTES.sample(random: rng)
+                               end
+
   CarlineDay.create!(
-    observed_on: observed_on,
-    dismissal_time: dismissal_time,
-    avg_wait_minutes: avg_wait,
-    worst_wait_minutes: worst_wait,
+    observed_on: date,
+    dismissal_time: "2:45pm",
+    avg_wait_minutes: avg,
+    worst_wait_minutes: worst,
     cars_in_line: cars,
     note: note
   )
 end
 
-# Families — the "related dataset" that, combined with the complaint log, reveals the
-# hidden pattern: repeat complainers cluster with extended-day families who already
-# want a bus. Vocal (2+ complaints): #14, #22, #40. Everyone else is quieter background.
+# Families — the related dataset. The first 12 are extended-day families who've
+# already said they'd take a bus; complaints are weighted toward this group on
+# purpose. That skew is the hidden pattern the combined-dataset section surfaces.
 families = {}
-[
-  # label,        extended_day, wants_bus, carpool_interested
-  [ "Family #14", true,  true,  false ],
-  [ "Family #22", true,  true,  true ],
-  [ "Family #40", false, false, true ],
-  [ "Family #3",  false, false, false ],
-  [ "Family #9",  true,  false, false ],
-  [ "Family #31", false, false, false ],
-  [ "Family #6",  true,  true,  false ],
-  [ "Family #1",  false, false, false ],
-  [ "Family #2",  false, false, true ],
-  [ "Family #4",  true,  false, false ],
-  [ "Family #5",  false, false, false ],
-  [ "Family #7",  false, false, false ],
-  [ "Family #8",  true,  false, false ],
-  [ "Family #10", false, false, false ],
-  [ "Family #11", false, false, false ],
-  [ "Family #12", true,  true,  false ],
-  [ "Family #13", false, false, false ],
-  [ "Family #15", false, false, false ],
-  [ "Family #16", false, true,  false ],
-  [ "Family #17", false, false, false ]
-].each do |label, extended_day, wants_bus, carpool_interested|
-  families[label] = Family.create!(label: label, extended_day: extended_day, wants_bus: wants_bus, carpool_interested: carpool_interested)
+loud_pool = []
+quiet_pool = []
+
+(1..12).each do |n|
+  label = "Family ##{n}"
+  wants_bus = n <= 10 # a couple of exceptions so the overlap isn't a suspicious 100%
+  families[label] = Family.create!(label: label, extended_day: true, wants_bus: wants_bus, carpool_interested: rng.rand < 0.3)
+  loud_pool << label
 end
 
-[
-  [ Date.new(2026, 8, 5), "email", "wait time", 2, "Family #14" ],
-  [ Date.new(2026, 8, 7), "phone", "wait time", 3, "Family #22" ],
-  [ Date.new(2026, 8, 7), "email", "lane discipline", 2, "Family #3" ],
-  [ Date.new(2026, 8, 8), "email", "wait time", 1, "Family #40" ],
-  [ Date.new(2026, 8, 11), "phone", "communication", 1, "Family #9" ],
-  [ Date.new(2026, 8, 12), "email", "wait time", 2, "Family #22" ],
-  [ Date.new(2026, 8, 13), "phone", "lane discipline", 3, "Family #14" ],
-  [ Date.new(2026, 8, 13), "email", "wait time", 3, "Family #31" ],
-  [ Date.new(2026, 8, 13), "email", "safety", 2, "Family #6" ],
-  [ Date.new(2026, 8, 14), "phone", "wait time", 1, "Family #40" ]
-].each do |logged_on, channel, category, severity, family_label|
-  Complaint.create!(
-    logged_on: logged_on,
-    channel: channel,
-    category: category,
-    severity: severity,
-    family_label: family_label,
-    family: families.fetch(family_label)
-  )
+(13..65).each do |n|
+  label = "Family ##{n}"
+  extended_day = rng.rand < 0.18
+  wants_bus = extended_day && rng.rand < 0.35
+  families[label] = Family.create!(label: label, extended_day: extended_day, wants_bus: wants_bus, carpool_interested: rng.rand < 0.15)
+  quiet_pool << label
+end
+
+def weighted_sample(rng, weighted)
+  n = rng.rand(weighted.sum { |_, w| w })
+  weighted.each { |val, w| return val if (n -= w) < 0 }
+  weighted.first.first
+end
+
+CATEGORIES = [ [ "wait time", 5 ], [ "lane discipline", 2 ], [ "communication", 1 ], [ "safety", 1 ] ].freeze
+CHANNELS = %w[email phone].freeze
+
+school_days.each_with_index do |date, i|
+  daily_count = (1 + (i * 0.16) + rng.rand(-0.5..0.5)).round.clamp(0, 6)
+  daily_count.times do
+    family_label = rng.rand < 0.6 ? loud_pool.sample(random: rng) : quiet_pool.sample(random: rng)
+    Complaint.create!(
+      logged_on: date,
+      channel: CHANNELS.sample(random: rng),
+      category: weighted_sample(rng, CATEGORIES),
+      severity: rng.rand(1..3),
+      family_label: family_label,
+      family: families.fetch(family_label)
+    )
+  end
 end
 
 puts "Seeded: #{Role.count} roles, #{Accomplishment.count} accomplishments, #{Skill.count} skills, #{Education.count} education entries, #{CarlineDay.count} carline days, #{Complaint.count} complaints, #{Family.count} families."

@@ -1,9 +1,7 @@
 require "csv"
 
 class CarlineController < ApplicationController
-  # A small hand-built synonym map — this is honest keyword search, not real
-  # semantic search. Labeled that way on the page on purpose: claiming more
-  # sophistication than what's actually running would undercut the whole point.
+  # Small hand-built synonym map for keyword search (not real semantic search).
   SEARCH_SYNONYMS = {
     "slow" => %w[wait],
     "suv" => %w[lane],
@@ -20,6 +18,12 @@ class CarlineController < ApplicationController
     @worst_day = @days.order(worst_wait_minutes: :desc).first
     @complaint_count = @complaints.count
     @complaints_by_category = @complaints.group(:category).count
+
+    # Where the "school start effect" stops explaining the wait time: the first
+    # day the rolling average is within 15% of where the last 10 days settle.
+    days_list = @days.to_a
+    @plateau_baseline = (days_list.last(10).sum(&:avg_wait_minutes) / 10.0).round(1)
+    @plateau_start = days_list.find { |d| d.avg_wait_minutes <= @plateau_baseline * 1.15 }
 
     @q = params[:q].presence
     @search = search(@q) if @q

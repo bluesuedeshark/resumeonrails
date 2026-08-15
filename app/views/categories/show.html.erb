@@ -1,7 +1,7 @@
 <% content_for :title, "#{@category} — #{Profile.current.name}" %>
 
 <p class="text-sm mb-2">
-  <%= link_to "← Timeline", timeline_path,
+  <%= link_to "← Back", timeline_path,
         class: "text-indigo-600 hover:text-indigo-800",
         onclick: "if (window.history.length > 1) { history.back(); return false; }" %>
 </p>

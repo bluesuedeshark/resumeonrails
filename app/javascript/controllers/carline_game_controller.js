@@ -109,11 +109,9 @@ export default class extends Controller {
   }
 
   update(dt) {
-    // Physics always runs, even during the grace period — otherwise a practice
-    // jump during "get ready" leaves onGround stuck false for the whole level,
-    // and every real jump attempt after that silently does nothing. (This was
-    // the actual bug: jump() only fires when onGround, and onGround only ever
-    // got reset back to true in the block that grace used to skip entirely.)
+    // Physics runs even during the grace period, or a practice jump leaves
+    // onGround stuck false (it's only ever reset in this block) and every
+    // real jump for the rest of the level silently does nothing.
     this.velocityY += (this.GRAVITY * dt) / 1000
     this.playerY += (this.velocityY * dt) / 1000
     if (this.playerY >= this.groundY) {

@@ -207,7 +207,7 @@
 </section>
 
 <section class="mb-16">
-  <h2 class="text-lg font-semibold text-slate-900 mb-2">How this was actually built</h2>
+  <h2 class="text-lg font-semibold text-slate-900 mb-2">A small example of build considerations</h2>
   <p class="text-sm text-slate-600 mb-1 max-w-2xl">
     Three source tables, joined on a real key, rolled into a derived signal not visible in any single
     table.
@@ -310,7 +310,7 @@
 
 <section class="mb-4">
   <h2 class="text-lg font-semibold text-slate-900 mb-2">Search the log</h2>
-  <%= form_with url: carline_path, method: :get, local: true, class: "flex gap-2 max-w-md" do %>
+  <%= form_with url: carline_path, method: :get, local: true, data: { turbo: false }, class: "flex gap-2 max-w-md" do %>
     <%= text_field_tag :q, @q, placeholder: "Try \"slow\" or \"guard\"", class: "flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm" %>
     <%= submit_tag "Search", class: "bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg px-4 py-2 cursor-pointer" %>
     <% if @q %>

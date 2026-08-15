@@ -250,7 +250,7 @@ indie = Role.create!(
 [
   [ "Advising a non-technical client on standing up a personal dashboard she owns and controls, while building a bespoke, model-agnostic dashboard proof of concept.", nil, [ "LLM Agents & Tooling" ] ],
   [ "Built and shipped AI-augmented tools end to end — agent-augmented data retrieval and scoring, small internal data apps, system integrations.", nil, [ "LLM Agents & Tooling" ] ],
-  [ "Shipped this site — a working, data-modeled résumé — overnight.", "start to finish, overnight", [ "Ruby on Rails" ] ]
+  [ "Just shipped this site overnight — for a little challenge.", "start to finish, overnight", [ "Ruby on Rails" ] ]
 ].each_with_index do |(desc, metric, skill_names), i|
   a = indie.accomplishments.create!(description: desc, metric: metric, position: i + 1)
   tag(a, skills, *skill_names)

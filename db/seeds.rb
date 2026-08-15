@@ -99,10 +99,7 @@ ocean_lakes = Role.create!(
   ends_on: Date.new(2006, 8, 31),
   current: false,
   position: 1,
-  summary: "First job. The only real requirement was keeping the nature center " \
-           "running and the register covered — everything else was free time. " \
-           "This is the earliest evidence of a pattern that hasn't stopped since: " \
-           "given a small box, expand it."
+  summary: nil
 )
 [
   [ "Rebuilt the inventory ordering process so restocks actually matched what was selling.", [ "Workflow Automation" ] ],
@@ -180,12 +177,12 @@ nm_planning = Role.create!(
   ends_on: Date.new(2016, 9, 1),
   current: false,
   position: 5,
-  summary: "The only person in the office who knew how to structure blended " \
-           "whole-life products — which meant teaching the people she reported to."
+  summary: "Specialized deeply in structuring blended whole-life products and became " \
+           "the agency's trainer on financial product and financial plan design."
 )
 [
-  [ "Was the only person in the office who could structure blended whole-life products, so taught classes to senior advisors and ran product design for most agents in-office.", nil, [ "Training & Curriculum Design" ] ],
-  [ "Built highly accurate Personal Financial Plans — Social Security projections, amortization schedules, and scenario modeling — for advisors' clients.", nil, [ "Campaign Optimization" ] ],
+  [ "Taught classes to senior advisors and ran product design for most agents in-office.", nil, [ "Training & Curriculum Design" ] ],
+  [ "Built Personal Financial Plans — Social Security projections, amortization schedules, and scenario modeling — for advisors' clients.", nil, [ "Campaign Optimization" ] ],
   [ "Was the only person ever offered an agent's contract without a bachelor's degree, where a degree was a baseline requirement.", "only person offered the contract without a degree", [], true ]
 ].each_with_index do |(desc, metric, skill_names, hide), i|
   a = nm_planning.accomplishments.create!(description: desc, metric: metric, position: i + 1, hide_from_highlights: !!hide)
@@ -200,9 +197,8 @@ amp = Role.create!(
   ends_on: nil,
   current: true,
   position: 6,
-  summary: "Ten years (and counting) of SAS-based custom modeling for financial, " \
-           "health, retail, and senior-living clients — the deepest, most provable " \
-           "track record."
+  summary: "Ten years of SAS-based custom modeling for financial, health, retail, " \
+           "and senior-living clients."
 )
 [
   [ "Rebuilt the core report shell: automated branding/white-labeling that had been done by hand, and added versioning, conditional logic, and exception-handling.", nil, [ "SAS", "VBA", "Workflow Automation" ] ],
@@ -244,8 +240,8 @@ indie = Role.create!(
   ends_on: nil,
   current: true,
   position: 7,
-  summary: "Self-directed pivot into applied AI and software — learning in " \
-           "public, shipping real things."
+  summary: "Self-directed pivot into applied AI and software — shipping things, " \
+           "experimenting."
 )
 [
   [ "Advising a non-technical client on standing up a personal dashboard she owns and controls, while building a bespoke, model-agnostic dashboard proof of concept.", nil, [ "LLM Agents & Tooling" ] ],

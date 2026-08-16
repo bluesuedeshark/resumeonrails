@@ -48,7 +48,7 @@
   </div>
 </section>
 
-<section class="mb-4">
+<section class="mb-4" data-controller="wait-chart">
   <h2 class="text-lg font-semibold text-slate-900 mb-1">Time series, not a point average</h2>
   <p class="text-sm text-slate-600 mb-4 max-w-2xl">
     n=30. Wait time decays over the adoption period, then stabilizes — the series reaches
@@ -64,7 +64,11 @@
       <% @days.each_with_index do |day, i| %>
         <% bar_h = (day.avg_wait_minutes / max_wait * chart_h).round %>
         <% is_plateau = @plateau_start && day.observed_on >= @plateau_start.observed_on %>
-        <rect x="<%= i * (bar_w + gap) %>" y="<%= chart_h - bar_h %>" width="<%= bar_w %>" height="<%= bar_h %>" rx="2" fill="<%= is_plateau ? '#c4b5fd' : '#6366f1' %>">
+        <rect x="<%= i * (bar_w + gap) %>" y="<%= chart_h - bar_h %>" width="<%= bar_w %>" height="<%= bar_h %>" rx="2" fill="<%= is_plateau ? '#c4b5fd' : '#6366f1' %>" class="cursor-pointer"
+          data-action="mouseenter->wait-chart#show click->wait-chart#show"
+          data-wait-chart-date-param="<%= day.observed_on.strftime("%b %-d") %>"
+          data-wait-chart-avg-param="<%= day.avg_wait_minutes %>"
+          data-wait-chart-worst-param="<%= day.worst_wait_minutes %>">
           <title><%= day.observed_on.strftime("%b %-d") %>: <%= day.avg_wait_minutes %> min avg, <%= day.worst_wait_minutes %> min worst</title>
         </rect>
       <% end %>
@@ -73,9 +77,10 @@
     </svg>
   </div>
   <p class="text-xs text-slate-400 mt-2">
-    Indigo = pre-stationarity (adoption period). Purple = post-stationarity (baseline). Hover a bar
-    for values.
+    Indigo = pre-stationarity (adoption period). Purple = post-stationarity (baseline). Hover or tap
+    a bar for that day's numbers.
   </p>
+  <p class="text-xs font-medium text-indigo-700 mt-1 min-h-4" data-wait-chart-target="readout"></p>
 </section>
 
 <p class="text-sm text-slate-600 max-w-2xl mb-12">

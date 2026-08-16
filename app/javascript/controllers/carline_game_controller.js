@@ -20,8 +20,8 @@ export default class extends Controller {
     "🎉 Your kid hopped in! Time to referee the backseat shotgun lawsuit. Bring a gavel.",
     "🎉 Your kid hopped in! Congratulations — you get to turn around for the cleats you knew were still on the porch.",
     "🎉 Your kid hopped in! Buckle up for 47 uninterrupted minutes of Minecraft lore.",
-    "🎉 Your kid hopped in! Get ready to explain, for the 900th time, why the iPad stays in the bag.",
-    "🎉 Your kid hopped in! You've earned a drive-thru. No judgment."
+    "🎉 Your kid hopped in! Get ready to explain, for the 900th time, why ice cream is not a dinner option.",
+    "🎉 Your kid hopped in! You've earned a trip to Duck Donuts. No judgement."
   ]
 
   GRAVITY = 1700 // px/s^2 — floaty on purpose, easy to time

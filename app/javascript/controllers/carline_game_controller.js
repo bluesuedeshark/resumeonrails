@@ -15,13 +15,13 @@ export default class extends Controller {
 
   WIN_MESSAGES = [
     "🎉 Your kid hopped in! You are now legally cleared to speed to Chick-fil-A.",
-    "🎉 Your kid hopped in! You are now legally cleared to make it to karate with four minutes to spare.",
-    "🎉 Your kid hopped in! You are now legally cleared to Costco. God help you.",
-    "🎉 Your kid hopped in! You are now legally cleared to referee a backseat argument about who called shotgun.",
-    "🎉 Your kid hopped in! You are now legally cleared to circle back for the forgotten cleats. You knew this was coming.",
-    "🎉 Your kid hopped in! You are now legally cleared to answer 47 questions about Minecraft before the stop sign.",
-    "🎉 Your kid hopped in! You are now legally cleared to explain, once more, why the iPad stays in the bag.",
-    "🎉 Your kid hopped in! You are now legally cleared to hit the drive-thru. It's been earned."
+    "🎉 Your kid hopped in! You will now make it to karate with exactly 2.7 minutes to spare.",
+    "🎉 Your kid hopped in! Zoom to Costco before they run out of rotisserie chicken. God be with you.",
+    "🎉 Your kid hopped in! Time to referee the backseat shotgun lawsuit. Bring a gavel.",
+    "🎉 Your kid hopped in! Congratulations — you get to turn around for the cleats you knew were still on the porch.",
+    "🎉 Your kid hopped in! Buckle up for 47 uninterrupted minutes of Minecraft lore.",
+    "🎉 Your kid hopped in! Get ready to explain, for the 900th time, why the iPad stays in the bag.",
+    "🎉 Your kid hopped in! You've earned a drive-thru. No judgment."
   ]
 
   GRAVITY = 1700 // px/s^2 — floaty on purpose, easy to time

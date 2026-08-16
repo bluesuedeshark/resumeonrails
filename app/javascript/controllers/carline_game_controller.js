@@ -24,6 +24,11 @@ export default class extends Controller {
     "🎉 Your kid hopped in! You've earned a trip to Duck Donuts. No judgement."
   ]
 
+  MAX_LEVEL = 8 // matches WIN_MESSAGES.length — every level gets its own line, no repeats
+
+  FINALE_MESSAGE =
+    "🏁 You survived this virtual car line! If you're still stuck in the real one — at least you have snacks. You do have snacks, right?"
+
   GRAVITY = 1700 // px/s^2 — floaty on purpose, easy to time
   JUMP_VELOCITY = -620 // px/s — tuned to clear obstacles without leaving the shorter canvas, ~730ms full airtime
   PLAYER_X_RATIO = 0.22
@@ -60,12 +65,23 @@ export default class extends Controller {
   }
 
   nextLevel() {
+    if (this.level >= this.MAX_LEVEL) {
+      this.showFinale()
+      return
+    }
     this.level += 1
     this.beginLevel()
   }
 
   retry() {
     this.beginLevel()
+  }
+
+  showFinale() {
+    this.running = false
+    document.removeEventListener("keydown", this.boundKeydown)
+    this.levelTarget.textContent = "You made it!"
+    this.statusTarget.innerHTML = this.FINALE_MESSAGE
   }
 
   beginLevel() {

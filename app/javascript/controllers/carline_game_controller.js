@@ -13,13 +13,26 @@ export default class extends Controller {
     { emoji: "🛑", label: "the crossing guard's stop sign" }
   ]
 
+  WIN_MESSAGES = [
+    "🎉 Your kid hopped in! You are now legally cleared to speed to Chick-fil-A.",
+    "🎉 Your kid hopped in! You are now legally cleared to make it to karate with four minutes to spare.",
+    "🎉 Your kid hopped in! You are now legally cleared to Costco. God help you.",
+    "🎉 Your kid hopped in! You are now legally cleared to referee a backseat argument about who called shotgun.",
+    "🎉 Your kid hopped in! You are now legally cleared to circle back for the forgotten cleats. You knew this was coming.",
+    "🎉 Your kid hopped in! You are now legally cleared to answer 47 questions about Minecraft before the stop sign.",
+    "🎉 Your kid hopped in! You are now legally cleared to explain, once more, why the iPad stays in the bag.",
+    "🎉 Your kid hopped in! You are now legally cleared to hit the drive-thru. It's been earned."
+  ]
+
   GRAVITY = 1700 // px/s^2 — floaty on purpose, easy to time
-  JUMP_VELOCITY = -620 // px/s — tuned to clear obstacles without leaving the shorter canvas
+  JUMP_VELOCITY = -620 // px/s — tuned to clear obstacles without leaving the shorter canvas, ~730ms full airtime
   PLAYER_X_RATIO = 0.22
   GROUND_MARGIN = 55
   CLEAR_HEIGHT = 30 // how high off the ground counts as "cleared it" — generous
   HIT_RADIUS = 16
-  MIN_SPAWN_GAP_MS = 1500 // always enough runway to land before the next one
+  MIN_SPAWN_GAP_MS = 1500 // level 1's runway; later levels tighten this
+  MIN_SPAWN_GAP_FLOOR_MS = 1050 // ~320ms of reaction buffer past a full ~730ms jump, even at max difficulty
+  MAX_OBSTACLE_SPEED = 255 // px/s cap — keeps spawn-to-player travel time from dropping below ~1s
 
   connect() {
     this.ctx = this.canvasTarget.getContext("2d")
@@ -60,13 +73,18 @@ export default class extends Controller {
     this.velocityY = 0
     this.onGround = true
     this.progress = 0
-    this.speed = 0.1 + (this.level - 1) * 0.02
-    this.spawnChance = 0.01 + (this.level - 1) * 0.003
-    this.obstacleSpeed = 130 + (this.level - 1) * 18 // px/sec
+    // Levels get LONGER as you go up (more time in "carline" = more obstacles
+    // to survive), floor keeps it from dragging forever at high levels.
+    this.speed = Math.max(0.05, 0.11 - (this.level - 1) * 0.008)
+    // Obstacles spawn more often and cross faster each level; both capped so
+    // the runway between them never drops below what a jump physically needs.
+    this.spawnChance = Math.min(0.05, 0.012 + (this.level - 1) * 0.004)
+    this.obstacleSpeed = Math.min(this.MAX_OBSTACLE_SPEED, 130 + (this.level - 1) * 14) // px/sec
+    this.spawnGapMs = Math.max(this.MIN_SPAWN_GAP_FLOOR_MS, this.MIN_SPAWN_GAP_MS - (this.level - 1) * 55)
     this.obstacles = []
     this.running = true
     this.graceMs = 1200
-    this.timeSinceSpawn = this.MIN_SPAWN_GAP_MS // eligible to spawn right after grace ends
+    this.timeSinceSpawn = this.spawnGapMs // eligible to spawn right after grace ends
     this.statusTarget.textContent = ""
     this.levelTarget.textContent = `Level ${this.level}`
     document.addEventListener("keydown", this.boundKeydown)
@@ -130,7 +148,7 @@ export default class extends Controller {
     this.progress += (this.speed * dt) / 1000
 
     this.timeSinceSpawn += dt
-    if (this.timeSinceSpawn >= this.MIN_SPAWN_GAP_MS && Math.random() < this.spawnChance) {
+    if (this.timeSinceSpawn >= this.spawnGapMs && Math.random() < this.spawnChance) {
       const kind = this.OBSTACLE_KINDS[Math.floor(Math.random() * this.OBSTACLE_KINDS.length)]
       this.obstacles.push({ x: this.width + 20, ...kind })
       this.timeSinceSpawn = 0
@@ -163,7 +181,8 @@ export default class extends Controller {
   win() {
     this.running = false
     document.removeEventListener("keydown", this.boundKeydown)
-    this.statusTarget.innerHTML = `🎉 Your kid hopped in! You are now legally cleared to speed to Chick-fil-A.`
+    const message = this.WIN_MESSAGES[(this.level - 1) % this.WIN_MESSAGES.length]
+    this.statusTarget.innerHTML = message
   }
 
   drawIdleFrame() {

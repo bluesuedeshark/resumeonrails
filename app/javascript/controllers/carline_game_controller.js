@@ -272,8 +272,14 @@ export default class extends Controller {
       ctx.fillText(o.emoji, o.x, this.groundY)
     })
 
-    // Player car (rises off the ground when jumping)
+    // Player car (rises off the ground when jumping). The 🚗 glyph faces
+    // left in every emoji font, but the car travels right toward the kid —
+    // flip it so it isn't visibly driving backward the whole game.
     ctx.font = "32px sans-serif"
-    ctx.fillText("🚗", this.playerX, this.playerY)
+    ctx.save()
+    ctx.translate(this.playerX, this.playerY)
+    ctx.scale(-1, 1)
+    ctx.fillText("🚗", 0, 0)
+    ctx.restore()
   }
 }

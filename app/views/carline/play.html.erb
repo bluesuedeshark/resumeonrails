@@ -1,4 +1,4 @@
-<% content_for :title, "Stuck in Carline? — #{Profile.current.name}" %>
+<% content_for :title, "Stuck in Carline? - #{Profile.current.name}" %>
 
 <p class="text-sm mb-4"><%= link_to "← Back to the analysis", carline_path, class: "text-indigo-600 hover:text-indigo-800" %></p>
 
@@ -18,18 +18,18 @@
     </button>
   </div>
 
-  <canvas data-carline-game-target="canvas" width="320" height="220" class="w-full rounded-lg border border-slate-300 touch-none select-none"></canvas>
+  <div class="relative">
+    <canvas data-carline-game-target="canvas" width="320" height="220" class="w-full rounded-lg border border-slate-300 touch-none select-none"></canvas>
 
-  <div data-carline-game-target="status" class="text-center text-sm font-medium text-slate-700 mt-4 min-h-12"></div>
+    <div data-carline-game-target="overlay" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-4 bg-slate-900/90 backdrop-blur-sm rounded-lg p-5 text-center">
+      <div data-carline-game-target="status" class="text-sm font-medium text-white leading-relaxed"></div>
+      <div data-carline-game-target="actions" class="flex gap-3 w-full max-w-56"></div>
+    </div>
+  </div>
 
   <button data-action="carline-game#jump" class="w-full bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-lg py-5 text-lg font-bold text-slate-700 select-none mt-2">
     JUMP
   </button>
-
-  <div class="flex gap-3 mt-3">
-    <button data-action="carline-game#retry" class="flex-1 text-sm text-slate-500 hover:text-indigo-600">Retry level</button>
-    <button data-action="carline-game#nextLevel" class="flex-1 text-sm text-slate-500 hover:text-indigo-600">Next level →</button>
-  </div>
 
   <p class="text-xs text-slate-400 mt-4 text-center">Spacebar works too, if you're on a real keyboard.</p>
 </div>

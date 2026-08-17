@@ -13,7 +13,7 @@ Profile.destroy_all
 # ---------------------------------------------------------------------------
 Profile.create!(
   name: "Kaleigh Unger",
-  headline: "Senior Analyst — Data, Systems & Applied AI",
+  headline: "Senior Analyst - Data, Systems & Applied AI",
   tagline: [
     "I turn messy data into meaningful insights.",
     "I optimize systems for usability and scale.",
@@ -24,15 +24,14 @@ Profile.create!(
     "industries, including 10 years in data science, creating and running custom " \
     "modeling solutions for financial, health, retail, senior-living, and other " \
     "clients. I have a depth of technical expertise that drives me to ensure I'm " \
-    "architecting the best solution for a given problem, while also bringing a " \
-    "breadth of understanding that allows me to keep the big picture in scope and " \
-    "plan a strategy that doesn't just work for the problem at hand, but scales " \
-    "long-term — with predictable, measurable, and meaningful results that hold " \
-    "up at scale and integrate even within messy systems.",
+    "architecting the best solution for a given problem. I also bring a breadth " \
+    "of understanding that allows me to keep the big picture in scope and plan a " \
+    "strategy that scales - with predictable, measurable, meaningful results that " \
+    "integrate even with imperfect systems.",
     "I am very intentional about keeping my knowledge broad, my learning constant, " \
     "my stance agile, and my energy persistent. My job only required me to learn " \
     "SAS, but I've chosen to stay systems-minded by continuing to learn across data " \
-    "science, software development, and agentic AI — building real things along " \
+    "science, software development, and agentic AI - building real things along " \
     "the way (more in the timeline), and, in my free time, helping an agentic " \
     "startup research agent behavior, build capability ladders for testing, and " \
     "hone agent behavior in live systems.",
@@ -139,7 +138,7 @@ nm_associate = Role.create!(
   ends_on: Date.new(2011, 1, 1),
   current: false,
   position: 3,
-  summary: "Hired with no degree and no industry experience — brought in purely " \
+  summary: "Hired with no degree and no industry experience - brought in purely " \
            "as a fast, detail-obsessed learner."
 )
 [
@@ -182,7 +181,7 @@ nm_planning = Role.create!(
 )
 [
   [ "Taught classes to senior advisors and ran product design for most agents in-office.", nil, [ "Training & Curriculum Design" ] ],
-  [ "Built Personal Financial Plans — Social Security projections, amortization schedules, and scenario modeling — for advisors' clients.", nil, [ "Campaign Optimization" ] ],
+  [ "Built Personal Financial Plans - Social Security projections, amortization schedules, and scenario modeling - for advisors' clients.", nil, [ "Campaign Optimization" ] ],
   [ "Was the only person ever offered an agent's contract without a bachelor's degree, where a degree was a baseline requirement.", "only person offered the contract without a degree", [], true ]
 ].each_with_index do |(desc, metric, skill_names, hide), i|
   a = nm_planning.accomplishments.create!(description: desc, metric: metric, position: i + 1, hide_from_highlights: !!hide)
@@ -197,15 +196,15 @@ amp = Role.create!(
   ends_on: nil,
   current: true,
   position: 6,
-  summary: "Ten years of SAS-based custom modeling for financial, health, retail, " \
-           "and senior-living clients."
+  summary: "Ten years of SAS-based custom modeling for a variety of industries " \
+           "including financial, health, retail, senior-living, and others."
 )
 [
   [ "Rebuilt the core report shell: automated branding/white-labeling that had been done by hand, and added versioning, conditional logic, and exception-handling.", nil, [ "SAS", "VBA", "Workflow Automation" ] ],
-  [ "Consolidated three separately-maintained versions of the same report — often out of sync with each other — into one data-driven shell.", nil, [ "SAS", "Workflow Automation" ] ],
+  [ "Consolidated three separately-maintained versions of the same report - often out of sync with each other - into one data-driven shell.", nil, [ "SAS", "Workflow Automation" ] ],
   [ "Became the team's mapping expert: automated per-run maps in PDF output, drive-time measurement, and Huff-model competitor analysis.", nil, [ "Geospatial / Huff Modeling" ] ],
-  [ "Co-built, launched, and now maintains a client-facing data portal — self-service data " \
-    "exploration that replaced a slow, fully manual request process — and helped shape a new " \
+  [ "Co-built, launched, and now maintains a client-facing data portal - self-service data " \
+    "exploration that replaced a slow, fully manual request process - and helped shape a new " \
     "data marketplace offering built on top of it.",
     "still in production, still growing", [ "React", "TypeScript", "Node.js", "Python", "Snowflake", "SQL", "Vercel", "Railway", "Supabase" ], 1 ],
   [ "Took on a client's \"group within a group\" segmentation problem: curated a new dataset " \
@@ -216,15 +215,15 @@ amp = Role.create!(
     "data they actually had access to, then refactored their existing bucketed RFM process " \
     "into a standard-deviation-based model parsed across more categories, folded into full " \
     "custom modeling blending spending/engagement patterns with household attributes.",
-    "record-breaking engagement — the client started paying for this study on every campaign",
+    "record-breaking engagement - the client started paying for this study on every campaign",
     [ "RFM Modeling" ], 3 ],
   [ "Solved an auto-loan campaign with no exact-match variables using reverse-logic modeling on the microgrid variables that were available.", nil, [ "Campaign Optimization" ] ],
-  [ "Overhauled a client's manual data-selection process — replacing a slow, manual, copy/paste-and-highlight " \
+  [ "Overhauled a client's manual data-selection process - replacing a slow, manual, copy/paste-and-highlight " \
     "workflow with a tool built on their existing Google BigQuery setup, giving " \
     "them instant feedback on selections and full control over their own parameters.",
     "replaced a fully manual selection process with instant, self-service control",
     [ "Google BigQuery", "Workflow Automation", "SQL" ], 4 ],
-  [ "Learned enough R in a single day to execute and validate a client's own scoring model against their internal testing — not R mastery, just enough to get it done.", "same-day turnaround, vs. weeks from other vendors", [ "R" ], 5 ],
+  [ "Learned enough R in a single day to execute and validate a client's own scoring model against their internal testing - not R mastery, just enough to get it done.", "same-day turnaround, vs. weeks from other vendors", [ "R" ], 5 ],
   [ "Pushed a client off straight-selects and hot-zips onto modeling; the resulting multi-territory win expanded into all franchises plus a full-year budget for the account.", nil, [ "Campaign Optimization" ] ],
   [ "Tunes variable weighting in production models - catching over- and under-weighted inputs before they skew results.", nil, [] ]
 ].each_with_index do |(desc, metric, skill_names, highlight), i|
@@ -234,19 +233,19 @@ end
 
 indie = Role.create!(
   kind: "role",
-  title: "Independent — AI/Product Development and Consulting",
+  title: "Independent - AI/Product Development and Consulting",
   organization: "bluesuedeshark LLC",
   starts_on: Date.new(2025, 1, 1),
   ends_on: nil,
   current: true,
   position: 7,
-  summary: "Self-directed pivot into applied AI and software — shipping things, " \
+  summary: "Self-directed pivot into applied AI and software - shipping things, " \
            "experimenting."
 )
 [
   [ "Advising a non-technical client on standing up a personal dashboard she owns and controls, while building a bespoke, model-agnostic dashboard proof of concept.", nil, [ "LLM Agents & Tooling" ] ],
-  [ "Built and shipped AI-augmented tools end to end — agent-augmented data retrieval and scoring, small internal data apps, system integrations.", nil, [ "LLM Agents & Tooling" ] ],
-  [ "Just shipped this site overnight — for a little challenge.", "start to finish, overnight", [ "Ruby on Rails" ] ]
+  [ "Built and shipped AI-augmented tools end to end - agent-augmented data retrieval and scoring, small internal data apps, system integrations.", nil, [ "LLM Agents & Tooling" ] ],
+  [ "Just shipped this site overnight - for a little challenge.", "start to finish, overnight", [ "Ruby on Rails" ] ]
 ].each_with_index do |(desc, metric, skill_names), i|
   a = indie.accomplishments.create!(description: desc, metric: metric, position: i + 1)
   tag(a, skills, *skill_names)
@@ -258,7 +257,7 @@ end
 Education.create!(
   institution: "Calvary Christian School",
   credential: "High school diploma",
-  honor: "Valedictorian — graduated at 16",
+  honor: "Valedictorian - graduated at 16",
   location: "Myrtle Beach, SC",
   position: 1
 )
@@ -267,14 +266,14 @@ Education.create!(institution: "Southeastern University", credential: "Coursewor
 Education.create!(
   institution: "Franklin University",
   credential: "B.S., Marketing & Business Administration (dual major)",
-  honor: "Summa Cum Laude — Highest Honors",
+  honor: "Summa Cum Laude - Highest Honors",
   location: "Columbus, OH",
   completed_on: Date.new(2022, 8, 1),
   position: 4
 )
 Education.create!(
   institution: "Self-directed",
-  credential: "Data science and software development — self-built curriculum drawing on MIT " \
+  credential: "Data science and software development - self-built curriculum drawing on MIT " \
               "OpenCourseWare and other rigorous sources, ongoing",
   position: 5
 )
@@ -306,7 +305,7 @@ DECAY = 0.85
 
 EARLY_NOTES = [
   "Everyone's still learning where to line up.",
-  "New families figuring out the flow — lots of confusion at the flagpole.",
+  "New families figuring out the flow - lots of confusion at the flagpole.",
   "Kids still working out which line is which.",
   "Staff still working out the choreography too.",
   "First few weeks are always like this, in theory."
@@ -314,21 +313,21 @@ EARLY_NOTES = [
 TRANSITION_NOTES = [
   "A little better than last week, a little at a time.",
   "Regulars are faster now; newer families still slow to load.",
-  "Some days good, some days bad — still finding a rhythm.",
+  "Some days good, some days bad - still finding a rhythm.",
   "Improving, but not as fast as anyone hoped."
 ].freeze
 PLATEAU_NOTES = [
-  "This is just how it is now. Everyone knows the routine — it's still this slow.",
+  "This is just how it is now. Everyone knows the routine - it's still this slow.",
   "Not an onboarding problem anymore. Everyone's fast at their part; the line is still the line.",
   "Nothing unusual today. It's just this long, every day.",
   "Routine is fully set. Wait time isn't improving further.",
-  "Well past the settling-in period — this is the baseline, not a rough patch."
+  "Well past the settling-in period - this is the baseline, not a rough patch."
 ].freeze
 SPECIAL_EVENTS = {
   1 => "Rain. Nobody wanted to walk the extra 10 feet.",
   8 => "Two SUVs sharing what should've been one lane.",
-  11 => "Crossing guard out sick — visibly slower without her.",
-  18 => "Trial run of a one-way loop — modest improvement, didn't hold.",
+  11 => "Crossing guard out sick - visibly slower without her.",
+  18 => "Trial run of a one-way loop - modest improvement, didn't hold.",
   23 => "One car stalled at the flagpole for six full minutes."
 }.freeze
 

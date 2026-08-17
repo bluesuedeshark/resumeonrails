@@ -1,4 +1,4 @@
-<% content_for :title, "#{@profile.name} — #{@profile.headline}" %>
+<% content_for :title, "#{@profile.name} - #{@profile.headline}" %>
 
 <section class="mb-8">
   <p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2 flex items-center gap-2">
@@ -41,5 +41,9 @@
         </p>
       <% end %>
     <% end %>
+  </div>
+
+  <div class="mt-6 text-center">
+    <%= link_to "Full timeline →", timeline_path, class: "inline-block text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
   </div>
 </section>

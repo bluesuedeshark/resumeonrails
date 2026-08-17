@@ -4,7 +4,16 @@ import { Controller } from "@hotwired/stimulus"
 // obstacles crossing the road, get to your kid before the timer runs out.
 // Single-input on purpose — it's meant to be playable one-thumb, mid-carline.
 export default class extends Controller {
-  static targets = ["canvas", "status", "level"]
+  static targets = ["canvas", "status", "level", "overlay", "actions"]
+
+  RETRY_NEXT_ACTIONS = `
+    <button data-action="carline-game#retry" class="flex-1 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg py-2 font-semibold">Retry</button>
+    <button data-action="carline-game#nextLevel" class="flex-1 text-sm bg-indigo-500 hover:bg-indigo-400 text-white rounded-lg py-2 font-semibold">Next →</button>
+  `
+
+  PLAY_AGAIN_ACTION = `
+    <button data-action="carline-game#start" class="flex-1 text-sm bg-indigo-500 hover:bg-indigo-400 text-white rounded-lg py-2 font-semibold">Play again ↻</button>
+  `
 
   OBSTACLE_KINDS = [
     { emoji: "🚧", label: "a traffic cone someone knocked over" },
@@ -82,6 +91,8 @@ export default class extends Controller {
     document.removeEventListener("keydown", this.boundKeydown)
     this.levelTarget.textContent = "You made it!"
     this.statusTarget.innerHTML = this.FINALE_MESSAGE
+    this.actionsTarget.innerHTML = this.PLAY_AGAIN_ACTION
+    this.overlayTarget.classList.remove("hidden")
   }
 
   beginLevel() {
@@ -102,6 +113,8 @@ export default class extends Controller {
     this.graceMs = 1200
     this.timeSinceSpawn = this.spawnGapMs // eligible to spawn right after grace ends
     this.statusTarget.textContent = ""
+    this.overlayTarget.classList.add("hidden")
+    this.actionsTarget.innerHTML = this.RETRY_NEXT_ACTIONS
     this.levelTarget.textContent = `Level ${this.level}`
     document.addEventListener("keydown", this.boundKeydown)
     this.lastTime = performance.now()
@@ -192,6 +205,7 @@ export default class extends Controller {
     this.running = false
     document.removeEventListener("keydown", this.boundKeydown)
     this.statusTarget.innerHTML = `🚗💥 Didn't clear ${reason}.<br>Guess you're still stuck in car line. Better luck at 2:45 tomorrow.`
+    this.overlayTarget.classList.remove("hidden")
   }
 
   win() {
@@ -199,6 +213,7 @@ export default class extends Controller {
     document.removeEventListener("keydown", this.boundKeydown)
     const message = this.WIN_MESSAGES[(this.level - 1) % this.WIN_MESSAGES.length]
     this.statusTarget.innerHTML = message
+    this.overlayTarget.classList.remove("hidden")
   }
 
   drawIdleFrame() {

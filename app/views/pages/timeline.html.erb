@@ -1,4 +1,4 @@
-<% content_for :title, "Timeline — #{Profile.current.name}" %>
+<% content_for :title, "Timeline - #{Profile.current.name}" %>
 
 <h1 class="text-2xl font-bold text-slate-900 mb-2">Timeline</h1>
 <p class="text-slate-600 mb-10 text-sm">Skills clickable for summary.</p>
@@ -22,7 +22,7 @@
           <% role.accomplishments.ordered.each do |a| %>
             <li class="text-sm text-slate-700">
               <%= a.description %>
-              <% if a.metric.present? %><span class="text-indigo-600 font-medium">— <%= a.metric %></span><% end %>
+              <% if a.metric.present? %><span class="text-indigo-600 font-medium">- <%= a.metric %></span><% end %>
               <% if a.skills.any? %>
                 <span class="block mt-1 space-x-1">
                   <% a.skills.each do |skill| %>
@@ -43,7 +43,7 @@
   <% Education.ordered.each do |e| %>
     <li>
       <span class="font-medium text-slate-900"><%= e.institution %></span>
-      <% if e.credential.present? %> — <%= e.credential %><% end %>
+      <% if e.credential.present? %> - <%= e.credential %><% end %>
       <% if e.honor.present? %><span class="text-indigo-600"> (<%= e.honor %>)</span><% end %>
       <% if e.location.present? %><span class="text-slate-500"> · <%= e.location %></span><% end %>
     </li>

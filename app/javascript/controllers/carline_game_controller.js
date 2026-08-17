@@ -27,7 +27,7 @@ export default class extends Controller {
     "🎉 Your kid hopped in! You will now make it to karate with exactly 2.7 minutes to spare.",
     "🎉 Your kid hopped in! Zoom to Costco before they run out of rotisserie chicken. God be with you.",
     "🎉 Your kid hopped in! Time to referee the backseat shotgun lawsuit. Bring a gavel.",
-    "🎉 Your kid hopped in! Circle back for the forgotten cleats. You knew this was coming.",
+    "🎉 Your kid hopped in! Rush to soccer practice, but circle back for the forgotten cleats. You knew this was coming.",
     "🎉 Your kid hopped in! Buckle up for 47 uninterrupted minutes of Minecraft lore.",
     "🎉 Your kid hopped in! Get ready to explain, for the 900th time, why ice cream is not a dinner option.",
     "🎉 Your kid hopped in! You've earned a trip to Duck Donuts. No judgement."

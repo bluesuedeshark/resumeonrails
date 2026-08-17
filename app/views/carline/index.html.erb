@@ -1,11 +1,11 @@
-<% content_for :title, "Carline, Data-Driven — #{Profile.current.name}" %>
+<% content_for :title, "Carline, Data-Driven - #{Profile.current.name}" %>
 
 <p class="text-sm font-semibold text-indigo-600 tracking-wide uppercase mb-2">If the carline were a data problem</p>
 <h1 class="text-3xl font-bold text-slate-900 mb-3">Carline: The Problem of Pain <span class="text-slate-400 font-normal text-xl">(not the C.S. Lewis one :-)</span></h1>
 <p class="text-xs text-slate-400 max-w-2xl mb-8">
-  Not pulled from real data, but imagined from real carline woes :-) What's real is how I'd actually
+  Not pulled from real data, but imagined from real carline woes. What's real is how I'd actually
   work it: not just the surface numbers, but digging, combining datasets, looking for patterns that
-  weren't obvious on the first pass — data science rigor, outside-of-the-box thinking.
+  weren't obvious on the first pass - data science rigor, outside-of-the-box thinking.
 </p>
 
 <div class="sticky top-0 z-30 -mx-6 px-6 py-3 mb-12 bg-indigo-50/95 backdrop-blur border-b border-indigo-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
@@ -13,9 +13,13 @@
   <%= link_to "Play →", carline_play_path, class: "shrink-0 self-start sm:self-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg px-4 py-2 text-sm" %>
 </div>
 
-<section class="flex items-baseline justify-between mb-4">
+<section class="flex items-baseline justify-between mb-4 flex-wrap gap-2">
   <h2 class="text-lg font-semibold text-slate-900">What the raw data shows</h2>
-  <%= link_to "Export the report ↓", carline_export_path(q: @q), class: "text-sm font-medium text-indigo-600 hover:text-indigo-800" %>
+  <div class="flex items-center gap-4 text-sm font-medium">
+    <%= link_to "View report", carline_report_path, class: "text-indigo-600 hover:text-indigo-800" %>
+    <%= link_to "Download PDF ↓", carline_report_path(format: :pdf), class: "text-indigo-600 hover:text-indigo-800" %>
+    <%= link_to "raw data (.csv)", carline_export_path(q: @q), class: "text-xs text-slate-400 hover:text-slate-600 font-normal" %>
+  </div>
 </section>
 
 <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
@@ -51,7 +55,7 @@
 <section class="mb-4" data-controller="wait-chart">
   <h2 class="text-lg font-semibold text-slate-900 mb-1">Time series, not a point average</h2>
   <p class="text-sm text-slate-600 mb-4 max-w-2xl">
-    n=30. Wait time decays over the adoption period, then stabilizes — the series reaches
+    n=30. Wait time decays over the adoption period, then stabilizes - the series reaches
     stationarity. <strong>Baseline is the stabilized value</strong>, not the decay period.
   </p>
   <div class="bg-white border border-slate-200 rounded-lg p-4 overflow-x-auto">
@@ -85,15 +89,15 @@
 
 <p class="text-sm text-slate-600 max-w-2xl mb-12">
   At face value: wait time is high, optimize the carline. Loop redesign, staggered dismissal, added
-  lane capacity — symptom-level interventions.
+  lane capacity - symptom-level interventions.
 </p>
 
 <section class="mb-16 bg-indigo-50 border border-indigo-200 rounded-lg p-6">
   <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wide mb-2">Then we combined it with another dataset</p>
-  <h2 class="text-lg font-semibold text-slate-900 mb-3">Family transport preferences — not just complaints</h2>
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">Family transport preferences - not just complaints</h2>
   <p class="text-sm text-slate-700 mb-4 max-w-2xl">
     Complaint volume is a measure of dissatisfaction, not cause. Second dataset: family-level
-    attributes — extended-day enrollment, stated bus interest.
+    attributes - extended-day enrollment, stated bus interest.
   </p>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
     <div>
@@ -117,14 +121,14 @@
   <p class="text-xs text-slate-400 mt-4 max-w-2xl">
     Honest footnote: a real 95% confidence interval at a ±5% margin needs roughly 384 families
     surveyed. This toy has 65. Real rigor means knowing your sample size before you trust your
-    percentages — this page is a sketch of the method, not a finished study.
+    percentages - this page is a sketch of the method, not a finished study.
   </p>
 </section>
 
 <section class="mb-16">
-  <h2 class="text-lg font-semibold text-slate-900 mb-2">So — not one fix, three</h2>
+  <h2 class="text-lg font-semibold text-slate-900 mb-2">So - not one fix, three</h2>
   <p class="text-sm text-slate-600 mb-6 max-w-2xl">
-    Independent variables, not mutually exclusive. Toggle any combination — the projection updates.
+    Independent variables, not mutually exclusive. Toggle any combination - the projection updates.
   </p>
 
   <div data-controller="solution-mix"
@@ -141,7 +145,7 @@
         <h3 class="font-semibold text-slate-900 mb-2">Earlier, organized check-in</h3>
         <p class="text-sm text-slate-600 mb-3">
           App-based (or a simple tag scan) check-in when a car enters the queue, so kids are staged in
-          rounds and ready to hop in — instead of being paged after the car's already at the front.
+          rounds and ready to hop in - instead of being paged after the car's already at the front.
         </p>
         <dl class="text-xs text-slate-500 space-y-1">
           <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">Low-medium</dd></div>
@@ -172,7 +176,7 @@
         <h3 class="font-semibold text-slate-900 mb-2">Afternoon bus route</h3>
         <p class="text-sm text-slate-600 mb-3">
           Route extended-day families who already want it. New driver jobs, a new revenue line for
-          the school, fewer trips for those families — target the most vocal families first.
+          the school, fewer trips for those families - target the most vocal families first.
         </p>
         <dl class="text-xs text-slate-500 space-y-1">
           <div><dt class="inline font-medium text-slate-600">Effort:</dt> <dd class="inline">High</dd></div>
@@ -215,7 +219,7 @@
     table.
   </p>
   <p class="text-xs text-slate-400 mb-6 max-w-2xl">
-    Simplified example of joins and derivations, pared down in complexity for the sake of a demo —
+    Simplified example of joins and derivations, pared down in complexity for the sake of a demo -
     production-scale data carries more sources, messier keys, and higher cardinality than this.
   </p>
 
@@ -267,13 +271,13 @@
   <p class="text-center text-slate-400 text-xs my-3">↓ correlate ↓</p>
 
   <div class="bg-indigo-600 text-white rounded-lg p-5 text-sm">
-    <strong><%= @vocal_bus_ready_percent %>% of vocal families are already bus-ready</strong> — a
+    <strong><%= @vocal_bus_ready_percent %>% of vocal families are already bus-ready</strong> - a
     pattern invisible in any single source table, only visible after the join.
   </div>
 
   <div class="mt-4 border border-dashed border-slate-300 rounded-lg p-4 text-xs text-slate-500">
     <strong class="text-slate-600">Next layer, not built:</strong> embed complaint free-text and
-    cluster semantically instead of by hand-typed category — surfaces groupings like "wants a real
+    cluster semantically instead of by hand-typed category - surfaces groupings like "wants a real
     alternative" vs. "just venting" that a fixed category list can't see. Same honesty rule as the
     search box below: this is a sketch of where the method goes next, not a claim that it's running.
   </div>
@@ -320,7 +324,7 @@
     <% end %>
   <% end %>
   <p class="text-xs text-slate-400 mt-1">
-    Keyword + synonym search, not real semantic search — the natural next step once this points at a real vector-capable store instead of a hand-typed table.
+    Keyword + synonym search, not real semantic search - the natural next step once this points at a real vector-capable store instead of a hand-typed table.
   </p>
 </section>
 
@@ -335,10 +339,10 @@
     <% else %>
       <ul class="space-y-2 text-sm text-slate-700">
         <% @search[:days].each do |d| %>
-          <li>📅 <%= d.observed_on.strftime("%b %-d") %> — <%= d.note %></li>
+          <li>📅 <%= d.observed_on.strftime("%b %-d") %> - <%= d.note %></li>
         <% end %>
         <% @search[:complaints].each do |c| %>
-          <li>💬 <%= c.logged_on.strftime("%b %-d") %> — <%= c.category %> (<%= c.channel %>, <%= c.family_label %>)</li>
+          <li>💬 <%= c.logged_on.strftime("%b %-d") %> - <%= c.category %> (<%= c.channel %>, <%= c.family_label %>)</li>
         <% end %>
       </ul>
     <% end %>

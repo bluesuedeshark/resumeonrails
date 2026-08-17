@@ -19,14 +19,8 @@ class CarlineController < ApplicationController
 
   def report
     load_metrics
-
-    respond_to do |format|
-      format.html
-      format.pdf do
-        pdf = CarlineReportPdf.new(metrics_for_report).render
-        send_data pdf, filename: "carline-report-#{Date.current}.pdf", type: "application/pdf", disposition: "inline"
-      end
-    end
+    pdf = CarlineReportPdf.new(metrics_for_report).render
+    send_data pdf, filename: "carline-report-#{Date.current}.pdf", type: "application/pdf", disposition: "attachment"
   end
 
   def export

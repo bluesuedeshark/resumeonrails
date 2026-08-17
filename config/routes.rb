@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get "timeline" => "pages#timeline"
   get "carline" => "carline#index"
   get "carline/export" => "carline#export"
-  get "carline/report" => "carline#report", as: :carline_report, defaults: { format: "html" }
+  get "carline/report" => "carline#report", as: :carline_report
   get "carline/play" => "carline#play"
   get "categories/:id" => "categories#show", as: :category
 end

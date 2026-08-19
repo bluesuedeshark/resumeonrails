@@ -1,17 +1,17 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  institution: MyString
-  credential: MyString
-  honor: MyString
-  location: MyString
-  completed_on: 2026-08-15
+first_degree:
+  institution: State University
+  credential: B.S. Computer Science
+  honor: cum laude
+  location: Austin, TX
+  completed_on: 2018-05-15
   position: 1
 
-two:
-  institution: MyString
-  credential: MyString
-  honor: MyString
-  location: MyString
-  completed_on: 2026-08-15
-  position: 1
+second_credential:
+  institution: Community College
+  credential: Certificate in Data Analysis
+  honor:
+  location:
+  completed_on: 2015-05-15
+  position: 2

@@ -1,9 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  accomplishment: one
-  skill: one
+highlighted_ruby:
+  accomplishment: acc_highlighted
+  skill: ruby
 
-two:
-  accomplishment: two
-  skill: two
+highlighted_sql:
+  accomplishment: acc_highlighted
+  skill: sql
+
+unordered_ruby:
+  accomplishment: acc_unordered_highlight
+  skill: ruby

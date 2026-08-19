@@ -1,15 +1,50 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# family_alpha (3 complaints) and family_gamma (2) are "vocal" (>=2); family_beta (1) is not.
 
-one:
-  logged_on: 2026-08-15
-  channel: MyString
-  category: MyString
-  severity: 1
-  family_label: MyString
+complaint_one:
+  family: family_alpha
+  logged_on: 2026-01-05
+  channel: email
+  category: Crossing guard safety
+  severity: 2
+  family_label: Family A
 
-two:
-  logged_on: 2026-08-15
-  channel: MyString
-  category: MyString
+complaint_two:
+  family: family_alpha
+  logged_on: 2026-01-10
+  channel: app
+  category: Wait time
   severity: 1
-  family_label: MyString
+  family_label: Family A
+
+complaint_three:
+  family: family_alpha
+  logged_on: 2026-01-12
+  channel: phone
+  category: Wait time
+  severity: 3
+  family_label: Family A
+
+complaint_four:
+  family: family_gamma
+  logged_on: 2026-01-06
+  channel: email
+  category: Wait time
+  severity: 1
+  family_label: Family C
+
+complaint_five:
+  family: family_gamma
+  logged_on: 2026-01-15
+  channel: app
+  category: Safety
+  severity: 2
+  family_label: Family C
+
+complaint_six:
+  family: family_beta
+  logged_on: 2026-01-08
+  channel: email
+  category: Wait time
+  severity: 1
+  family_label: Family B

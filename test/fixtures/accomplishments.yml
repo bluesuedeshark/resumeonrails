@@ -1,13 +1,33 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  role: one
-  description: MyText
-  metric: MyString
+acc_highlighted:
+  role: current_role
+  description: Shipped a thing that mattered.
+  metric: 30% faster
   position: 1
+  highlight_order: 1
+  hide_from_highlights: false
 
-two:
-  role: two
-  description: MyText
-  metric: MyString
+acc_no_metric:
+  role: current_role
+  description: Did something with no measurable metric.
+  metric:
+  position: 2
+  highlight_order:
+  hide_from_highlights: false
+
+acc_hidden:
+  role: past_role
+  description: Explicitly hidden from highlights despite having a metric.
+  metric: 50% better
   position: 1
+  highlight_order:
+  hide_from_highlights: true
+
+acc_unordered_highlight:
+  role: past_role
+  description: Second highlight-eligible accomplishment with no explicit order.
+  metric: 10x throughput
+  position: 2
+  highlight_order:
+  hide_from_highlights: false

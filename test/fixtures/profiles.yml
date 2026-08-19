@@ -1,19 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  headline: MyString
-  tagline: MyText
-  intro: MyText
-  github_url: MyString
-  linkedin_url: MyString
-  location: MyString
+primary:
+  name: Kaleigh Unger
+  headline: Data-minded engineer
+  tagline: Builds things that hold up under real questions.
+  intro: |-
+    First paragraph of the intro.
 
-two:
-  name: MyString
-  headline: MyString
-  tagline: MyText
-  intro: MyText
-  github_url: MyString
-  linkedin_url: MyString
-  location: MyString
+    Second paragraph of the intro.
+  github_url: https://github.com/bluesuedeshark
+  linkedin_url: https://linkedin.com/in/example
+  location: Remote

@@ -1,17 +1,106 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+#
+# 12 days, decaying then plateauing, so CarlineController#load_metrics has something
+# real to compute against:
+#   avg_wait  = mean(all 12)                      = 14.1
+#   baseline  = mean(last 10)                      = 12.2
+#   threshold = baseline * 1.15                     = 14.03
+#   plateau_start = first day <= threshold          = day05 (14 <= 14.03)
+#   worst_day = day01 (worst_wait_minutes 40, the max)
+# See test/controllers/carline_controller_test.rb, which asserts these exact values.
 
-one:
-  observed_on: 2026-08-15
-  dismissal_time: MyString
-  avg_wait_minutes: 1
-  worst_wait_minutes: 1
-  cars_in_line: 1
-  note: MyText
+day01:
+  observed_on: 2026-01-01
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 25
+  worst_wait_minutes: 40
+  cars_in_line: 25
+  note: First week chaos, the line backs onto the highway.
 
-two:
-  observed_on: 2026-08-15
-  dismissal_time: MyString
-  avg_wait_minutes: 1
-  worst_wait_minutes: 1
-  cars_in_line: 1
-  note: MyText
+day02:
+  observed_on: 2026-01-02
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 22
+  worst_wait_minutes: 35
+  cars_in_line: 25
+  note: Still adjusting to the new drop-off flow.
+
+day03:
+  observed_on: 2026-01-05
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 19
+  worst_wait_minutes: 30
+  cars_in_line: 25
+  note: Slight improvement.
+
+day04:
+  observed_on: 2026-01-06
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 16
+  worst_wait_minutes: 28
+  cars_in_line: 25
+  note: Staff added a second lane.
+
+day05:
+  observed_on: 2026-01-07
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 14
+  worst_wait_minutes: 24
+  cars_in_line: 25
+  note: Getting better.
+
+day06:
+  observed_on: 2026-01-08
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 12
+  worst_wait_minutes: 20
+  cars_in_line: 25
+  note: Long wait at pickup during the rain.
+
+day07:
+  observed_on: 2026-01-09
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 11
+  worst_wait_minutes: 18
+  cars_in_line: 25
+  note: Routine.
+
+day08:
+  observed_on: 2026-01-12
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 10
+  worst_wait_minutes: 16
+  cars_in_line: 25
+  note: Routine.
+
+day09:
+  observed_on: 2026-01-13
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 11
+  worst_wait_minutes: 17
+  cars_in_line: 25
+  note: Minor SUV backup in the through lane.
+
+day10:
+  observed_on: 2026-01-14
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 10
+  worst_wait_minutes: 15
+  cars_in_line: 25
+  note: Routine.
+
+day11:
+  observed_on: 2026-01-15
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 9
+  worst_wait_minutes: 14
+  cars_in_line: 25
+  note: Routine.
+
+day12:
+  observed_on: 2026-01-16
+  dismissal_time: 3:00 PM
+  avg_wait_minutes: 10
+  worst_wait_minutes: 16
+  cars_in_line: 25
+  note: Routine.

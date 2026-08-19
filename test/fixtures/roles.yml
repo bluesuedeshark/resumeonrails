@@ -1,23 +1,23 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  kind: MyString
-  title: MyString
-  organization: MyString
-  location: MyString
-  starts_on: 2026-08-15
-  ends_on: 2026-08-15
-  current: false
-  summary: MyText
+current_role:
+  kind: job
+  title: Dev Team Lead
+  organization: AMP
+  location: Remote
+  starts_on: 2024-01-15
+  ends_on:
+  current: true
+  summary: Leading the dev team.
   position: 1
 
-two:
-  kind: MyString
-  title: MyString
-  organization: MyString
-  location: MyString
-  starts_on: 2026-08-15
-  ends_on: 2026-08-15
+past_role:
+  kind: job
+  title: Software Engineer
+  organization: Previous Co
+  location: Austin, TX
+  starts_on: 2020-06-01
+  ends_on: 2023-12-01
   current: false
-  summary: MyText
-  position: 1
+  summary: Shipped things.
+  position: 2

@@ -1,13 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  label: MyString
-  extended_day: false
-  wants_bus: false
+family_alpha:
+  label: Family A
+  extended_day: true
+  wants_bus: true
   carpool_interested: false
 
-two:
-  label: MyString
+family_beta:
+  label: Family B
   extended_day: false
+  wants_bus: false
+  carpool_interested: true
+
+family_gamma:
+  label: Family C
+  extended_day: true
   wants_bus: false
   carpool_interested: false

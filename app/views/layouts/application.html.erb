@@ -22,11 +22,13 @@
 
     <%= yield :head %>
 
-    <%# ?v= busts the one-year cache on public/ assets. Anyone who loaded the
-        site before the SVG was fixed is holding a broken icon otherwise. %>
+    <%# The favicon is embedded rather than fetched. It kept intermittently
+        falling back to Chrome's generated letter tile, and a request that can
+        fail is the one thing all the causes had in common -- a cold wake, a
+        year-long cache holding a broken copy, or Chrome caching the failure
+        itself. Inlined, there is no request to fail. 402 bytes. %>
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9IiM0ZjQ2ZTUiLz4KICA8IS0tIFRoZSBLIGlzIGEgcGF0aCwgbm90IDx0ZXh0PjogZmF2aWNvbiBjb250ZXh0cyBkb24ndCBsb2FkIHdlYiBmb250cywgYW5kCiAgICAgICB0ZXh0IGxheW91dCByYXN0ZXJpemVzIGluY29uc2lzdGVudGx5IGF0IDE2LTMycHguIC0tPgogIDxwYXRoIGQ9Ik0xMzIgMTIwIGg2MiB2MTA0IGwxMDYgLTEwNCBoNzQgbC0xMjggMTI2IGwxMzQgMTQ2IGgtNzYgbC0xMTAgLTEyMiB2MTIyIGgtNjIgeiIgZmlsbD0iI2ZmZmZmZiIvPgo8L3N2Zz4K" type="image/svg+xml">
     <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/icon.svg?v=2" type="image/svg+xml">
-    <link rel="icon" href="/icon.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

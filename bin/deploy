@@ -20,6 +20,10 @@ if [ "$1" != "--warm-only" ]; then
 fi
 
 if [ "$1" == "--seed" ]; then
+  # `fly ssh` needs a running VM, and with auto_stop_machines="suspend" there
+  # isn't one after a deploy -- a request has to wake it first.
+  echo "==> Waking machine before seeding"
+  curl -s -o /dev/null "$URL"
   echo "==> Re-seeding production database"
   fly ssh console -a "$APP" -C "bin/rails db:seed"
 fi

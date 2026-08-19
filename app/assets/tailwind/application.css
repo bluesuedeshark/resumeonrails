@@ -50,8 +50,24 @@
     margin: 0;
     padding: 0;
     box-shadow: none !important;
-    font-size: 10.5pt;
-    line-height: 1.35;
+    font-size: 10pt;
+    line-height: 1.28;
+  }
+
+  /* Tightened so the document fits two pages with slack, rather than landing
+     exactly on the boundary where a different browser or paper size tips it
+     onto a third. Spacing only -- no content is dropped to achieve this. */
+  .print-doc section {
+    margin-bottom: 0.75rem;
+  }
+  .print-doc .print-role {
+    margin-bottom: 0.6rem;
+  }
+  .print-doc header {
+    margin-bottom: 0.75rem;
+  }
+  .print-h2 {
+    margin-bottom: 0.3rem;
   }
 
   /* Page-break behaviour. A long job is TALLER than a page, so forbidding a

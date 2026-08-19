@@ -22,8 +22,10 @@
 
     <%= yield :head %>
 
+    <%# ?v= busts the one-year cache on public/ assets. Anyone who loaded the
+        site before the SVG was fixed is holding a broken icon otherwise. %>
     <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="icon" href="/icon.svg?v=2" type="image/svg+xml">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon.png">
 

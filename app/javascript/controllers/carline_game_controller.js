@@ -33,20 +33,6 @@ export default class extends Controller {
     "🎉 Your kid hopped in! You've earned a trip to Duck Donuts. No judgement."
   ]
 
-  // Failing had one line for every level while winning had eight, so the jokes
-  // all lived on the win path. Losing gets its own voice now — deliberately
-  // varied in structure, since a reused template kills the joke.
-  FAIL_MESSAGES = [
-    "The car behind you has opinions.",
-    "Somewhere, a teacher is discreetly checking her watch.",
-    "Your kid is on the curb narrating this to a friend.",
-    "Chick-fil-A does close eventually, you know.",
-    "The minivan behind you took your spot. It was never your spot.",
-    "Enjoy another twenty minutes of the same four songs.",
-    "Your kid has made a friend out there. Now they're both waiting.",
-    "Tomorrow you leave five minutes earlier. You will not leave five minutes earlier."
-  ]
-
   MAX_LEVEL = 8 // matches WIN_MESSAGES.length — every level gets its own line, no repeats
 
   FINALE_MESSAGE =
@@ -218,8 +204,7 @@ export default class extends Controller {
   fail(reason) {
     this.running = false
     document.removeEventListener("keydown", this.boundKeydown)
-    const quip = this.FAIL_MESSAGES[(this.level - 1) % this.FAIL_MESSAGES.length]
-    this.statusTarget.innerHTML = `🚗💥 Didn't clear ${reason}.<br>${quip}`
+    this.statusTarget.innerHTML = `🚗💥 Didn't clear ${reason}.<br>Guess you're still stuck in car line. Better luck at 2:45 tomorrow.`
     this.overlayTarget.classList.remove("hidden")
   }
 

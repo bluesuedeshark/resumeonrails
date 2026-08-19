@@ -43,6 +43,7 @@ Profile.create!(
     "with confidence, and exceed expectations consistently."
   ].join("\n\n"),
   github_url: "https://github.com/bluesuedeshark/resumeonrails",
+  linkedin_url: "https://www.linkedin.com/in/kaleighunger",
   location: "Greer, SC"
 )
 

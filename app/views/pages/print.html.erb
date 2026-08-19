@@ -45,9 +45,7 @@
     </dl>
   </section>
 
-  <%# Experience starts its own page: page one is who she is, the rest is what
-      she's done, so a job never straddles that boundary. %>
-  <section class="mb-6 print-break-before">
+  <section class="mb-6">
     <h2 class="print-h2">Experience</h2>
     <% @roles.each do |role| %>
       <% if role.print_condensed? %>

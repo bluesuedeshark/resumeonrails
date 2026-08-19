@@ -83,10 +83,13 @@
     <h2 class="print-h2">Education</h2>
     <ul class="text-sm space-y-1 print-minor">
       <% @education.each do |e| %>
+        <%# Only the institution is bold -- bolding a whole credential sentence
+            made this block read as one heavy paragraph. %>
         <li class="print-entry">
-          <span class="font-semibold"><%= e.headline %></span><%
-            %><% if e.honor.present? %> - <%= e.honor %><% end %><%
-            %><% if e.context_line.present? %> <span class="text-slate-600">· <%= e.context_line %></span><% end %>
+          <span class="font-semibold"><%= e.institution %></span><%
+            %><% if e.print_credential_text.present? %> - <%= e.print_credential_text %><% end %><%
+            %><% if e.honor.present? %>, <%= e.honor %><% end %><%
+            %><% if e.print_meta.present? %> <span class="text-slate-600">· <%= e.print_meta %></span><% end %>
         </li>
       <% end %>
     </ul>

@@ -10,6 +10,16 @@ class Education < ApplicationRecord
     category == CATEGORY ? recent_first : none
   end
 
+  # On paper the institution is what gets emphasised, so the credential runs
+  # alongside it as plain text -- and may be a shorter, print-only version.
+  def print_credential_text
+    print_credential.presence || credential
+  end
+
+  def print_meta
+    [ location, completed_on&.year ].compact_blank.join(" · ")
+  end
+
   # Card headline. When the credential says nothing the tag pill doesn't already
   # say ("Coursework"), the institution is the specific bit worth leading with.
   def headline

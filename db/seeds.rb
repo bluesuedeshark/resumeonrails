@@ -356,6 +356,8 @@ Education.create!(
   institution: "Self-directed",
   credential: "Data science and software development - self-built curriculum drawing on MIT " \
               "OpenCourseWare and other rigorous sources, ongoing",
+  # The web can afford the full sentence; on paper it reads long and redundant.
+  print_credential: "Data science, software development, CS fundamentals - ongoing",
   tag: "Self-Directed Study",
   position: 5
 )

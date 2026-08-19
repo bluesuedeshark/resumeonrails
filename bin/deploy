@@ -1,0 +1,36 @@
+#!/bin/bash -e
+# Deploy to fly.io, then warm the new machine ourselves.
+#
+# A fresh deploy is always genuinely cold: "suspend" resumes from a memory
+# snapshot, but a new image has no snapshot to resume from, so the first
+# request after a deploy pays the full Rails + db:prepare boot (~14s).
+# Better that we pay it than whoever scans the QR card next.
+#
+#   bin/deploy              deploy and warm
+#   bin/deploy --seed       also re-run seeds (needed when seed DATA changed;
+#                           db:prepare applies migrations but never reseeds a
+#                           non-empty database)
+#   bin/deploy --warm-only  skip the deploy, just warm and time the site
+
+APP="resumeonrails"
+URL="https://resumeonrails.com"
+
+if [ "$1" != "--warm-only" ]; then
+  fly deploy -a "$APP"
+fi
+
+if [ "$1" == "--seed" ]; then
+  echo "==> Re-seeding production database"
+  fly ssh console -a "$APP" -C "bin/rails db:seed"
+fi
+
+echo "==> Warming $URL (paying the cold start so visitors don't)"
+for path in / /timeline /carline; do
+  code=$(curl -s -o /dev/null -w '%{http_code}' "$URL$path")
+  printf '    %-12s %s\n' "$path" "$code"
+done
+
+echo "==> Warm timings"
+for path in / /timeline /carline; do
+  printf '    %-12s %ss\n' "$path" "$(curl -s -o /dev/null -w '%{time_total}' "$URL$path")"
+done

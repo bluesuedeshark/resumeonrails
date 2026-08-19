@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_19_030028) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_19_042923) do
   create_table "accomplishment_skills", force: :cascade do |t|
     t.integer "accomplishment_id", null: false
     t.datetime "created_at", null: false
@@ -84,6 +84,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_030028) do
     t.string "linkedin_url"
     t.string "location"
     t.string "name"
+    t.text "print_summary"
     t.text "tagline"
     t.datetime "updated_at", null: false
   end
@@ -96,6 +97,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_030028) do
     t.string "location"
     t.string "organization"
     t.integer "position"
+    t.text "print_bullets"
+    t.boolean "print_condensed", default: false, null: false
     t.date "starts_on"
     t.text "summary"
     t.string "title"

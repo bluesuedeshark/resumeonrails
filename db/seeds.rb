@@ -252,6 +252,84 @@ indie = Role.create!(
 end
 
 # ---------------------------------------------------------------------------
+# Print-only content
+#
+# The printed resume is a different document with a different job, so it gets
+# its own copy rather than reusing the web bullets: terser lines, several web
+# entries combined into one, and the earliest roles reduced to a single line.
+# Nothing above is modified -- the site keeps the voice it was written in.
+# ---------------------------------------------------------------------------
+Profile.current.update!(
+  print_summary: [
+    "Almost 20 years in analytical disciplines, 10 of them in data science - custom modeling " \
+    "solutions for financial, health, retail, senior-living, and other clients.",
+    "Technical depth to architect the right solution, with the breadth to keep the big picture " \
+    "in scope and plan a strategy that scales.",
+    "Continually self-taught across data science, software development, and agentic AI - " \
+    "building real things along the way."
+  ].join("\n")
+)
+
+indie.update!(print_bullets: [
+  "Ships AI-augmented tools end to end - agent-augmented data retrieval and scoring, small " \
+  "internal data apps, system integrations.",
+  "Advising a non-technical client on standing up a personal dashboard she owns and controls, " \
+  "alongside a model-agnostic proof of concept.",
+  "Built and deployed this resume as a working Rails app, overnight."
+].join("\n"))
+
+amp.update!(print_bullets: [
+  "Builds custom segmentation and response models end to end - k-means from scratch (400%+ " \
+  "response rate vs. prior efforts) and an RFM process rebuilt on standard deviations across " \
+  "more categories (record-breaking engagement; the client now funds the study every campaign) " \
+  "- and tunes variable weighting to catch over- and under-weighted inputs.",
+  "Co-built and maintains a client-facing data portal - self-service exploration that replaced " \
+  "a slow manual request process, still in production and growing. React, TypeScript, Node, " \
+  "Python, Snowflake, Vercel.",
+  "Rebuilt the core SAS/VBA report shell: automated the white-labeling that had been done by " \
+  "hand, added versioning, conditional logic, and exception handling, and consolidated three " \
+  "separately-maintained versions into one data-driven shell.",
+  "Team's mapping lead - automated per-run maps in PDF output, drive-time measurement, and " \
+  "Huff-model competitor analysis.",
+  "Replaced a client's manual copy/paste selection workflow with a BigQuery-backed tool giving " \
+  "them instant feedback and control over their own parameters.",
+  "Learned enough R in a day to validate a client's scoring model against their internal " \
+  "testing (same-day turnaround vs. weeks from other vendors); moved another client off " \
+  "straight-selects onto modeling, expanding a multi-territory win into all franchises plus a " \
+  "full-year budget."
+].join("\n"))
+
+nm_planning.update!(print_bullets: [
+  "Ran product design for most agents in-office and taught financial product and plan design " \
+  "to senior advisors.",
+  "Built Personal Financial Plans - Social Security projections, amortization schedules, " \
+  "scenario modeling."
+].join("\n"))
+
+nm_director.update!(print_bullets: [
+  "Rebuilt new-agent production tracking end to end - VBA macros and dashboards giving agents " \
+  "real-time visibility into daily, weekly, and monthly goals - and owned the new-hire curriculum."
+].join("\n"))
+
+nm_associate.update!(print_bullets: [
+  "Broke the agency record for applications submitted with zero errors by a single representative.",
+  "Earned a life & health insurance license, then FINRA Series 6, 63, and 7; promoted to " \
+  "associate representative, signing contracts with clients."
+].join("\n"))
+
+geico.update!(
+  print_condensed: true,
+  print_bullets: "Promoted twice in under two years onto a small team handling the hardest " \
+                 "retention calls; earned a property & casualty license."
+)
+
+ocean_lakes.update!(
+  print_condensed: true,
+  print_bullets: "Rebuilt the inventory ordering process; wrote a plain-language fossil ID " \
+                 "guide and ran daily wildlife trainings."
+)
+
+# ---------------------------------------------------------------------------
 # Education
 # ---------------------------------------------------------------------------
 Education.create!(

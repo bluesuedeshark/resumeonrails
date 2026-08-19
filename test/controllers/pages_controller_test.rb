@@ -68,19 +68,18 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select "article.print-doc"
   end
 
-  test "print hides the toolbar from paper and keeps the Carline appendix opt-in" do
+  test "print hides its toolbar from paper and carries no Carline appendix" do
     get print_path
 
     assert_response :success
     assert_select ".no-print"
-    assert_select "#include-carline"
-    assert_select "#carline-appendix"
+    assert_select "#carline-appendix", count: 0
   end
 
-  test "every page offers the print link" do
-    [ root_path, timeline_path ].each do |path|
+  test "every page offers the print link, labelled for screen readers" do
+    [ root_path, timeline_path, carline_path ].each do |path|
       get path
-      assert_select "a[href=?]", print_path, text: "Print"
+      assert_select "a[href=?][aria-label=?]", print_path, "Printable resume"
     end
   end
 

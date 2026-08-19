@@ -24,18 +24,20 @@
   color: #64748b;
 }
 
-/* The Carline appendix is opt-in: off unless the toolbar checkbox is ticked. */
-#carline-appendix {
-  display: none;
-}
-body:has(#include-carline:checked) #carline-appendix {
-  display: block;
+/* Lower-priority material (early roles, education) sits a step back. */
+.print-minor {
+  font-size: 0.92em;
 }
 
 @media print {
   /* Toolbar, and anything else screen-only, never reaches paper. */
   .no-print {
     display: none !important;
+  }
+
+  /* Experience opens a fresh page. */
+  .print-break-before {
+    break-before: page;
   }
 
   @page {
@@ -56,14 +58,37 @@ body:has(#include-carline:checked) #carline-appendix {
     line-height: 1.35;
   }
 
-  /* Don't split a job, or a heading from what it introduces, across pages. */
-  .print-entry,
-  .print-appendix li,
-  .print-bullet {
-    break-inside: avoid;
+  /* Page-break behaviour. A long job is TALLER than a page, so forbidding a
+     break inside it just shoves the whole block to the next page and leaves a
+     gap. Let roles break; protect the small things instead. */
+  .print-role {
+    break-inside: auto;
   }
+
+  /* A job title must never be the last thing on a page. */
+  .print-role-head,
   .print-h2 {
     break-after: avoid;
+  }
+
+  /* Individual bullets, skill lines and degrees stay whole. */
+  .print-bullet,
+  .print-entry,
+  li {
+    break-inside: avoid;
+  }
+
+  /* No single dangling line of a paragraph at a page boundary. */
+  p,
+  li,
+  .print-doc {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* A section heading shouldn't start a page it can't put content on. */
+  section {
+    break-inside: auto;
   }
 
   /* Paper has no hover states and no need for link chrome. */

@@ -5,14 +5,26 @@
         class: "text-indigo-600 hover:text-indigo-800",
         onclick: "if (window.history.length > 1) { history.back(); return false; }" %>
 </p>
-<h1 class="text-2xl font-bold text-slate-900 mb-2"><%= @category %></h1>
+<h1 id="top" class="text-2xl font-bold text-slate-900 mb-2 scroll-mt-20"><%= @category %></h1>
 <div class="flex flex-wrap gap-1.5 mb-10">
-  <% @skills.each do |s| %>
-    <span class="inline-block text-xs bg-purple-100 text-purple-700 rounded-full px-2.5 py-1 font-medium"><%= s.name %></span>
+  <% category_pills(@category).each do |pill| %>
+    <span class="<%= pill_class(:static_lg) %>"><%= pill %></span>
   <% end %>
 </div>
 
 <ul class="space-y-3">
+  <% @education.each do |e| %>
+    <li class="bg-white border border-slate-200 rounded-lg p-4">
+      <p class="text-sm text-slate-700"><%= e.headline %></p>
+      <% if e.honor.present? %><p class="text-indigo-600 font-medium mt-1"><%= e.honor %></p><% end %>
+      <p class="text-xs text-slate-400 mt-1"><%= e.context_line %></p>
+      <% if e.tag.present? %>
+        <div class="mt-2 flex flex-wrap gap-1">
+          <span class="<%= pill_class(:static) %>"><%= e.tag %></span>
+        </div>
+      <% end %>
+    </li>
+  <% end %>
   <% @accomplishments.each do |a| %>
     <li class="bg-white border border-slate-200 rounded-lg p-4">
       <p class="text-sm text-slate-700"><%= a.description %></p>
@@ -22,10 +34,12 @@
       <% if category_skills.any? %>
         <div class="mt-2 flex flex-wrap gap-1">
           <% category_skills.each do |s| %>
-            <span class="inline-block text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-0.5 font-medium"><%= s.name %></span>
+            <span class="<%= pill_class(:static) %>"><%= s.name %></span>
           <% end %>
         </div>
       <% end %>
     </li>
   <% end %>
 </ul>
+
+<%= render "shared/back_to_top" %>

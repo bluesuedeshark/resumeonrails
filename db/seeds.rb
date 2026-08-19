@@ -259,22 +259,25 @@ Education.create!(
   credential: "High school diploma",
   honor: "Valedictorian - graduated at 16",
   location: "Myrtle Beach, SC",
+  tag: "High School Diploma",
   position: 1
 )
-Education.create!(institution: "Greenville Technical College", credential: "Coursework", location: "Greenville, SC", position: 2)
-Education.create!(institution: "Southeastern University", credential: "Coursework", location: "Lakeland, FL", position: 3)
+Education.create!(institution: "Greenville Technical College", credential: "Coursework", location: "Greenville, SC", tag: "Coursework", position: 2)
+Education.create!(institution: "Southeastern University", credential: "Coursework", location: "Lakeland, FL", tag: "Coursework", position: 3)
 Education.create!(
   institution: "Franklin University",
   credential: "B.S., Marketing & Business Administration (dual major)",
   honor: "Summa Cum Laude - Highest Honors",
   location: "Columbus, OH",
   completed_on: Date.new(2022, 8, 1),
+  tag: "Bachelor's Degree",
   position: 4
 )
 Education.create!(
   institution: "Self-directed",
   credential: "Data science and software development - self-built curriculum drawing on MIT " \
               "OpenCourseWare and other rigorous sources, ongoing",
+  tag: "Self-Directed Study",
   position: 5
 )
 

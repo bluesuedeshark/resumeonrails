@@ -14,7 +14,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     categories = css_select("section a.rounded-full").map { |el| el.text.strip }
-    assert_equal [ "Data Science and Analytics", "AI & Dev" ], categories
+    assert_equal [ "Data Science and Analytics", "AI & Dev", "Learning & Credentials" ], categories
   end
 
   test "home features only highlighted accomplishments, in highlight order" do
@@ -38,14 +38,31 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal [ roles(:past_role).title, roles(:current_role).title ], titles
   end
 
-  test "timeline lists education in position order" do
+  test "timeline lists education newest first, matching how roles are ordered" do
     get timeline_path
 
     assert_response :success
-    institutions = css_select("ul.space-y-2 span.font-medium.text-slate-900").map { |el| el.text.strip }
+    headlines = css_select("#education ~ ul span.font-medium.text-slate-900").map { |el| el.text.strip }
     assert_equal [
-      educations(:first_degree).institution,
-      educations(:second_credential).institution
-    ], institutions
+      educations(:second_credential).headline,
+      educations(:first_degree).headline
+    ], headlines
+  end
+
+  test "timeline skills roster uses the same vocabulary as the category page" do
+    get timeline_path
+
+    assert_response :success
+    roster = css_select("#skills ~ div p.text-purple-700").map { |el| el.text.strip }
+    assert_includes roster, "Coursework · Bachelor's Degree · Example License"
+  end
+
+  test "timeline links Skills to its section, plus one back to top" do
+    get timeline_path
+
+    assert_response :success
+    assert_select "a[href='#skills']", text: "Skills"
+    assert_select "a[href='#top']", count: 1
+    assert_select "h2#skills"
   end
 end

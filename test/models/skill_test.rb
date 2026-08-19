@@ -2,7 +2,7 @@ require "test_helper"
 
 class SkillTest < ActiveSupport::TestCase
   test "categories are unique and sorted by CATEGORY_ORDER, not alphabetically" do
-    assert_equal [ "Data Science and Analytics", "AI & Dev" ], Skill.categories
+    assert_equal [ "Data Science and Analytics", "AI & Dev", "Learning & Credentials" ], Skill.categories
   end
 
   test "category_slug parameterizes the category name" do

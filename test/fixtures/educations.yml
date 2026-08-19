@@ -6,12 +6,14 @@ first_degree:
   honor: cum laude
   location: Austin, TX
   completed_on: 2018-05-15
+  tag: Bachelor's Degree
   position: 1
 
 second_credential:
   institution: Community College
-  credential: Certificate in Data Analysis
+  credential: Coursework
   honor:
   location:
   completed_on: 2015-05-15
+  tag: Coursework
   position: 2

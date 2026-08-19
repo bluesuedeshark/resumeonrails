@@ -20,7 +20,7 @@
   <h2 class="text-lg font-semibold text-slate-900 mb-4">Relevant skills</h2>
   <div class="flex flex-wrap gap-2">
     <% @skill_categories.each do |category| %>
-      <%= link_to category, category_path(Skill.category_slug(category)), class: "inline-block text-sm bg-purple-50 border border-purple-200 hover:border-purple-400 hover:bg-purple-100 text-purple-700 rounded-full px-4 py-1.5 font-medium" %>
+      <%= link_to category, category_path(Skill.category_slug(category)), class: pill_class(:category) %>
     <% end %>
   </div>
 </section>

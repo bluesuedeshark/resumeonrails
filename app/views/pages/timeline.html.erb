@@ -1,16 +1,16 @@
 <% content_for :title, "Timeline - #{Profile.current.name}" %>
 
-<h1 class="text-2xl font-bold text-slate-900 mb-2">Timeline</h1>
-<p class="text-slate-600 mb-10 text-sm">Skills clickable for summary.</p>
+<h1 id="top" class="text-2xl font-bold text-slate-900 mb-2 scroll-mt-20">Timeline</h1>
+<p class="text-slate-600 mb-10 text-sm">
+  <%= link_to "Skills", "#skills", class: pill_class(:skill) %>
+  clickable for summary.
+</p>
 
 <div class="space-y-12">
   <% @roles.each do |role| %>
     <div id="role-<%= role.id %>" class="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-3 md:gap-8 scroll-mt-20">
       <div class="text-sm text-slate-500 md:text-right">
         <%= role.date_range %>
-        <% if role.kind == "origin" %>
-          <div class="mt-1 inline-block md:block text-xs uppercase tracking-wide text-indigo-500 font-semibold">Origin story</div>
-        <% end %>
       </div>
       <div class="border-l-2 border-slate-200 pl-5 pb-2">
         <h2 class="font-semibold text-slate-900 text-lg"><%= role.title %></h2>
@@ -26,7 +26,7 @@
               <% if a.skills.any? %>
                 <span class="block mt-1 space-x-1">
                   <% a.skills.each do |skill| %>
-                    <%= link_to skill.name, category_path(skill.category_slug), class: "inline-block text-xs bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-full px-2 py-0.5" %>
+                    <%= link_to skill.name, category_path(skill.category_slug), class: pill_class(:skill) %>
                   <% end %>
                 </span>
               <% end %>
@@ -38,22 +38,28 @@
   <% end %>
 </div>
 
-<h2 class="text-lg font-semibold text-slate-900 mt-16 mb-4">Education</h2>
-<ul class="space-y-2 text-sm text-slate-700">
-  <% Education.ordered.each do |e| %>
+<h2 id="education" class="text-lg font-semibold text-slate-900 mt-16 mb-4 scroll-mt-20">Education</h2>
+<ul class="space-y-3 text-sm text-slate-700">
+  <% Education.recent_first.each do |e| %>
     <li>
-      <span class="font-medium text-slate-900"><%= e.institution %></span>
-      <% if e.credential.present? %> - <%= e.credential %><% end %>
+      <span class="font-medium text-slate-900"><%= e.headline %></span>
       <% if e.honor.present? %><span class="text-indigo-600"> (<%= e.honor %>)</span><% end %>
-      <% if e.location.present? %><span class="text-slate-500"> · <%= e.location %></span><% end %>
+      <% if e.context_line.present? %><span class="text-slate-500"> · <%= e.context_line %></span><% end %>
+      <% if e.tag.present? %>
+        <span class="block mt-1">
+          <%= link_to e.tag, category_path(Skill.category_slug(Education::CATEGORY)), class: pill_class(:skill) %>
+        </span>
+      <% end %>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-lg font-semibold text-slate-900 mt-16 mb-4">Skills</h2>
+<h2 id="skills" class="text-lg font-semibold text-slate-900 mt-16 mb-4 scroll-mt-20">Skills</h2>
 <% Skill.categories.each do |category| %>
   <div class="mb-4">
-    <%= link_to category, category_path(Skill.category_slug(category)), class: "inline-block text-sm bg-purple-50 border border-purple-200 hover:border-purple-400 hover:bg-purple-100 text-purple-700 rounded-full px-4 py-1.5 font-medium" %>
-    <p class="text-sm text-purple-700 mt-1"><%= @skills.select { |s| s.category == category }.map(&:name).join(" · ") %></p>
+    <%= link_to category, category_path(Skill.category_slug(category)), class: pill_class(:category) %>
+    <p class="text-sm text-purple-700 mt-1"><%= category_pills(category).join(" · ") %></p>
   </div>
 <% end %>
+
+<%= render "shared/back_to_top" %>

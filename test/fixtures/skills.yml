@@ -7,3 +7,7 @@ ruby:
 sql:
   name: SQL
   category: Data Science and Analytics
+
+license:
+  name: Example License
+  category: Learning & Credentials

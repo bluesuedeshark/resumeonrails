@@ -8,5 +8,6 @@ class CategoriesController < ApplicationController
       .includes(:role, :skills)
       .distinct
       .order("roles.position DESC, accomplishments.position ASC")
+    @education = Education.for_category(@category)
   end
 end

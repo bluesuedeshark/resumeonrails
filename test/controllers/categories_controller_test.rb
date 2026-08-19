@@ -28,6 +28,21 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal [ accomplishments(:acc_highlighted).description ], descriptions
   end
 
+  test "Learning & Credentials pill row covers education as well as skills" do
+    get category_path("learning-credentials")
+
+    assert_response :success
+    pills = css_select("div.mb-10 span").map { |el| el.text.strip }
+    assert_equal [ "Coursework", "Bachelor's Degree", "Example License" ], pills
+  end
+
+  test "other categories show no education entries" do
+    get category_path("ai-dev")
+
+    assert_response :success
+    assert_select "span.bg-purple-100", text: "Bachelor's Degree", count: 0
+  end
+
   test "show 404s for an unknown category slug" do
     get category_path("does-not-exist")
 

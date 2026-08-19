@@ -17,4 +17,13 @@ module ApplicationHelper
   def pill_class(variant = :skill)
     PILL_CLASSES.fetch(variant)
   end
+
+  # Nav link, marked when it points at the page you're already on.
+  def nav_class(path)
+    if current_page?(path)
+      "text-indigo-600 font-semibold"
+    else
+      "hover:text-indigo-600"
+    end
+  end
 end

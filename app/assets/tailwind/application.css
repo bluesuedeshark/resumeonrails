@@ -1,1 +1,74 @@
 @import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Printable resume (/print)
+   --------------------------------------------------------------------------- */
+
+.print-h2 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #334155;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 0.15rem;
+  margin-bottom: 0.5rem;
+}
+
+.print-bullet {
+  padding-left: 0.9rem;
+  text-indent: -0.9rem;
+}
+.print-bullet::before {
+  content: "– ";
+  color: #64748b;
+}
+
+/* The Carline appendix is opt-in: off unless the toolbar checkbox is ticked. */
+#carline-appendix {
+  display: none;
+}
+body:has(#include-carline:checked) #carline-appendix {
+  display: block;
+}
+
+@media print {
+  /* Toolbar, and anything else screen-only, never reaches paper. */
+  .no-print {
+    display: none !important;
+  }
+
+  @page {
+    margin: 0.5in;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  .print-doc {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+    font-size: 10.5pt;
+    line-height: 1.35;
+  }
+
+  /* Don't split a job, or a heading from what it introduces, across pages. */
+  .print-entry,
+  .print-appendix li,
+  .print-bullet {
+    break-inside: avoid;
+  }
+  .print-h2 {
+    break-after: avoid;
+  }
+
+  /* Paper has no hover states and no need for link chrome. */
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}

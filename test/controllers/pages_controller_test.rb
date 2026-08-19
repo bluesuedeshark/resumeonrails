@@ -57,6 +57,33 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_includes roster, "Coursework · Bachelor's Degree · Example License"
   end
 
+  test "print renders one document with every section, using the print layout" do
+    get print_path
+
+    assert_response :success
+    assert_select "header nav", count: 0, message: "print layout must not carry the site nav"
+    assert_select "h2.print-h2", text: "Skills"
+    assert_select "h2.print-h2", text: "Experience"
+    assert_select "h2.print-h2", text: "Education"
+    assert_select "article.print-doc"
+  end
+
+  test "print hides the toolbar from paper and keeps the Carline appendix opt-in" do
+    get print_path
+
+    assert_response :success
+    assert_select ".no-print"
+    assert_select "#include-carline"
+    assert_select "#carline-appendix"
+  end
+
+  test "every page offers the print link" do
+    [ root_path, timeline_path ].each do |path|
+      get path
+      assert_select "a[href=?]", print_path, text: "Print"
+    end
+  end
+
   test "timeline links Skills to its section, plus one back to top" do
     get timeline_path
 

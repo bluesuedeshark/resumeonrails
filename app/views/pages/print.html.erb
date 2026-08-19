@@ -1,0 +1,122 @@
+<%# Screen-only control bar. Hidden from the printed page by .no-print. %>
+<div class="no-print sticky top-0 z-10 bg-white border-b border-slate-200 shadow-sm">
+  <div class="max-w-3xl mx-auto px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-4 text-sm">
+      <%= link_to "← Back", root_path, class: "text-indigo-600 hover:text-indigo-800" %>
+      <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+        <input type="checkbox" id="include-carline" class="cursor-pointer">
+        Include Carline case study
+      </label>
+    </div>
+    <button type="button" onclick="window.print()"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg px-4 py-2 text-sm">
+      Print / Save as PDF
+    </button>
+  </div>
+</div>
+
+<article class="print-doc max-w-3xl mx-auto bg-white px-8 py-10 my-6 shadow-sm">
+  <header class="mb-6">
+    <h1 class="text-3xl font-bold tracking-tight"><%= @profile.name %></h1>
+    <p class="text-slate-700 mt-1"><%= @profile.headline %></p>
+    <p class="text-sm text-slate-600 mt-2">
+      <%= [ @profile.location,
+            @profile.linkedin_url&.sub(%r{\Ahttps?://(www\.)?}, ""),
+            @profile.github_url&.sub(%r{\Ahttps?://(www\.)?}, ""),
+            "resumeonrails.com" ].compact_blank.join(" · ") %>
+    </p>
+  </header>
+
+  <% if @profile.intro.present? %>
+    <section class="mb-6">
+      <h2 class="print-h2">Summary</h2>
+      <div class="text-sm leading-relaxed space-y-2">
+        <% @profile.intro.split(/\n{2,}/).each do |para| %>
+          <p><%= para.strip %></p>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <section class="mb-6">
+    <h2 class="print-h2">Skills</h2>
+    <dl class="text-sm space-y-1">
+      <% Skill.categories.each do |category| %>
+        <div class="flex gap-2">
+          <dt class="font-semibold shrink-0"><%= category %>:</dt>
+          <dd><%= category_pills(category).join(", ") %></dd>
+        </div>
+      <% end %>
+    </dl>
+  </section>
+
+  <section class="mb-6">
+    <h2 class="print-h2">Experience</h2>
+    <% @roles.each do |role| %>
+      <div class="print-entry mb-4">
+        <div class="flex items-baseline justify-between gap-4">
+          <h3 class="font-semibold"><%= role.title %></h3>
+          <span class="text-sm text-slate-600 shrink-0 whitespace-nowrap"><%= role.date_range %></span>
+        </div>
+        <p class="text-sm text-slate-700"><%= role.organization %><%= " · #{role.location}" if role.location.present? %></p>
+        <% if role.summary.present? %>
+          <p class="text-sm text-slate-700 italic mt-1"><%= role.summary %></p>
+        <% end %>
+        <ul class="mt-1 text-sm space-y-1">
+          <% role.accomplishments.ordered.each do |a| %>
+            <li class="print-bullet">
+              <%= a.description %><% if a.metric.present? %> <span class="font-medium">(<%= a.metric %>)</span><% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </section>
+
+  <section class="mb-6">
+    <h2 class="print-h2">Education</h2>
+    <ul class="text-sm space-y-1">
+      <% @education.each do |e| %>
+        <li>
+          <span class="font-semibold"><%= e.headline %></span><%
+            %><% if e.honor.present? %> - <%= e.honor %><% end %><%
+            %><% if e.context_line.present? %> <span class="text-slate-600">· <%= e.context_line %></span><% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+
+  <%# Optional: hidden by default, shown when the checkbox above is ticked. %>
+  <section id="carline-appendix" class="print-appendix">
+    <h2 class="print-h2">Appendix - Carline: a worked analysis</h2>
+    <p class="text-sm text-slate-700 mb-2">
+      A self-contained case study built to show method rather than to report on a real school.
+      The underlying data is synthetic and generated from a fixed seed, so the analysis is
+      reproducible; the pipeline, joins, and derived views are real. Live version, with the
+      interactive trade-off dashboard, at resumeonrails.com/carline.
+    </p>
+    <ul class="text-sm space-y-1">
+      <li class="print-bullet">
+        <strong><%= @days.count %> school days</strong> of dismissal observations, averaging
+        <strong><%= @avg_wait %> min</strong> wait, peaking at
+        <strong><%= @worst_day&.worst_wait_minutes %> min</strong>.
+      </li>
+      <li class="print-bullet">
+        Separated the start-of-year learning curve from the underlying floor: waits settle to a
+        <strong><%= @plateau_baseline %> min</strong> baseline that does not improve on its own -
+        so early chaos and the structural wait are two different problems.
+      </li>
+      <li class="print-bullet">
+        Joined <strong><%= @complaint_count %> logged complaints</strong> against a second dataset of
+        <strong><%= @total_families %> families</strong>' transport preferences, which surfaced a
+        computed pattern rather than an assumed one:
+        <strong><%= @vocal_bus_ready_percent %>%</strong> of repeat complainers are already
+        bus-eligible (<%= @bus_ready_families.count %> families qualify overall).
+      </li>
+      <li class="print-bullet">
+        Modeled three interventions with their effects labeled by provenance - one computed from the
+        data, two disclosed on the page as estimates rather than measurements.
+      </li>
+    </ul>
+  </section>
+</article>

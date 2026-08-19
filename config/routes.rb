@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   root "pages#home"
   get "timeline" => "pages#timeline"
+  get "print" => "pages#print"
   get "carline" => "carline#index"
   get "carline/export" => "carline#export"
   get "carline/report" => "carline#report", as: :carline_report

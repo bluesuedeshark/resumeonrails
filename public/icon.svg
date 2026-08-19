@@ -1,6 +1,6 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <rect width="512" height="512" rx="112" fill="#4f46e5"/>
-  <text x="50%" y="53%" dominant-baseline="middle" text-anchor="middle"
-        font-family="'IBM Plex Mono', ui-monospace, monospace" font-weight="700"
-        font-size="290" fill="#ffffff">K</text>
+  <!-- The K is a path, not <text>: favicon contexts don't load web fonts, and
+       text layout rasterizes inconsistently at 16-32px. -->
+  <path d="M132 120 h62 v104 l106 -104 h74 l-128 126 l134 146 h-76 l-110 -122 v122 h-62 z" fill="#ffffff"/>
 </svg>

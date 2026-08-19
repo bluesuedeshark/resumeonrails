@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="motion-safe:scroll-smooth">
   <head>
     <title><%= content_for(:title) || "Kaleigh Unger - Resume, on Rails" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,6 +8,17 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <% page_title = content_for(:title) || "#{Profile.current.name} - Resume, on Rails" %>
+    <% page_description = content_for(:description) ||
+         "#{Profile.current.name} - #{Profile.current.headline}. A resume built as a working Rails app." %>
+    <meta name="description" content="<%= page_description %>">
+    <meta property="og:title" content="<%= page_title %>">
+    <meta property="og:description" content="<%= page_description %>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <meta property="og:image" content="<%= request.base_url %>/icon.png">
+    <meta name="twitter:card" content="summary">
 
     <%= yield :head %>
 
@@ -25,15 +36,18 @@
   </head>
 
   <body class="bg-slate-50 text-slate-800 antialiased">
-    <header class="border-b border-slate-200 bg-white">
-      <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+    <header class="sticky top-0 z-20 border-b border-slate-200 bg-white">
+      <div class="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
         <%= link_to root_path, class: "font-semibold tracking-tight text-slate-900" do %>
           Kaleigh Unger
         <% end %>
-        <nav class="flex gap-6 text-sm font-medium text-slate-600">
-          <%= link_to "Headline", root_path, class: "hover:text-indigo-600" %>
-          <%= link_to "Timeline", timeline_path, class: "hover:text-indigo-600" %>
-          <%= link_to "Carline", carline_path, class: "hover:text-indigo-600" %>
+        <nav class="flex items-center gap-4 sm:gap-6 text-sm font-medium text-slate-600">
+          <%= link_to "Headline", root_path, class: nav_class(root_path) %>
+          <%= link_to "Timeline", timeline_path, class: nav_class(timeline_path) %>
+          <%= link_to "Carline", carline_path, class: nav_class(carline_path) %>
+          <%= link_to "Print", print_path,
+                title: "One-page printable resume",
+                class: "text-xs border border-slate-300 hover:border-indigo-400 hover:text-indigo-600 rounded-full px-2.5 py-1" %>
         </nav>
       </div>
     </header>

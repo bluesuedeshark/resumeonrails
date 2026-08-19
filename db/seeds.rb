@@ -337,11 +337,12 @@ school_days.each_with_index do |date, i|
   worst = (avg + rng.rand(10..22)).clamp(avg + 8, 85)
   cars = 108 + rng.rand(-6..16)
 
-  note = SPECIAL_EVENTS[i] || case i
-                               when 0...6 then EARLY_NOTES.sample(random: rng)
-                               when 6...16 then TRANSITION_NOTES.sample(random: rng)
-                               else PLATEAU_NOTES.sample(random: rng)
-                               end
+  phase_note = case i
+  when 0...6 then EARLY_NOTES.sample(random: rng)
+  when 6...16 then TRANSITION_NOTES.sample(random: rng)
+  else PLATEAU_NOTES.sample(random: rng)
+  end
+  note = SPECIAL_EVENTS[i] || phase_note
 
   CarlineDay.create!(
     observed_on: date,
